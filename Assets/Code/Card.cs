@@ -9,7 +9,7 @@ public class Card : MonoBehaviour
     private Vector3 m_DragOffset = Vector3.zero;
     private bool m_Seen = false;
 
-    public static Vector3 StartPosition = new Vector3(0f, 2f, 0f);
+    public static Vector3 StartPosition = new Vector3(0f, 2f, 0f); //TODO - these should go away. The card needs to know which deck it came from. There might be multiple decks
     public static Vector3 StartRotation = new Vector3(90f, 0f, 90f);
 
     public IEnumerator ShowToCamera()
@@ -39,6 +39,7 @@ public class Card : MonoBehaviour
 
     public IEnumerator ReturnToDeck()
     {
+        //TODO - cards should slide underneath the deck (consider invisible decks?)
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  transform.position + Vector3.up * 2,
             "easeType", iTween.EaseType.Linear,
@@ -53,6 +54,7 @@ public class Card : MonoBehaviour
             "delay", 0.5f));
 
         yield return new WaitForSeconds(2.5f);
+        //TODO - the card shouldn't be reused. It should be destroyed here and a new one spawned by the deck when needed.
     }
     
     public void Show()
@@ -89,6 +91,8 @@ public class Card : MonoBehaviour
         //GameController.instance.SetNextPlayer(); TODO - how should this be hooked into the routine workflow? Should it be a subroutine of the Player/Cell routine?
     }
 
+    #region Dragging
+
     private void OnMouseDown()
     {
         if (!m_Seen) { return; }
@@ -111,4 +115,6 @@ public class Card : MonoBehaviour
     {
         m_IsDragging = false;
     }
+
+    #endregion
 }

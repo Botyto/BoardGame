@@ -20,13 +20,13 @@ public class Player : MonoBehaviour
 
     private bool m_Moving = false;
     
-    public void MoveToNext()
+    public IEnumerator MoveToNext()
     {
         var currentWp = currentWaypoint;
-        MoveToToDirect(currentWp.index + 1);
+        return MoveToToDirect(currentWp.index + 1);
     }
 
-    public Coroutine MoveTo(int index)
+    public IEnumerator MoveTo(int index)
     {
         if (m_Moving) { return null; }
 
@@ -45,12 +45,12 @@ public class Player : MonoBehaviour
             return null;
         }
 
-        return StartCoroutine(MoveToRoutine(waypointsOrder.ToArray()));
+        return MoveToRoutine(waypointsOrder.ToArray());
     }
 
     public IEnumerator MoveToRoutine(Waypoint[] order)
     {
-        OnLeaveCell(currentWaypoint);
+        yield return OnLeaveCell(currentWaypoint);
 
         currentCellIndex = order[order.Length - 1].index;
 
@@ -67,20 +67,20 @@ public class Player : MonoBehaviour
             "easeType", iTween.EaseType.Linear));
         yield return new WaitForSeconds(moveTween.time);
         m_Moving = false;
-        
-        OnEnterCell(currentWaypoint);
+
+        yield return OnEnterCell(currentWaypoint);
     }
 
-    public Coroutine MoveToToDirect(int index)
+    public IEnumerator MoveToToDirect(int index)
     {
         if (m_Moving) { return null; }
         var targetWaypoint = FindWaypointAt(index);
-        return StartCoroutine(MoveToDirectRoutine(targetWaypoint));
+        return MoveToDirectRoutine(targetWaypoint);
     }
 
     public IEnumerator MoveToDirectRoutine(Waypoint targetWaypoint)
     {
-        OnLeaveCell(currentWaypoint);
+        yield return OnLeaveCell(currentWaypoint);
 
         currentCellIndex = targetWaypoint.index;
 
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(moveTween.time);
         m_Moving = false;
 
-        OnEnterCell(currentWaypoint);
+        yield return OnEnterCell(currentWaypoint);
     }
 
     #endregion
@@ -101,12 +101,12 @@ public class Player : MonoBehaviour
 
     public const float parkedScale = 0.75f;
 
-    public Coroutine Park()
+    public IEnumerator Park()
     {
         if (m_Moving) { return null; }
 
         var spot = currentWaypoint.TakeParkingSpace(this);
-        return StartCoroutine(ParkRoutine(spot));
+        return ParkRoutine(spot);
     }
 
     public IEnumerator ParkRoutine(Vector3 spot)
@@ -114,6 +114,7 @@ public class Player : MonoBehaviour
         var spotlight = GetComponentInChildren<Light>(true);
         if (spotlight != null) { spotlight.enabled = false; }
 
+        m_Moving = true;
         var path = new Vector3[] { transform.position, spot };
         var parkTween = iTween.MoveTo(gameObject, iTween.Hash(
             "path", path,
@@ -121,16 +122,16 @@ public class Player : MonoBehaviour
             "easeType", iTween.EaseType.Linear));
         var parkingTime = parkTween.time;
         iTween.ScaleTo(gameObject, Vector3.one * parkedScale, parkingTime);
-        
         yield return new WaitForSeconds(parkingTime);
+        m_Moving = false;
     }
 
-    public Coroutine Unpark()
+    public IEnumerator Unpark()
     {
         if (m_Moving) { return null; }
 
         currentWaypoint.ReleaseParkingSpace(this);
-        return StartCoroutine(UnparkRoutine());
+        return UnparkRoutine();
     }
 
     public IEnumerator UnparkRoutine()
@@ -138,6 +139,7 @@ public class Player : MonoBehaviour
         var spotlight = GetComponentInChildren<Light>(true);
         if (spotlight != null) { spotlight.enabled = true; }
 
+        m_Moving = true;
         var center = currentWaypoint.bounds.center;
         var path = new Vector3[] { transform.position, center };        
         var unparkTween = iTween.MoveTo(gameObject, iTween.Hash(
@@ -146,28 +148,43 @@ public class Player : MonoBehaviour
             "easeType", iTween.EaseType.Linear));
         var unpackingTime = unparkTween.time;
         iTween.ScaleTo(gameObject, Vector3.one, unpackingTime);
-
         yield return new WaitForSeconds(unpackingTime);
+        m_Moving = false;
     }
 
     #endregion
 
-    public void OnEnterCell(Waypoint waypoint)
+    public IEnumerator BeginTurn()
     {
-        var cell = Board.instance.boardDefinition.GetCell(waypoint.index);
-        cell.OnEnter(waypoint.gameObject, this);
+        //TODO should we wait for the camera to arrive (and how? maybe keep it's previous position and check for distance travelled)
+        yield return Unpark();
+
+        //TODO - Maybe this should be a flag (or something..) to allow other types of input?
+        //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
+        yield return new WaitForKeyDown(KeyCode.Space);
+        var dice1 = GameController.instance.RollDice();
+        var dice2 = GameController.instance.RollDice();
+        yield return MoveTo(currentCellIndex + dice1 + dice2);
+
+        yield return Park();
+        //TODO maybe wait a bit so the motion is not that rought?
     }
 
-    public void OnLeaveCell(Waypoint waypoint)
+    public IEnumerator OnEnterCell(Waypoint waypoint)
     {
         var cell = Board.instance.boardDefinition.GetCell(waypoint.index);
-        cell.OnLeave(waypoint.gameObject, this);
+        return cell.OnEnter(waypoint.gameObject, this);
+    }
+
+    public IEnumerator OnLeaveCell(Waypoint waypoint)
+    {
+        var cell = Board.instance.boardDefinition.GetCell(waypoint.index);
+        return cell.OnLeave(waypoint.gameObject, this);
     }
     
     public void Start()
     {
         ApplyColors();
-        Park();
     }
 
     public void ApplyColors()

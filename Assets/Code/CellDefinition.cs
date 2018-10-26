@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 [Serializable]
@@ -44,17 +45,17 @@ public class CellDefinition : ScriptableObject
         renderer.material = material;
     }
 
-    public void OnEnter(GameObject cell, Player player)
+    public IEnumerator OnEnter(GameObject cell, Player player)
     {
-        ApplyEffects(enterEffects, cell, player);
+        return ApplyEffects(enterEffects, cell, player);
     }
 
-    public void OnLeave(GameObject cell, Player player)
+    public IEnumerator OnLeave(GameObject cell, Player player)
     {
-        ApplyEffects(leaveEffects, cell, player);
+        return ApplyEffects(leaveEffects, cell, player);
     }
 
-    private void ApplyEffects(string[] effects, GameObject cell, Player player)
+    private IEnumerator ApplyEffects(string[] effects, GameObject cell, Player player)
     {
         var ty = typeof(CellEffects);
         var parameters = new object[] { this, cell, player };
@@ -63,7 +64,7 @@ public class CellDefinition : ScriptableObject
             var method = ty.GetMethod(effect);
             if (method == null) { continue; }
 
-            method.Invoke(null, parameters);
+            yield return method.Invoke(null, parameters);
         }
     }
 }

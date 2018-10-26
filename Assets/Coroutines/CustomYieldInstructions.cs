@@ -27,3 +27,15 @@ public class WaitForKeyDown : CustomYieldInstruction
 
     public override bool keepWaiting { get { return !Input.GetKeyDown(m_KeyCode); } }
 }
+
+public class WaitForObjectDestroyed : CustomYieldInstruction
+{
+    private GameObject m_Object;
+
+    public WaitForObjectDestroyed(GameObject obj)
+    {
+        m_Object = obj;
+    }
+
+    public override bool keepWaiting { get { return m_Object != null; } }
+}

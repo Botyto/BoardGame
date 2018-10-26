@@ -17,7 +17,7 @@ public class FollowCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        var bounds = GetObjectsBounds();
+        var bounds = GetObjectsBounds(); //TODO - can we avoid calculating this bounding box every frame? But it will still need to be updated when something moves.
         if (bounds.size.sqrMagnitude < 0.001)
         {
             return;

@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
 
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
     
-    public Deck deck = null;
+    public Deck deck = null; //TODO - the controller should gather all decks (in OnEnable) by name into a dictionary. This member should go away.
 
     private void OnEnable()
     {
@@ -27,6 +27,12 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < players.Length; ++i)
+        {
+            if (i == currentPlayerIndex) { continue; }
+            players[i].StartCoroutine(players[i].Park());
+        }
+
         --currentPlayerIndex;
         BeginTurn();
     }
@@ -35,7 +41,7 @@ public class GameController : MonoBehaviour
     {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
         m_GameRoutine = new UnityCoroutine(TurnRountine());
-        StartCoroutine(m_GameRoutine.Start());
+        StartCoroutine(m_GameRoutine.StartSafe());
     }
 
     private void Update()
@@ -56,15 +62,7 @@ public class GameController : MonoBehaviour
     private IEnumerator TurnRountine()
     {
         camera.PushTarget(currentPlayer.gameObject.transform);
-        yield return currentPlayer.Unpark();
-        
-        //TODO - This should be moved inside Player.
-        yield return new WaitForKeyDown(KeyCode.Space); //UnityCoroutine may be paused instead of this, as other input methods may be available in the future.
-        var dice1 = RollDice();
-        var dice2 = RollDice();
-        yield return currentPlayer.MoveTo(currentPlayer.currentCellIndex + dice1 + dice2);
-
-        yield return currentPlayer.Park();
+        yield return currentPlayer.BeginTurn();
         camera.PopTarget();
     }
     

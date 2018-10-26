@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Waypoint : MonoBehaviour
+public class Waypoint : MonoBehaviour //TODO - this is badly named :( shouldn't it be Cell or something like that?
 {
     [Header("Waypoint")]
     public int index = -1;
@@ -59,6 +59,8 @@ public class Waypoint : MonoBehaviour
 
     public Vector3 GetParkingSpacePosition(int index)
     {
+        //TODO - can we generate a grid-like (instead of line-like) arrangement of the parking spaces
+        //       This should take into account the size of the cell (see Waypoint.bounds.size) and adjust to it
         return transform.TransformPoint(Vector3.right * 2.0f * (index + 1));
     }
 
