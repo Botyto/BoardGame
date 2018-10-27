@@ -12,7 +12,6 @@ public class GameController : MonoBehaviour
 
     [Header("Turns")]
     public int currentPlayerIndex = 0;
-    public bool ActiveTurn = false;
 
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
     
@@ -66,9 +65,15 @@ public class GameController : MonoBehaviour
         camera.PopTarget();
     }
     
-    public int RollDice()
+    public int RollDice(int n = 1)
     {
-        return Random.Range(1, 6);
+        int total = 0;
+        for (int i = 0; i < n; ++i)
+        {
+            total += Random.Range(1, 6);
+        }
+
+        return total;
     }
 
     private void SpawnPlayers()
