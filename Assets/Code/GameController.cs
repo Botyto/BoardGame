@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -12,13 +13,23 @@ public class GameController : MonoBehaviour
 
     [Header("Turns")]
     public int currentPlayerIndex = 0;
-
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
-    
-    public Deck deck = null; //TODO - the controller should gather all decks (in OnEnable) by name into a dictionary. This member should go away.
 
+    [HideInInspector]
+    public Dictionary<string, Deck> decks;
+    
     private void OnEnable()
     {
+        //Gather all decks into a dictionary
+        decks = new Dictionary<string, Deck>();
+        foreach (var deck in FindObjectsOfType<Deck>())
+        {
+            if (!decks.ContainsKey(deck.id))
+            {
+                decks.Add(deck.id, deck);
+            }
+        }
+
         SpawnPlayers();
     }
 
@@ -67,6 +78,13 @@ public class GameController : MonoBehaviour
     
     public int RollDice(int n = 1)
     {
+        //TODO - make more elegant solution later?
+        var cheat = FindObjectOfType<DiceCheat>();
+        if (cheat != null)
+        {
+            return cheat.RollDice(n);
+        }
+        
         int total = 0;
         for (int i = 0; i < n; ++i)
         {

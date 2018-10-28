@@ -171,6 +171,7 @@ public class Player : MonoBehaviour
 
     public IEnumerator OnEnterCell(Waypoint waypoint)
     {
+        //TODO should OnEnterCell and OnLeaveCell ask the board for the cell definition? Shouldn't it be embedded into the waypoint (see Deck.SpawnCard())?
         var cell = Board.instance.boardDefinition.GetCell(waypoint.index);
         return cell.OnEnter(waypoint.gameObject, this);
     }

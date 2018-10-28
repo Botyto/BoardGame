@@ -12,8 +12,12 @@ public class FollowCamera : MonoBehaviour
     public float zoomSpeed = 0.05f;
     public float additionalDistance = 10.0f;
     public List<Transform[]> followedObjectsStack = new List<Transform[]>() { new Transform[0] };
-
+    
     public Transform[] followedObjects { get { return followedObjectsStack[followedObjectsStack.Count - 1]; } }
+
+    private float m_PreviousStepSize = 0.0f;
+    public float previousStepSize { get { return m_PreviousStepSize; } }
+    public bool isMoving { get { return previousStepSize > 0.01f; } }
 
     void LateUpdate()
     {
@@ -32,6 +36,7 @@ public class FollowCamera : MonoBehaviour
         var direction = desiredPosition - transform.position;
         var smoothedPosition = transform.position + (direction * Time.deltaTime) * moveSpeed;
 
+        m_PreviousStepSize = Vector3.Distance(transform.position, smoothedPosition);
         transform.position = smoothedPosition;
     }
 
@@ -43,11 +48,13 @@ public class FollowCamera : MonoBehaviour
     public void AddTarget(Transform[] newTarget)
     {
         followedObjectsStack.Add(newTarget);
+        m_PreviousStepSize = float.PositiveInfinity;
     }
 
     public void PopTarget()
     {
         followedObjectsStack.RemoveAt(followedObjectsStack.Count - 1);
+        m_PreviousStepSize = float.PositiveInfinity;
     }
 
     public Bounds GetObjectsBounds()

@@ -22,12 +22,14 @@ public static partial class CellEffects
 
     public static IEnumerator DrawCard(CellDefinition definition, GameObject cell, Player player)
     {
-        //TODO - this effect should use a parameter to allaw multiple decks
-        //var deck = definition.GetParameter("deck", defaultValue: "default");
+        var deckName = definition.GetParameter("deck", defaultValue: "default");
+        Deck deck = null;
+        if (!GameController.instance.decks.TryGetValue(deckName, out deck))
+        {
+            Debug.LogFormat("<color=red>[Failed]</color> Deck with name {0} doesn't exists!", deckName);
+            yield break;
+        }
 
-        //TODO - this should be a coroutine that will wait for the card to do it's effect and be destroyed (or the other way around) (see MessageBox effect above)
-        //Also where do we push the deck in the camera follow objects? (and should we?)
-        GameController.instance.deck.DrawCard();
-        yield break;
+        yield return deck.DrawCard(player);
     }
 }

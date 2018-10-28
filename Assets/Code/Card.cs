@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    [Header("Card")]
+    public CardDefinition definition = null;
+    public Deck deck = null;
+
     private Vector3 m_Velocity = Vector3.zero;
     private Vector3 m_PreviousPosition = Vector3.zero;
     private bool m_IsDragging = false;
@@ -78,17 +82,16 @@ public class Card : MonoBehaviour
             if (m_Seen)
             {
                 var viewportPos = Camera.main.WorldToViewportPoint(transform.position);
-                if (viewportPos.x < 0 || viewportPos.x > 1) { ReturnCardAndContinue(); }
-                if (viewportPos.y < 0 || viewportPos.y > 1) { ReturnCardAndContinue(); }
+                if (viewportPos.x < 0 || viewportPos.x > 1) { StartCoroutine(ReturnCardAndContinue()); }
+                if (viewportPos.y < 0 || viewportPos.y > 1) { StartCoroutine(ReturnCardAndContinue()); }
             }
         }
     }
 
-    public void ReturnCardAndContinue()
+    public IEnumerator ReturnCardAndContinue() //TODO - should this be called like that?
     {
-        StartCoroutine(ReturnToDeck());
-        m_Seen = false;
-        //GameController.instance.SetNextPlayer(); TODO - how should this be hooked into the routine workflow? Should it be a subroutine of the Player/Cell routine?
+        yield return ReturnToDeck();
+        Destroy(gameObject);
     }
 
     #region Dragging
