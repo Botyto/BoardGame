@@ -12,6 +12,16 @@ public partial class iTween : MonoBehaviour
 {
     #region Variables
 
+    [Serializable]
+    private struct Targets
+    {
+        public Vector3[] vector3s;
+        public Vector2[] vector2s;
+        public Color[,] colors;
+        public float[] floats;
+        public Rect[] rects;
+    }
+
     //repository of all living iTweens:
     public static List<Hashtable> tweens = new List<Hashtable>();
 
@@ -35,6 +45,7 @@ public partial class iTween : MonoBehaviour
     private delegate void ApplyTween();
 
     private float m_RunningTime;
+    [Header("Targets"), SerializeField]
     private float m_Percentage;
     private float m_DelayStarted; //probably not neccesary that this be protected but it shuts Unity's compiler up about this being "never used"
     private bool m_Kinematic;
@@ -48,11 +59,9 @@ public partial class iTween : MonoBehaviour
     private EasingFunction m_EaseFunc;
     private ApplyTween m_ApplyFunc;
     private AudioSource m_AudioSource;
-    private Vector3[] m_Vector3s; //TODO - move these into a serializable structure so it can be inspected
-    private Vector2[] m_Vector2s;
-    private Color[,] m_Colors;
-    private float[] m_Floats;
-    private Rect[] m_Rects;
+    [SerializeField]
+    private Targets m_Targets;
+    [SerializeField]
     private CRSpline m_Path;
     private Vector3 m_PreUpdate;
     private Vector3 m_PostUpdate;
@@ -260,36 +269,36 @@ public partial class iTween : MonoBehaviour
     void GenerateRectTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Rects = new Rect[3];
+        m_Targets.rects = new Rect[3];
 
         //from and to values:
-        m_Rects[0] = (Rect)m_TweenArguments["from"];
-        m_Rects[1] = (Rect)m_TweenArguments["to"];
+        m_Targets.rects[0] = (Rect)m_TweenArguments["from"];
+        m_Targets.rects[1] = (Rect)m_TweenArguments["to"];
     }
 
     void GenerateColorTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Colors = new Color[1, 3];
+        m_Targets.colors = new Color[1, 3];
 
         //from and to values:
-        m_Colors[0, 0] = (Color)m_TweenArguments["from"];
-        m_Colors[0, 1] = (Color)m_TweenArguments["to"];
+        m_Targets.colors[0, 0] = (Color)m_TweenArguments["from"];
+        m_Targets.colors[0, 1] = (Color)m_TweenArguments["to"];
     }
 
     void GenerateVector3Targets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from and to values:
-        m_Vector3s[0] = (Vector3)m_TweenArguments["from"];
-        m_Vector3s[1] = (Vector3)m_TweenArguments["to"];
+        m_Targets.vector3s[0] = (Vector3)m_TweenArguments["from"];
+        m_Targets.vector3s[1] = (Vector3)m_TweenArguments["to"];
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -297,17 +306,17 @@ public partial class iTween : MonoBehaviour
     void GenerateVector2Targets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector2s = new Vector2[3];
+        m_Targets.vector2s = new Vector2[3];
 
         //from and to values:
-        m_Vector2s[0] = (Vector2)m_TweenArguments["from"];
-        m_Vector2s[1] = (Vector2)m_TweenArguments["to"];
+        m_Targets.vector2s[0] = (Vector2)m_TweenArguments["from"];
+        m_Targets.vector2s[1] = (Vector2)m_TweenArguments["to"];
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            Vector3 fromV3 = new Vector3(m_Vector2s[0].x, m_Vector2s[0].y, 0);
-            Vector3 toV3 = new Vector3(m_Vector2s[1].x, m_Vector2s[1].y, 0);
+            Vector3 fromV3 = new Vector3(m_Targets.vector2s[0].x, m_Targets.vector2s[0].y, 0);
+            Vector3 toV3 = new Vector3(m_Targets.vector2s[1].x, m_Targets.vector2s[1].y, 0);
             float distance = Math.Abs(Vector3.Distance(fromV3, toV3));
             time = distance / (float)m_TweenArguments["speed"];
         }
@@ -316,16 +325,16 @@ public partial class iTween : MonoBehaviour
     void GenerateFloatTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Floats = new float[3];
+        m_Targets.floats = new float[3];
 
         //from and to values:
-        m_Floats[0] = (float)m_TweenArguments["from"];
-        m_Floats[1] = (float)m_TweenArguments["to"];
+        m_Targets.floats[0] = (float)m_TweenArguments["from"];
+        m_Targets.floats[1] = (float)m_TweenArguments["to"];
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(m_Floats[0] - m_Floats[1]);
+            float distance = Math.Abs(m_Targets.floats[0] - m_Targets.floats[1]);
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -338,31 +347,31 @@ public partial class iTween : MonoBehaviour
         //from and init to values:
         if (GetComponent<Renderer>())
         {
-            m_Colors = new Color[GetComponent<Renderer>().materials.Length, 3];
+            m_Targets.colors = new Color[GetComponent<Renderer>().materials.Length, 3];
             for (int i = 0; i < GetComponent<Renderer>().materials.Length; i++)
             {
-                m_Colors[i, 0] = GetComponent<Renderer>().materials[i].GetColor(m_Namedcolorvalue.ToString());
-                m_Colors[i, 1] = GetComponent<Renderer>().materials[i].GetColor(m_Namedcolorvalue.ToString());
+                m_Targets.colors[i, 0] = GetComponent<Renderer>().materials[i].GetColor(m_Namedcolorvalue.ToString());
+                m_Targets.colors[i, 1] = GetComponent<Renderer>().materials[i].GetColor(m_Namedcolorvalue.ToString());
             }
             //colors[0] = colors[1] = renderer.material.color;	
         }
         else if (GetComponent<Light>())
         {
-            m_Colors = new Color[1, 3];
-            m_Colors[0, 0] = m_Colors[0, 1] = GetComponent<Light>().color;
+            m_Targets.colors = new Color[1, 3];
+            m_Targets.colors[0, 0] = m_Targets.colors[0, 1] = GetComponent<Light>().color;
         }
         else
         {
-            m_Colors = new Color[1, 3]; //empty placeholder incase the GO is perhaps an empty holder or something similar
+            m_Targets.colors = new Color[1, 3]; //empty placeholder incase the GO is perhaps an empty holder or something similar
         }
 
         //to values:
         if (m_TweenArguments.Contains("color"))
         {
             //colors[1]=(Color)tweenArguments["color"];
-            for (int i = 0; i < m_Colors.GetLength(0); i++)
+            for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
             {
-                m_Colors[i, 1] = (Color)m_TweenArguments["color"];
+                m_Targets.colors[i, 1] = (Color)m_TweenArguments["color"];
             }
         }
         else
@@ -370,33 +379,33 @@ public partial class iTween : MonoBehaviour
             if (m_TweenArguments.Contains("r"))
             {
                 //colors[1].r=(float)tweenArguments["r"];
-                for (int i = 0; i < m_Colors.GetLength(0); i++)
+                for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
                 {
-                    m_Colors[i, 1].r = (float)m_TweenArguments["r"];
+                    m_Targets.colors[i, 1].r = (float)m_TweenArguments["r"];
                 }
             }
             if (m_TweenArguments.Contains("g"))
             {
                 //colors[1].g=(float)tweenArguments["g"];
-                for (int i = 0; i < m_Colors.GetLength(0); i++)
+                for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
                 {
-                    m_Colors[i, 1].g = (float)m_TweenArguments["g"];
+                    m_Targets.colors[i, 1].g = (float)m_TweenArguments["g"];
                 }
             }
             if (m_TweenArguments.Contains("b"))
             {
                 //colors[1].b=(float)tweenArguments["b"];
-                for (int i = 0; i < m_Colors.GetLength(0); i++)
+                for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
                 {
-                    m_Colors[i, 1].b = (float)m_TweenArguments["b"];
+                    m_Targets.colors[i, 1].b = (float)m_TweenArguments["b"];
                 }
             }
             if (m_TweenArguments.Contains("a"))
             {
                 //colors[1].a=(float)tweenArguments["a"];
-                for (int i = 0; i < m_Colors.GetLength(0); i++)
+                for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
                 {
-                    m_Colors[i, 1].a = (float)m_TweenArguments["a"];
+                    m_Targets.colors[i, 1].a = (float)m_TweenArguments["a"];
                 }
             }
         }
@@ -405,17 +414,17 @@ public partial class iTween : MonoBehaviour
         if (m_TweenArguments.Contains("amount"))
         {
             //colors[1].a=(float)tweenArguments["amount"];
-            for (int i = 0; i < m_Colors.GetLength(0); i++)
+            for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
             {
-                m_Colors[i, 1].a = (float)m_TweenArguments["amount"];
+                m_Targets.colors[i, 1].a = (float)m_TweenArguments["amount"];
             }
         }
         else if (m_TweenArguments.Contains("alpha"))
         {
             //colors[1].a=(float)tweenArguments["alpha"];
-            for (int i = 0; i < m_Colors.GetLength(0); i++)
+            for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
             {
-                m_Colors[i, 1].a = (float)m_TweenArguments["alpha"];
+                m_Targets.colors[i, 1].a = (float)m_TweenArguments["alpha"];
             }
         }
     }
@@ -423,7 +432,7 @@ public partial class iTween : MonoBehaviour
     void GenerateAudioToTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector2s = new Vector2[3];
+        m_Targets.vector2s = new Vector2[3];
 
         //set audioSource:
         if (m_TweenArguments.Contains("audiosource"))
@@ -445,16 +454,16 @@ public partial class iTween : MonoBehaviour
         }
 
         //from values and default to values:
-        m_Vector2s[0] = m_Vector2s[1] = new Vector2(m_AudioSource.volume, m_AudioSource.pitch);
+        m_Targets.vector2s[0] = m_Targets.vector2s[1] = new Vector2(m_AudioSource.volume, m_AudioSource.pitch);
 
         //to values:
         if (m_TweenArguments.Contains("volume"))
         {
-            m_Vector2s[1].x = (float)m_TweenArguments["volume"];
+            m_Targets.vector2s[1].x = (float)m_TweenArguments["volume"];
         }
         if (m_TweenArguments.Contains("pitch"))
         {
-            m_Vector2s[1].y = (float)m_TweenArguments["pitch"];
+            m_Targets.vector2s[1].y = (float)m_TweenArguments["pitch"];
         }
     }
 
@@ -501,10 +510,10 @@ public partial class iTween : MonoBehaviour
     void GenerateLookToTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
-        m_Vector3s[0] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[0] = m_ThisTransform.eulerAngles;
 
         //set look:
         if (m_TweenArguments.Contains("looktarget"))
@@ -527,8 +536,8 @@ public partial class iTween : MonoBehaviour
         }
 
         //to values:
-        m_Vector3s[1] = m_ThisTransform.eulerAngles;
-        m_ThisTransform.eulerAngles = m_Vector3s[0];
+        m_Targets.vector3s[1] = m_ThisTransform.eulerAngles;
+        m_ThisTransform.eulerAngles = m_Targets.vector3s[0];
 
         //axis restriction:
         if (m_TweenArguments.Contains("axis"))
@@ -536,27 +545,27 @@ public partial class iTween : MonoBehaviour
             switch ((string)m_TweenArguments["axis"])
             {
                 case "x":
-                    m_Vector3s[1].y = m_Vector3s[0].y;
-                    m_Vector3s[1].z = m_Vector3s[0].z;
+                    m_Targets.vector3s[1].y = m_Targets.vector3s[0].y;
+                    m_Targets.vector3s[1].z = m_Targets.vector3s[0].z;
                     break;
                 case "y":
-                    m_Vector3s[1].x = m_Vector3s[0].x;
-                    m_Vector3s[1].z = m_Vector3s[0].z;
+                    m_Targets.vector3s[1].x = m_Targets.vector3s[0].x;
+                    m_Targets.vector3s[1].z = m_Targets.vector3s[0].z;
                     break;
                 case "z":
-                    m_Vector3s[1].x = m_Vector3s[0].x;
-                    m_Vector3s[1].y = m_Vector3s[0].y;
+                    m_Targets.vector3s[1].x = m_Targets.vector3s[0].x;
+                    m_Targets.vector3s[1].y = m_Targets.vector3s[0].y;
                     break;
             }
         }
 
         //shortest distance:
-        m_Vector3s[1] = new Vector3(clerp(m_Vector3s[0].x, m_Vector3s[1].x, 1), clerp(m_Vector3s[0].y, m_Vector3s[1].y, 1), clerp(m_Vector3s[0].z, m_Vector3s[1].z, 1));
+        m_Targets.vector3s[1] = new Vector3(clerp(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, 1), clerp(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, 1), clerp(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, 1));
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -617,10 +626,10 @@ public partial class iTween : MonoBehaviour
         }
 
         //build calculated path:
-        m_Vector3s = new Vector3[suppliedPath.Length + offset];
+        m_Targets.vector3s = new Vector3[suppliedPath.Length + offset];
         if (plotStart)
         {
-            m_Vector3s[1] = m_ThisTransform.position;
+            m_Targets.vector3s[1] = m_ThisTransform.position;
             offset = 2;
         }
         else
@@ -629,31 +638,31 @@ public partial class iTween : MonoBehaviour
         }
 
         //populate calculate path;
-        Array.Copy(suppliedPath, 0, m_Vector3s, offset, suppliedPath.Length);
+        Array.Copy(suppliedPath, 0, m_Targets.vector3s, offset, suppliedPath.Length);
 
         //populate start and end control points:
         //vector3s[0] = vector3s[1] - vector3s[2];
-        m_Vector3s[0] = m_Vector3s[1] + (m_Vector3s[1] - m_Vector3s[2]);
-        m_Vector3s[m_Vector3s.Length - 1] = m_Vector3s[m_Vector3s.Length - 2] + (m_Vector3s[m_Vector3s.Length - 2] - m_Vector3s[m_Vector3s.Length - 3]);
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] + (m_Targets.vector3s[1] - m_Targets.vector3s[2]);
+        m_Targets.vector3s[m_Targets.vector3s.Length - 1] = m_Targets.vector3s[m_Targets.vector3s.Length - 2] + (m_Targets.vector3s[m_Targets.vector3s.Length - 2] - m_Targets.vector3s[m_Targets.vector3s.Length - 3]);
 
         //is this a closed, continuous loop? yes? well then so let's make a continuous Catmull-Rom spline!
-        if (m_Vector3s[1] == m_Vector3s[m_Vector3s.Length - 2])
+        if (m_Targets.vector3s[1] == m_Targets.vector3s[m_Targets.vector3s.Length - 2])
         {
-            Vector3[] tmpLoopSpline = new Vector3[m_Vector3s.Length];
-            Array.Copy(m_Vector3s, tmpLoopSpline, m_Vector3s.Length);
+            Vector3[] tmpLoopSpline = new Vector3[m_Targets.vector3s.Length];
+            Array.Copy(m_Targets.vector3s, tmpLoopSpline, m_Targets.vector3s.Length);
             tmpLoopSpline[0] = tmpLoopSpline[tmpLoopSpline.Length - 3];
             tmpLoopSpline[tmpLoopSpline.Length - 1] = tmpLoopSpline[2];
-            m_Vector3s = new Vector3[tmpLoopSpline.Length];
-            Array.Copy(tmpLoopSpline, m_Vector3s, tmpLoopSpline.Length);
+            m_Targets.vector3s = new Vector3[tmpLoopSpline.Length];
+            Array.Copy(tmpLoopSpline, m_Targets.vector3s, tmpLoopSpline.Length);
         }
 
         //create Catmull-Rom path:
-        m_Path = new CRSpline(m_Vector3s);
+        m_Path = new CRSpline(m_Targets.vector3s);
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = PathLength(m_Vector3s);
+            float distance = PathLength(m_Targets.vector3s);
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -661,16 +670,16 @@ public partial class iTween : MonoBehaviour
     void GenerateMoveToTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
         if (m_IsLocal)
         {
-            m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.localPosition;
+            m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.localPosition;
         }
         else
         {
-            m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.position;
+            m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.position;
         }
 
         //to values:
@@ -679,39 +688,39 @@ public partial class iTween : MonoBehaviour
             if (m_TweenArguments["position"].GetType() == typeof(Transform))
             {
                 Transform trans = (Transform)m_TweenArguments["position"];
-                m_Vector3s[1] = trans.position;
+                m_Targets.vector3s[1] = trans.position;
             }
             else if (m_TweenArguments["position"].GetType() == typeof(Vector3))
             {
-                m_Vector3s[1] = (Vector3)m_TweenArguments["position"];
+                m_Targets.vector3s[1] = (Vector3)m_TweenArguments["position"];
             }
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
 
         //handle orient to path request:
         if (m_TweenArguments.Contains("orienttopath") && (bool)m_TweenArguments["orienttopath"])
         {
-            m_TweenArguments["looktarget"] = m_Vector3s[1];
+            m_TweenArguments["looktarget"] = m_Targets.vector3s[1];
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -719,50 +728,50 @@ public partial class iTween : MonoBehaviour
     void GenerateMoveByTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation, [3] previous value for Translate usage to allow Space utilization, [4] original rotation to make sure look requests don't interfere with the direction object should move in, [5] for dial in location:
-        m_Vector3s = new Vector3[6];
+        m_Targets.vector3s = new Vector3[6];
 
         //grab starting rotation:
-        m_Vector3s[4] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[4] = m_ThisTransform.eulerAngles;
 
         //from values:
-        m_Vector3s[0] = m_Vector3s[1] = m_Vector3s[3] = m_ThisTransform.position;
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_Targets.vector3s[3] = m_ThisTransform.position;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = m_Vector3s[0] + (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = m_Targets.vector3s[0] + (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = m_Vector3s[0].x + (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = m_Targets.vector3s[0].x + (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = m_Vector3s[0].y + (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = m_Targets.vector3s[0].y + (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = m_Vector3s[0].z + (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = m_Targets.vector3s[0].z + (float)m_TweenArguments["z"];
             }
         }
 
         //calculation for dial in:
-        m_ThisTransform.Translate(m_Vector3s[1], m_Space);
-        m_Vector3s[5] = m_ThisTransform.position;
-        m_ThisTransform.position = m_Vector3s[0];
+        m_ThisTransform.Translate(m_Targets.vector3s[1], m_Space);
+        m_Targets.vector3s[5] = m_ThisTransform.position;
+        m_ThisTransform.position = m_Targets.vector3s[0];
 
         //handle orient to path request:
         if (m_TweenArguments.Contains("orienttopath") && (bool)m_TweenArguments["orienttopath"])
         {
-            m_TweenArguments["looktarget"] = m_Vector3s[1];
+            m_TweenArguments["looktarget"] = m_Targets.vector3s[1];
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -770,10 +779,10 @@ public partial class iTween : MonoBehaviour
     void GenerateScaleToTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
-        m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.localScale;
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.localScale;
 
         //to values:
         if (m_TweenArguments.Contains("scale"))
@@ -781,33 +790,33 @@ public partial class iTween : MonoBehaviour
             if (m_TweenArguments["scale"].GetType() == typeof(Transform))
             {
                 Transform trans = (Transform)m_TweenArguments["scale"];
-                m_Vector3s[1] = trans.localScale;
+                m_Targets.vector3s[1] = trans.localScale;
             }
             else if (m_TweenArguments["scale"].GetType() == typeof(Vector3))
             {
-                m_Vector3s[1] = (Vector3)m_TweenArguments["scale"];
+                m_Targets.vector3s[1] = (Vector3)m_TweenArguments["scale"];
             }
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -815,36 +824,36 @@ public partial class iTween : MonoBehaviour
     void GenerateScaleByTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
-        m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.localScale;
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.localScale;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = Vector3.Scale(m_Vector3s[1], (Vector3)m_TweenArguments["amount"]);
+            m_Targets.vector3s[1] = Vector3.Scale(m_Targets.vector3s[1], (Vector3)m_TweenArguments["amount"]);
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x *= (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x *= (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y *= (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y *= (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z *= (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z *= (float)m_TweenArguments["z"];
             }
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -852,36 +861,36 @@ public partial class iTween : MonoBehaviour
     void GenerateScaleAddTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
-        m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.localScale;
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.localScale;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] += (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] += (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x += (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x += (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y += (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y += (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z += (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z += (float)m_TweenArguments["z"];
             }
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -889,16 +898,16 @@ public partial class iTween : MonoBehaviour
     void GenerateRotateToTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
         if (m_IsLocal)
         {
-            m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.localEulerAngles;
+            m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.localEulerAngles;
         }
         else
         {
-            m_Vector3s[0] = m_Vector3s[1] = m_ThisTransform.eulerAngles;
+            m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_ThisTransform.eulerAngles;
         }
 
         //to values:
@@ -907,36 +916,36 @@ public partial class iTween : MonoBehaviour
             if (m_TweenArguments["rotation"].GetType() == typeof(Transform))
             {
                 Transform trans = (Transform)m_TweenArguments["rotation"];
-                m_Vector3s[1] = trans.eulerAngles;
+                m_Targets.vector3s[1] = trans.eulerAngles;
             }
             else if (m_TweenArguments["rotation"].GetType() == typeof(Vector3))
             {
-                m_Vector3s[1] = (Vector3)m_TweenArguments["rotation"];
+                m_Targets.vector3s[1] = (Vector3)m_TweenArguments["rotation"];
             }
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
 
         //shortest distance:
-        m_Vector3s[1] = new Vector3(clerp(m_Vector3s[0].x, m_Vector3s[1].x, 1), clerp(m_Vector3s[0].y, m_Vector3s[1].y, 1), clerp(m_Vector3s[0].z, m_Vector3s[1].z, 1));
+        m_Targets.vector3s[1] = new Vector3(clerp(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, 1), clerp(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, 1), clerp(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, 1));
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -944,36 +953,36 @@ public partial class iTween : MonoBehaviour
     void GenerateRotateAddTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation, [3] previous value for Rotate usage to allow Space utilization:
-        m_Vector3s = new Vector3[5];
+        m_Targets.vector3s = new Vector3[5];
 
         //from values:
-        m_Vector3s[0] = m_Vector3s[1] = m_Vector3s[3] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_Targets.vector3s[3] = m_ThisTransform.eulerAngles;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] += (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] += (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x += (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x += (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y += (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y += (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z += (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z += (float)m_TweenArguments["z"];
             }
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -981,36 +990,36 @@ public partial class iTween : MonoBehaviour
     void GenerateRotateByTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation, [3] previous value for Rotate usage to allow Space utilization:
-        m_Vector3s = new Vector3[4];
+        m_Targets.vector3s = new Vector3[4];
 
         //from values:
-        m_Vector3s[0] = m_Vector3s[1] = m_Vector3s[3] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[0] = m_Targets.vector3s[1] = m_Targets.vector3s[3] = m_ThisTransform.eulerAngles;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] += Vector3.Scale((Vector3)m_TweenArguments["amount"], new Vector3(360, 360, 360));
+            m_Targets.vector3s[1] += Vector3.Scale((Vector3)m_TweenArguments["amount"], new Vector3(360, 360, 360));
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x += 360 * (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x += 360 * (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y += 360 * (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y += 360 * (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z += 360 * (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z += 360 * (float)m_TweenArguments["z"];
             }
         }
 
         //need for speed?
         if (m_TweenArguments.Contains("speed"))
         {
-            float distance = Math.Abs(Vector3.Distance(m_Vector3s[0], m_Vector3s[1]));
+            float distance = Math.Abs(Vector3.Distance(m_Targets.vector3s[0], m_Targets.vector3s[1]));
             time = distance / (float)m_TweenArguments["speed"];
         }
     }
@@ -1018,32 +1027,32 @@ public partial class iTween : MonoBehaviour
     void GenerateShakePositionTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation, [3] original rotation to make sure look requests don't interfere with the direction object should move in:
-        m_Vector3s = new Vector3[4];
+        m_Targets.vector3s = new Vector3[4];
 
         //grab starting rotation:
-        m_Vector3s[3] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[3] = m_ThisTransform.eulerAngles;
 
         //root:
-        m_Vector3s[0] = m_ThisTransform.position;
+        m_Targets.vector3s[0] = m_ThisTransform.position;
 
         //amount:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
     }
@@ -1051,29 +1060,29 @@ public partial class iTween : MonoBehaviour
     void GenerateShakeScaleTargets()
     {
         //values holder [0] root value, [1] amount, [2] generated amount:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //root:
-        m_Vector3s[0] = m_ThisTransform.localScale;
+        m_Targets.vector3s[0] = m_ThisTransform.localScale;
 
         //amount:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
     }
@@ -1081,29 +1090,29 @@ public partial class iTween : MonoBehaviour
     void GenerateShakeRotationTargets()
     {
         //values holder [0] root value, [1] amount, [2] generated amount:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //root:
-        m_Vector3s[0] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[0] = m_ThisTransform.eulerAngles;
 
         //amount:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
     }
@@ -1111,33 +1120,33 @@ public partial class iTween : MonoBehaviour
     void GeneratePunchPositionTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation, [3] previous value for Translate usage to allow Space utilization, [4] original rotation to make sure look requests don't interfere with the direction object should move in:
-        m_Vector3s = new Vector3[5];
+        m_Targets.vector3s = new Vector3[5];
 
         //grab starting rotation:
-        m_Vector3s[4] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[4] = m_ThisTransform.eulerAngles;
 
         //from values:
-        m_Vector3s[0] = m_ThisTransform.position;
-        m_Vector3s[1] = m_Vector3s[3] = Vector3.zero;
+        m_Targets.vector3s[0] = m_ThisTransform.position;
+        m_Targets.vector3s[1] = m_Targets.vector3s[3] = Vector3.zero;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
     }
@@ -1145,30 +1154,30 @@ public partial class iTween : MonoBehaviour
     void GeneratePunchRotationTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation, [3] previous value for Translate usage to allow Space utilization:
-        m_Vector3s = new Vector3[4];
+        m_Targets.vector3s = new Vector3[4];
 
         //from values:
-        m_Vector3s[0] = m_ThisTransform.eulerAngles;
-        m_Vector3s[1] = m_Vector3s[3] = Vector3.zero;
+        m_Targets.vector3s[0] = m_ThisTransform.eulerAngles;
+        m_Targets.vector3s[1] = m_Targets.vector3s[3] = Vector3.zero;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
     }
@@ -1176,30 +1185,30 @@ public partial class iTween : MonoBehaviour
     void GeneratePunchScaleTargets()
     {
         //values holder [0] from, [1] to, [2] calculated value from ease equation:
-        m_Vector3s = new Vector3[3];
+        m_Targets.vector3s = new Vector3[3];
 
         //from values:
-        m_Vector3s[0] = m_ThisTransform.localScale;
-        m_Vector3s[1] = Vector3.zero;
+        m_Targets.vector3s[0] = m_ThisTransform.localScale;
+        m_Targets.vector3s[1] = Vector3.zero;
 
         //to values:
         if (m_TweenArguments.Contains("amount"))
         {
-            m_Vector3s[1] = (Vector3)m_TweenArguments["amount"];
+            m_Targets.vector3s[1] = (Vector3)m_TweenArguments["amount"];
         }
         else
         {
             if (m_TweenArguments.Contains("x"))
             {
-                m_Vector3s[1].x = (float)m_TweenArguments["x"];
+                m_Targets.vector3s[1].x = (float)m_TweenArguments["x"];
             }
             if (m_TweenArguments.Contains("y"))
             {
-                m_Vector3s[1].y = (float)m_TweenArguments["y"];
+                m_Targets.vector3s[1].y = (float)m_TweenArguments["y"];
             }
             if (m_TweenArguments.Contains("z"))
             {
-                m_Vector3s[1].z = (float)m_TweenArguments["z"];
+                m_Targets.vector3s[1].z = (float)m_TweenArguments["z"];
             }
         }
     }
@@ -1211,96 +1220,96 @@ public partial class iTween : MonoBehaviour
     void ApplyRectTargets()
     {
         //calculate:
-        m_Rects[2].x = m_EaseFunc(m_Rects[0].x, m_Rects[1].x, m_Percentage);
-        m_Rects[2].y = m_EaseFunc(m_Rects[0].y, m_Rects[1].y, m_Percentage);
-        m_Rects[2].width = m_EaseFunc(m_Rects[0].width, m_Rects[1].width, m_Percentage);
-        m_Rects[2].height = m_EaseFunc(m_Rects[0].height, m_Rects[1].height, m_Percentage);
+        m_Targets.rects[2].x = m_EaseFunc(m_Targets.rects[0].x, m_Targets.rects[1].x, m_Percentage);
+        m_Targets.rects[2].y = m_EaseFunc(m_Targets.rects[0].y, m_Targets.rects[1].y, m_Percentage);
+        m_Targets.rects[2].width = m_EaseFunc(m_Targets.rects[0].width, m_Targets.rects[1].width, m_Percentage);
+        m_Targets.rects[2].height = m_EaseFunc(m_Targets.rects[0].height, m_Targets.rects[1].height, m_Percentage);
 
         //apply:
-        m_TweenArguments["onupdateparams"] = m_Rects[2];
+        m_TweenArguments["onupdateparams"] = m_Targets.rects[2];
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_TweenArguments["onupdateparams"] = m_Rects[1];
+            m_TweenArguments["onupdateparams"] = m_Targets.rects[1];
         }
     }
 
     void ApplyColorTargets()
     {
         //calculate:
-        m_Colors[0, 2].r = m_EaseFunc(m_Colors[0, 0].r, m_Colors[0, 1].r, m_Percentage);
-        m_Colors[0, 2].g = m_EaseFunc(m_Colors[0, 0].g, m_Colors[0, 1].g, m_Percentage);
-        m_Colors[0, 2].b = m_EaseFunc(m_Colors[0, 0].b, m_Colors[0, 1].b, m_Percentage);
-        m_Colors[0, 2].a = m_EaseFunc(m_Colors[0, 0].a, m_Colors[0, 1].a, m_Percentage);
+        m_Targets.colors[0, 2].r = m_EaseFunc(m_Targets.colors[0, 0].r, m_Targets.colors[0, 1].r, m_Percentage);
+        m_Targets.colors[0, 2].g = m_EaseFunc(m_Targets.colors[0, 0].g, m_Targets.colors[0, 1].g, m_Percentage);
+        m_Targets.colors[0, 2].b = m_EaseFunc(m_Targets.colors[0, 0].b, m_Targets.colors[0, 1].b, m_Percentage);
+        m_Targets.colors[0, 2].a = m_EaseFunc(m_Targets.colors[0, 0].a, m_Targets.colors[0, 1].a, m_Percentage);
 
         //apply:
-        m_TweenArguments["onupdateparams"] = m_Colors[0, 2];
+        m_TweenArguments["onupdateparams"] = m_Targets.colors[0, 2];
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_TweenArguments["onupdateparams"] = m_Colors[0, 1];
+            m_TweenArguments["onupdateparams"] = m_Targets.colors[0, 1];
         }
     }
 
     void ApplyVector3Targets()
     {
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:
-        m_TweenArguments["onupdateparams"] = m_Vector3s[2];
+        m_TweenArguments["onupdateparams"] = m_Targets.vector3s[2];
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_TweenArguments["onupdateparams"] = m_Vector3s[1];
+            m_TweenArguments["onupdateparams"] = m_Targets.vector3s[1];
         }
     }
 
     void ApplyVector2Targets()
     {
         //calculate:
-        m_Vector2s[2].x = m_EaseFunc(m_Vector2s[0].x, m_Vector2s[1].x, m_Percentage);
-        m_Vector2s[2].y = m_EaseFunc(m_Vector2s[0].y, m_Vector2s[1].y, m_Percentage);
+        m_Targets.vector2s[2].x = m_EaseFunc(m_Targets.vector2s[0].x, m_Targets.vector2s[1].x, m_Percentage);
+        m_Targets.vector2s[2].y = m_EaseFunc(m_Targets.vector2s[0].y, m_Targets.vector2s[1].y, m_Percentage);
 
         //apply:
-        m_TweenArguments["onupdateparams"] = m_Vector2s[2];
+        m_TweenArguments["onupdateparams"] = m_Targets.vector2s[2];
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_TweenArguments["onupdateparams"] = m_Vector2s[1];
+            m_TweenArguments["onupdateparams"] = m_Targets.vector2s[1];
         }
     }
 
     void ApplyFloatTargets()
     {
         //calculate:
-        m_Floats[2] = m_EaseFunc(m_Floats[0], m_Floats[1], m_Percentage);
+        m_Targets.floats[2] = m_EaseFunc(m_Targets.floats[0], m_Targets.floats[1], m_Percentage);
 
         //apply:
-        m_TweenArguments["onupdateparams"] = m_Floats[2];
+        m_TweenArguments["onupdateparams"] = m_Targets.floats[2];
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_TweenArguments["onupdateparams"] = m_Floats[1];
+            m_TweenArguments["onupdateparams"] = m_Targets.floats[1];
         }
     }
 
     void ApplyColorToTargets()
     {
         //calculate:
-        for (int i = 0; i < m_Colors.GetLength(0); i++)
+        for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
         {
-            m_Colors[i, 2].r = m_EaseFunc(m_Colors[i, 0].r, m_Colors[i, 1].r, m_Percentage);
-            m_Colors[i, 2].g = m_EaseFunc(m_Colors[i, 0].g, m_Colors[i, 1].g, m_Percentage);
-            m_Colors[i, 2].b = m_EaseFunc(m_Colors[i, 0].b, m_Colors[i, 1].b, m_Percentage);
-            m_Colors[i, 2].a = m_EaseFunc(m_Colors[i, 0].a, m_Colors[i, 1].a, m_Percentage);
+            m_Targets.colors[i, 2].r = m_EaseFunc(m_Targets.colors[i, 0].r, m_Targets.colors[i, 1].r, m_Percentage);
+            m_Targets.colors[i, 2].g = m_EaseFunc(m_Targets.colors[i, 0].g, m_Targets.colors[i, 1].g, m_Percentage);
+            m_Targets.colors[i, 2].b = m_EaseFunc(m_Targets.colors[i, 0].b, m_Targets.colors[i, 1].b, m_Percentage);
+            m_Targets.colors[i, 2].a = m_EaseFunc(m_Targets.colors[i, 0].a, m_Targets.colors[i, 1].a, m_Percentage);
         }
         /*
 		colors[2].r = ease(colors[0].r,colors[1].r,percentage);
@@ -1313,15 +1322,15 @@ public partial class iTween : MonoBehaviour
         if (GetComponent<Renderer>())
         {
             //renderer.material.color=colors[2];
-            for (int i = 0; i < m_Colors.GetLength(0); i++)
+            for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
             {
-                GetComponent<Renderer>().materials[i].SetColor(m_Namedcolorvalue.ToString(), m_Colors[i, 2]);
+                GetComponent<Renderer>().materials[i].SetColor(m_Namedcolorvalue.ToString(), m_Targets.colors[i, 2]);
             }
         }
         else if (GetComponent<Light>())
         {
             //light.color=colors[2];	
-            GetComponent<Light>().color = m_Colors[0, 2];
+            GetComponent<Light>().color = m_Targets.colors[0, 2];
         }
 
         //dial in:
@@ -1330,15 +1339,15 @@ public partial class iTween : MonoBehaviour
             if (GetComponent<Renderer>())
             {
                 //renderer.material.color=colors[1];	
-                for (int i = 0; i < m_Colors.GetLength(0); i++)
+                for (int i = 0; i < m_Targets.colors.GetLength(0); i++)
                 {
-                    GetComponent<Renderer>().materials[i].SetColor(m_Namedcolorvalue.ToString(), m_Colors[i, 1]);
+                    GetComponent<Renderer>().materials[i].SetColor(m_Namedcolorvalue.ToString(), m_Targets.colors[i, 1]);
                 }
             }
             else if (GetComponent<Light>())
             {
                 //light.color=colors[1];	
-                GetComponent<Light>().color = m_Colors[0, 1];
+                GetComponent<Light>().color = m_Targets.colors[0, 1];
             }
         }
     }
@@ -1346,18 +1355,18 @@ public partial class iTween : MonoBehaviour
     void ApplyAudioToTargets()
     {
         //calculate:
-        m_Vector2s[2].x = m_EaseFunc(m_Vector2s[0].x, m_Vector2s[1].x, m_Percentage);
-        m_Vector2s[2].y = m_EaseFunc(m_Vector2s[0].y, m_Vector2s[1].y, m_Percentage);
+        m_Targets.vector2s[2].x = m_EaseFunc(m_Targets.vector2s[0].x, m_Targets.vector2s[1].x, m_Percentage);
+        m_Targets.vector2s[2].y = m_EaseFunc(m_Targets.vector2s[0].y, m_Targets.vector2s[1].y, m_Percentage);
 
         //apply:
-        m_AudioSource.volume = m_Vector2s[2].x;
-        m_AudioSource.pitch = m_Vector2s[2].y;
+        m_AudioSource.volume = m_Targets.vector2s[2].x;
+        m_AudioSource.pitch = m_Targets.vector2s[2].y;
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_AudioSource.volume = m_Vector2s[1].x;
-            m_AudioSource.pitch = m_Vector2s[1].y;
+            m_AudioSource.volume = m_Targets.vector2s[1].x;
+            m_AudioSource.pitch = m_Targets.vector2s[1].y;
         }
     }
 
@@ -1420,18 +1429,18 @@ public partial class iTween : MonoBehaviour
 
 
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:	
         if (m_IsLocal)
         {
-            m_ThisTransform.localPosition = m_Vector3s[2];
+            m_ThisTransform.localPosition = m_Targets.vector3s[2];
         }
         else
         {
-            m_ThisTransform.position = m_Vector3s[2];
+            m_ThisTransform.position = m_Targets.vector3s[2];
         }
 
         //dial in:
@@ -1439,11 +1448,11 @@ public partial class iTween : MonoBehaviour
         {
             if (m_IsLocal)
             {
-                m_ThisTransform.localPosition = m_Vector3s[1];
+                m_ThisTransform.localPosition = m_Targets.vector3s[1];
             }
             else
             {
-                m_ThisTransform.position = m_Vector3s[1];
+                m_ThisTransform.position = m_Targets.vector3s[1];
             }
         }
 
@@ -1466,19 +1475,19 @@ public partial class iTween : MonoBehaviour
         if (m_TweenArguments.Contains("looktarget"))
         {
             currentRotation = m_ThisTransform.eulerAngles;
-            m_ThisTransform.eulerAngles = m_Vector3s[4];
+            m_ThisTransform.eulerAngles = m_Targets.vector3s[4];
         }
 
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:
-        m_ThisTransform.Translate(m_Vector3s[2] - m_Vector3s[3], m_Space);
+        m_ThisTransform.Translate(m_Targets.vector3s[2] - m_Targets.vector3s[3], m_Space);
 
         //record:
-        m_Vector3s[3] = m_Vector3s[2];
+        m_Targets.vector3s[3] = m_Targets.vector3s[2];
 
         //reset rotation:
         if (m_TweenArguments.Contains("looktarget"))
@@ -1505,35 +1514,35 @@ public partial class iTween : MonoBehaviour
     void ApplyScaleToTargets()
     {
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:
-        m_ThisTransform.localScale = m_Vector3s[2];
+        m_ThisTransform.localScale = m_Targets.vector3s[2];
 
         //dial in:
         if (m_Percentage == 1)
         {
-            m_ThisTransform.localScale = m_Vector3s[1];
+            m_ThisTransform.localScale = m_Targets.vector3s[1];
         }
     }
 
     void ApplyLookToTargets()
     {
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:
         if (m_IsLocal)
         {
-            m_ThisTransform.localRotation = Quaternion.Euler(m_Vector3s[2]);
+            m_ThisTransform.localRotation = Quaternion.Euler(m_Targets.vector3s[2]);
         }
         else
         {
-            m_ThisTransform.rotation = Quaternion.Euler(m_Vector3s[2]);
+            m_ThisTransform.rotation = Quaternion.Euler(m_Targets.vector3s[2]);
         };
     }
 
@@ -1542,18 +1551,18 @@ public partial class iTween : MonoBehaviour
         m_PreUpdate = m_ThisTransform.eulerAngles;
 
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:
         if (m_IsLocal)
         {
-            m_ThisTransform.localRotation = Quaternion.Euler(m_Vector3s[2]);
+            m_ThisTransform.localRotation = Quaternion.Euler(m_Targets.vector3s[2]);
         }
         else
         {
-            m_ThisTransform.rotation = Quaternion.Euler(m_Vector3s[2]);
+            m_ThisTransform.rotation = Quaternion.Euler(m_Targets.vector3s[2]);
         };
 
         //dial in:
@@ -1561,11 +1570,11 @@ public partial class iTween : MonoBehaviour
         {
             if (m_IsLocal)
             {
-                m_ThisTransform.localRotation = Quaternion.Euler(m_Vector3s[1]);
+                m_ThisTransform.localRotation = Quaternion.Euler(m_Targets.vector3s[1]);
             }
             else
             {
-                m_ThisTransform.rotation = Quaternion.Euler(m_Vector3s[1]);
+                m_ThisTransform.rotation = Quaternion.Euler(m_Targets.vector3s[1]);
             };
         }
 
@@ -1583,15 +1592,15 @@ public partial class iTween : MonoBehaviour
         m_PreUpdate = m_ThisTransform.eulerAngles;
 
         //calculate:
-        m_Vector3s[2].x = m_EaseFunc(m_Vector3s[0].x, m_Vector3s[1].x, m_Percentage);
-        m_Vector3s[2].y = m_EaseFunc(m_Vector3s[0].y, m_Vector3s[1].y, m_Percentage);
-        m_Vector3s[2].z = m_EaseFunc(m_Vector3s[0].z, m_Vector3s[1].z, m_Percentage);
+        m_Targets.vector3s[2].x = m_EaseFunc(m_Targets.vector3s[0].x, m_Targets.vector3s[1].x, m_Percentage);
+        m_Targets.vector3s[2].y = m_EaseFunc(m_Targets.vector3s[0].y, m_Targets.vector3s[1].y, m_Percentage);
+        m_Targets.vector3s[2].z = m_EaseFunc(m_Targets.vector3s[0].z, m_Targets.vector3s[1].z, m_Percentage);
 
         //apply:
-        m_ThisTransform.Rotate(m_Vector3s[2] - m_Vector3s[3], m_Space);
+        m_ThisTransform.Rotate(m_Targets.vector3s[2] - m_Targets.vector3s[3], m_Space);
 
         //record:
-        m_Vector3s[3] = m_Vector3s[2];
+        m_Targets.vector3s[3] = m_Targets.vector3s[2];
 
         //need physics?
         m_PostUpdate = m_ThisTransform.eulerAngles;
@@ -1620,41 +1629,41 @@ public partial class iTween : MonoBehaviour
         if (m_TweenArguments.Contains("looktarget"))
         {
             currentRotation = m_ThisTransform.eulerAngles;
-            m_ThisTransform.eulerAngles = m_Vector3s[3];
+            m_ThisTransform.eulerAngles = m_Targets.vector3s[3];
         }
 
         //impact:
         if (m_Percentage == 0)
         {
-            m_ThisTransform.Translate(m_Vector3s[1], m_Space);
+            m_ThisTransform.Translate(m_Targets.vector3s[1], m_Space);
         }
 
         //transform.position=vector3s[0];
         //reset:
         if (m_IsLocal)
         {
-            m_ThisTransform.localPosition = m_Vector3s[0];
+            m_ThisTransform.localPosition = m_Targets.vector3s[0];
         }
         else
         {
-            m_ThisTransform.position = m_Vector3s[0];
+            m_ThisTransform.position = m_Targets.vector3s[0];
         }
 
         //generate:
         float diminishingControl = 1 - m_Percentage;
-        m_Vector3s[2].x = UnityEngine.Random.Range(-m_Vector3s[1].x * diminishingControl, m_Vector3s[1].x * diminishingControl);
-        m_Vector3s[2].y = UnityEngine.Random.Range(-m_Vector3s[1].y * diminishingControl, m_Vector3s[1].y * diminishingControl);
-        m_Vector3s[2].z = UnityEngine.Random.Range(-m_Vector3s[1].z * diminishingControl, m_Vector3s[1].z * diminishingControl);
+        m_Targets.vector3s[2].x = UnityEngine.Random.Range(-m_Targets.vector3s[1].x * diminishingControl, m_Targets.vector3s[1].x * diminishingControl);
+        m_Targets.vector3s[2].y = UnityEngine.Random.Range(-m_Targets.vector3s[1].y * diminishingControl, m_Targets.vector3s[1].y * diminishingControl);
+        m_Targets.vector3s[2].z = UnityEngine.Random.Range(-m_Targets.vector3s[1].z * diminishingControl, m_Targets.vector3s[1].z * diminishingControl);
 
         //apply:	
         //transform.Translate(vector3s[2],space);	
         if (m_IsLocal)
         {
-            m_ThisTransform.localPosition += m_Vector3s[2];
+            m_ThisTransform.localPosition += m_Targets.vector3s[2];
         }
         else
         {
-            m_ThisTransform.position += m_Vector3s[2];
+            m_ThisTransform.position += m_Targets.vector3s[2];
         }
 
         //reset rotation:
@@ -1677,20 +1686,20 @@ public partial class iTween : MonoBehaviour
         //impact:
         if (m_Percentage == 0)
         {
-            m_ThisTransform.localScale = m_Vector3s[1];
+            m_ThisTransform.localScale = m_Targets.vector3s[1];
         }
 
         //reset:
-        m_ThisTransform.localScale = m_Vector3s[0];
+        m_ThisTransform.localScale = m_Targets.vector3s[0];
 
         //generate:
         float diminishingControl = 1 - m_Percentage;
-        m_Vector3s[2].x = UnityEngine.Random.Range(-m_Vector3s[1].x * diminishingControl, m_Vector3s[1].x * diminishingControl);
-        m_Vector3s[2].y = UnityEngine.Random.Range(-m_Vector3s[1].y * diminishingControl, m_Vector3s[1].y * diminishingControl);
-        m_Vector3s[2].z = UnityEngine.Random.Range(-m_Vector3s[1].z * diminishingControl, m_Vector3s[1].z * diminishingControl);
+        m_Targets.vector3s[2].x = UnityEngine.Random.Range(-m_Targets.vector3s[1].x * diminishingControl, m_Targets.vector3s[1].x * diminishingControl);
+        m_Targets.vector3s[2].y = UnityEngine.Random.Range(-m_Targets.vector3s[1].y * diminishingControl, m_Targets.vector3s[1].y * diminishingControl);
+        m_Targets.vector3s[2].z = UnityEngine.Random.Range(-m_Targets.vector3s[1].z * diminishingControl, m_Targets.vector3s[1].z * diminishingControl);
 
         //apply:
-        m_ThisTransform.localScale += m_Vector3s[2];
+        m_ThisTransform.localScale += m_Targets.vector3s[2];
     }
 
     void ApplyShakeRotationTargets()
@@ -1700,20 +1709,20 @@ public partial class iTween : MonoBehaviour
         //impact:
         if (m_Percentage == 0)
         {
-            m_ThisTransform.Rotate(m_Vector3s[1], m_Space);
+            m_ThisTransform.Rotate(m_Targets.vector3s[1], m_Space);
         }
 
         //reset:
-        m_ThisTransform.eulerAngles = m_Vector3s[0];
+        m_ThisTransform.eulerAngles = m_Targets.vector3s[0];
 
         //generate:
         float diminishingControl = 1 - m_Percentage;
-        m_Vector3s[2].x = UnityEngine.Random.Range(-m_Vector3s[1].x * diminishingControl, m_Vector3s[1].x * diminishingControl);
-        m_Vector3s[2].y = UnityEngine.Random.Range(-m_Vector3s[1].y * diminishingControl, m_Vector3s[1].y * diminishingControl);
-        m_Vector3s[2].z = UnityEngine.Random.Range(-m_Vector3s[1].z * diminishingControl, m_Vector3s[1].z * diminishingControl);
+        m_Targets.vector3s[2].x = UnityEngine.Random.Range(-m_Targets.vector3s[1].x * diminishingControl, m_Targets.vector3s[1].x * diminishingControl);
+        m_Targets.vector3s[2].y = UnityEngine.Random.Range(-m_Targets.vector3s[1].y * diminishingControl, m_Targets.vector3s[1].y * diminishingControl);
+        m_Targets.vector3s[2].z = UnityEngine.Random.Range(-m_Targets.vector3s[1].z * diminishingControl, m_Targets.vector3s[1].z * diminishingControl);
 
         //apply:
-        m_ThisTransform.Rotate(m_Vector3s[2], m_Space);
+        m_ThisTransform.Rotate(m_Targets.vector3s[2], m_Space);
 
         //need physics?
         m_PostUpdate = m_ThisTransform.eulerAngles;
@@ -1734,40 +1743,40 @@ public partial class iTween : MonoBehaviour
         if (m_TweenArguments.Contains("looktarget"))
         {
             currentRotation = m_ThisTransform.eulerAngles;
-            m_ThisTransform.eulerAngles = m_Vector3s[4];
+            m_ThisTransform.eulerAngles = m_Targets.vector3s[4];
         }
 
         //calculate:
-        if (m_Vector3s[1].x > 0)
+        if (m_Targets.vector3s[1].x > 0)
         {
-            m_Vector3s[2].x = punch(m_Vector3s[1].x, m_Percentage);
+            m_Targets.vector3s[2].x = punch(m_Targets.vector3s[1].x, m_Percentage);
         }
-        else if (m_Vector3s[1].x < 0)
+        else if (m_Targets.vector3s[1].x < 0)
         {
-            m_Vector3s[2].x = -punch(Mathf.Abs(m_Vector3s[1].x), m_Percentage);
+            m_Targets.vector3s[2].x = -punch(Mathf.Abs(m_Targets.vector3s[1].x), m_Percentage);
         }
-        if (m_Vector3s[1].y > 0)
+        if (m_Targets.vector3s[1].y > 0)
         {
-            m_Vector3s[2].y = punch(m_Vector3s[1].y, m_Percentage);
+            m_Targets.vector3s[2].y = punch(m_Targets.vector3s[1].y, m_Percentage);
         }
-        else if (m_Vector3s[1].y < 0)
+        else if (m_Targets.vector3s[1].y < 0)
         {
-            m_Vector3s[2].y = -punch(Mathf.Abs(m_Vector3s[1].y), m_Percentage);
+            m_Targets.vector3s[2].y = -punch(Mathf.Abs(m_Targets.vector3s[1].y), m_Percentage);
         }
-        if (m_Vector3s[1].z > 0)
+        if (m_Targets.vector3s[1].z > 0)
         {
-            m_Vector3s[2].z = punch(m_Vector3s[1].z, m_Percentage);
+            m_Targets.vector3s[2].z = punch(m_Targets.vector3s[1].z, m_Percentage);
         }
-        else if (m_Vector3s[1].z < 0)
+        else if (m_Targets.vector3s[1].z < 0)
         {
-            m_Vector3s[2].z = -punch(Mathf.Abs(m_Vector3s[1].z), m_Percentage);
+            m_Targets.vector3s[2].z = -punch(Mathf.Abs(m_Targets.vector3s[1].z), m_Percentage);
         }
 
         //apply:
-        m_ThisTransform.Translate(m_Vector3s[2] - m_Vector3s[3], m_Space);
+        m_ThisTransform.Translate(m_Targets.vector3s[2] - m_Targets.vector3s[3], m_Space);
 
         //record:
-        m_Vector3s[3] = m_Vector3s[2];
+        m_Targets.vector3s[3] = m_Targets.vector3s[2];
 
         //reset rotation:
         if (m_TweenArguments.Contains("looktarget"))
@@ -1796,36 +1805,36 @@ public partial class iTween : MonoBehaviour
         m_PreUpdate = m_ThisTransform.eulerAngles;
 
         //calculate:
-        if (m_Vector3s[1].x > 0)
+        if (m_Targets.vector3s[1].x > 0)
         {
-            m_Vector3s[2].x = punch(m_Vector3s[1].x, m_Percentage);
+            m_Targets.vector3s[2].x = punch(m_Targets.vector3s[1].x, m_Percentage);
         }
-        else if (m_Vector3s[1].x < 0)
+        else if (m_Targets.vector3s[1].x < 0)
         {
-            m_Vector3s[2].x = -punch(Mathf.Abs(m_Vector3s[1].x), m_Percentage);
+            m_Targets.vector3s[2].x = -punch(Mathf.Abs(m_Targets.vector3s[1].x), m_Percentage);
         }
-        if (m_Vector3s[1].y > 0)
+        if (m_Targets.vector3s[1].y > 0)
         {
-            m_Vector3s[2].y = punch(m_Vector3s[1].y, m_Percentage);
+            m_Targets.vector3s[2].y = punch(m_Targets.vector3s[1].y, m_Percentage);
         }
-        else if (m_Vector3s[1].y < 0)
+        else if (m_Targets.vector3s[1].y < 0)
         {
-            m_Vector3s[2].y = -punch(Mathf.Abs(m_Vector3s[1].y), m_Percentage);
+            m_Targets.vector3s[2].y = -punch(Mathf.Abs(m_Targets.vector3s[1].y), m_Percentage);
         }
-        if (m_Vector3s[1].z > 0)
+        if (m_Targets.vector3s[1].z > 0)
         {
-            m_Vector3s[2].z = punch(m_Vector3s[1].z, m_Percentage);
+            m_Targets.vector3s[2].z = punch(m_Targets.vector3s[1].z, m_Percentage);
         }
-        else if (m_Vector3s[1].z < 0)
+        else if (m_Targets.vector3s[1].z < 0)
         {
-            m_Vector3s[2].z = -punch(Mathf.Abs(m_Vector3s[1].z), m_Percentage);
+            m_Targets.vector3s[2].z = -punch(Mathf.Abs(m_Targets.vector3s[1].z), m_Percentage);
         }
 
         //apply:
-        m_ThisTransform.Rotate(m_Vector3s[2] - m_Vector3s[3], m_Space);
+        m_ThisTransform.Rotate(m_Targets.vector3s[2] - m_Targets.vector3s[3], m_Space);
 
         //record:
-        m_Vector3s[3] = m_Vector3s[2];
+        m_Targets.vector3s[3] = m_Targets.vector3s[2];
 
         //dial in:
         /*
@@ -1846,33 +1855,33 @@ public partial class iTween : MonoBehaviour
     void ApplyPunchScaleTargets()
     {
         //calculate:
-        if (m_Vector3s[1].x > 0)
+        if (m_Targets.vector3s[1].x > 0)
         {
-            m_Vector3s[2].x = punch(m_Vector3s[1].x, m_Percentage);
+            m_Targets.vector3s[2].x = punch(m_Targets.vector3s[1].x, m_Percentage);
         }
-        else if (m_Vector3s[1].x < 0)
+        else if (m_Targets.vector3s[1].x < 0)
         {
-            m_Vector3s[2].x = -punch(Mathf.Abs(m_Vector3s[1].x), m_Percentage);
+            m_Targets.vector3s[2].x = -punch(Mathf.Abs(m_Targets.vector3s[1].x), m_Percentage);
         }
-        if (m_Vector3s[1].y > 0)
+        if (m_Targets.vector3s[1].y > 0)
         {
-            m_Vector3s[2].y = punch(m_Vector3s[1].y, m_Percentage);
+            m_Targets.vector3s[2].y = punch(m_Targets.vector3s[1].y, m_Percentage);
         }
-        else if (m_Vector3s[1].y < 0)
+        else if (m_Targets.vector3s[1].y < 0)
         {
-            m_Vector3s[2].y = -punch(Mathf.Abs(m_Vector3s[1].y), m_Percentage);
+            m_Targets.vector3s[2].y = -punch(Mathf.Abs(m_Targets.vector3s[1].y), m_Percentage);
         }
-        if (m_Vector3s[1].z > 0)
+        if (m_Targets.vector3s[1].z > 0)
         {
-            m_Vector3s[2].z = punch(m_Vector3s[1].z, m_Percentage);
+            m_Targets.vector3s[2].z = punch(m_Targets.vector3s[1].z, m_Percentage);
         }
-        else if (m_Vector3s[1].z < 0)
+        else if (m_Targets.vector3s[1].z < 0)
         {
-            m_Vector3s[2].z = -punch(Mathf.Abs(m_Vector3s[1].z), m_Percentage);
+            m_Targets.vector3s[2].z = -punch(Mathf.Abs(m_Targets.vector3s[1].z), m_Percentage);
         }
 
         //apply:
-        m_ThisTransform.localScale = m_Vector3s[0] + m_Vector3s[2];
+        m_ThisTransform.localScale = m_Targets.vector3s[0] + m_Targets.vector3s[2];
 
         //dial in:
         /*
@@ -2939,7 +2948,7 @@ public partial class iTween : MonoBehaviour
         {
             try
             {
-                iTweenDrawUtilities.DrawPath(m_Vector3s);
+                iTweenDrawUtilities.DrawPath(m_Targets.vector3s);
             } catch (Exception) { }
         }
     }
@@ -3001,6 +3010,7 @@ public partial class iTween : MonoBehaviour
     }
 
     //andeeee from the Unity forum's steller Catmull-Rom class ( http://forum.unity3d.com/viewtopic.php?p=218400#218400 ):
+    [Serializable]
     private class CRSpline
     {
         public Vector3[] points;
