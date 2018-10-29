@@ -156,7 +156,7 @@ public class Player : MonoBehaviour
 
     public IEnumerator BeginTurn()
     {
-        //TODO should we wait for the camera to arrive (and how? maybe keep it's previous position and check for distance travelled)
+        yield return new WaitForCamera(GameController.instance.camera);
         yield return Unpark();
 
         //TODO - Maybe this should be a flag (or something..) to allow other types of input?
@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
         yield return MoveTo(currentCellIndex + dice);
 
         yield return Park();
-        //TODO maybe wait a bit so the motion is not that rought?
+        yield return new WaitForSeconds(0.5f);
     }
 
     public IEnumerator OnEnterCell(Waypoint waypoint)
