@@ -65,7 +65,9 @@ public class Deck : MonoBehaviour
 
     private Card SpawnCard(CardDefinition definition)
     {
-        var newCardObj = Instantiate(cardPrefab, transform.position, transform.rotation);
+        var rotation = transform.rotation * Quaternion.Euler(0, 0, 180);
+        var position = transform.position + Vector3.up * 2;
+        var newCardObj = Instantiate(cardPrefab, position, rotation);
         var newCard = newCardObj.GetComponent<Card>() ?? newCardObj.AddComponent<Card>();
         newCard.deck = this;
         definition.ApplyDefinition(newCard);

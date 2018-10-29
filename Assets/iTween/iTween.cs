@@ -48,7 +48,7 @@ public partial class iTween : MonoBehaviour
     private EasingFunction m_EaseFunc;
     private ApplyTween m_ApplyFunc;
     private AudioSource m_AudioSource;
-    private Vector3[] m_Vector3s;
+    private Vector3[] m_Vector3s; //TODO - move these into a serializable structure so it can be inspected
     private Vector2[] m_Vector2s;
     private Color[,] m_Colors;
     private float[] m_Floats;
@@ -2937,7 +2937,10 @@ public partial class iTween : MonoBehaviour
     {
         if (type == "move")
         {
-            iTweenDrawUtilities.DrawPath(m_Vector3s);
+            try
+            {
+                iTweenDrawUtilities.DrawPath(m_Vector3s);
+            } catch (Exception) { }
         }
     }
 

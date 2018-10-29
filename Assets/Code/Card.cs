@@ -12,58 +12,47 @@ public class Card : MonoBehaviour
     private bool m_IsDragging = false;
     private Vector3 m_DragOffset = Vector3.zero;
     private bool m_Seen = false;
-
-    public static Vector3 StartPosition = new Vector3(0f, 2f, 0f); //TODO - these should go away. The card needs to know which deck it came from. There might be multiple decks
-    public static Vector3 StartRotation = new Vector3(90f, 0f, 90f);
-
+    
     public IEnumerator ShowToCamera()
     {
         var cam = Camera.main;
 
-        var targetPos = cam.transform.TransformPoint(Vector3.forward);
-        var targetRotation = Quaternion.LookRotation(cam.transform.position - targetPos, cam.transform.up);
+        var targetPos = cam.transform.TransformPoint(Vector3.forward * 5.0f);
+        var lookRotation = Quaternion.LookRotation(cam.transform.position - targetPos, cam.transform.up);
+        var targetRotation = lookRotation * Quaternion.Euler(180, 90, 90);
 
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  transform.position + Vector3.up * 2,
             "easeType", iTween.EaseType.Linear,
             "time", 0.5f));
+        yield return new WaitForSeconds(0.5f);
+
         iTween.RotateTo(gameObject, iTween.Hash(
-            "rotation",  targetRotation.eulerAngles,
+            "rotation", targetRotation.eulerAngles,
             "time", 2.0f,
-            "delay", 0.5f));
+            "easeType", iTween.EaseType.Linear));
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  targetPos,
-            "time", 2.0f,
-            "delay", 0.5f));
-
-        yield return new WaitForSeconds(2.5f);
+            "time", 2.0f));
+        yield return new WaitForSeconds(2.0f);
 
         m_Seen = true;
     }
 
     public IEnumerator ReturnToDeck()
     {
-        //TODO - cards should slide underneath the deck (consider invisible decks?)
-        iTween.MoveTo(gameObject, iTween.Hash(
-            "position",  transform.position + Vector3.up * 2,
-            "easeType", iTween.EaseType.Linear,
-            "time", 0.5f));
         iTween.RotateTo(gameObject, iTween.Hash(
-            "rotation",  StartRotation,
-            "time", 2.0f,
-            "delay", 0.5f));
+            "rotation",  deck.transform.rotation,
+            "time", 2.0f));
         iTween.MoveTo(gameObject, iTween.Hash(
-            "position",  StartPosition,
-            "time", 2.0f,
-            "delay", 0.5f));
+            "position",  deck.transform.position,
+            "time", 2.0f));
 
-        yield return new WaitForSeconds(2.5f);
-        //TODO - the card shouldn't be reused. It should be destroyed here and a new one spawned by the deck when needed.
+        yield return new WaitForSeconds(2.0f);
     }
     
     public void Show()
     {
-        gameObject.SetActive(true);
         StartCoroutine(ShowToCamera());
     }
 
