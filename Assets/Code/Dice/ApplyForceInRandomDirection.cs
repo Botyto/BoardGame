@@ -4,8 +4,8 @@ using System.Collections;
 public class ApplyForceInRandomDirection : MonoBehaviour
 {
 	public string buttonName = "Fire1";
-	public float forceAmount = 10.0f;
-	public float torqueAmount = 10.0f;
+	public float forceAmount = 30.0f;
+	public float torqueAmount = 40.0f;
 	public ForceMode forceMode;
 
 	// Update is called once per frame

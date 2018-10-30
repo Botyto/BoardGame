@@ -22,7 +22,7 @@ public class DisplayCurrentDieValue : MonoBehaviour
 		if(GetComponent<Rigidbody>().IsSleeping() && !rollComplete)
 		{
 			rollComplete = true;
-			Debug.Log("Die roll complete, die is at rest");
+			Debug.Log("Die roll complete, " + currentValue);
 		}
 		else if(!GetComponent<Rigidbody>().IsSleeping())
 		{

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SetMaxAngularVelocity : MonoBehaviour
 {
-	public float maxAngularVelocity = 7.0f;
+	public float maxAngularVelocity =  30.0f;
 
 	// Use this for initialization
 	void Start ()
