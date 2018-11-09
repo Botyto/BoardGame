@@ -34,6 +34,11 @@ public class DiceValueSelector : MonoBehaviour
         }
     }
 
+    private DiceValue OppositeValue(DiceValue value)
+    {
+        return (DiceValue)(DiceValue.Six - (value - 1));
+    }
+
     void OnEnable()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
