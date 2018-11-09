@@ -29,7 +29,7 @@ public class Card : MonoBehaviour
 
         iTween.RotateTo(gameObject, iTween.Hash(
             "rotation", targetRotation.eulerAngles,
-            "time", 2.0f,
+            "time", 1.0f,
             "easeType", iTween.EaseType.Linear));
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  targetPos,

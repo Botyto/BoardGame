@@ -13,10 +13,10 @@ public class Deck : MonoBehaviour
     [Header("Deck")]
     public string id = "default";
     public GameObject cardPrefab = null;
-    public DeckType deckType = DeckType.All;
-    [SerializeField]
+    public DeckType deckType = DeckType.All; //TODO should this be a list of filters for easier setup in inspector?
+    [SerializeField] //TODO visible for debug purposes, hide later
     private List<CardDefinition> m_Cards = null;
-    [SerializeField]
+    [SerializeField] //TODO visible for debug purposes, hide later
     private List<int> m_CardsQueue = null;
 
     private void OnEnable()
@@ -82,7 +82,8 @@ public class Deck : MonoBehaviour
         GameController.instance.camera.PushTarget(transform);
         yield return new WaitForCamera(GameController.instance.camera);
 
-        var card = SpawnCard(PeekCard());
+        var definition = PeekCard();
+        var card = SpawnCard(definition);
 
         var cardIdx = m_CardsQueue[0];
         m_CardsQueue.RemoveAt(0);
@@ -90,6 +91,8 @@ public class Deck : MonoBehaviour
 
         yield return card.ShowToCamera();
         yield return new WaitForObjectDestroyed(card.gameObject);
+
+        yield return definition.Activate(forPlayer);
 
         GameController.instance.camera.PopTarget();
     }

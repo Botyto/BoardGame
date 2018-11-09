@@ -99,8 +99,9 @@ public class UnityCoroutine
                 var success = m_Coroutine.MoveNext();
                 if (!success) { break; }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.LogException(e);
                 m_State = CoroutineState.Failed;
                 yield break;
             }

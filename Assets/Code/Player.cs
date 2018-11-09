@@ -165,7 +165,11 @@ public class Player : MonoBehaviour
         var dice = GameController.instance.RollDice(2);
         yield return MoveTo(currentCellIndex + dice);
 
-        yield return Park();
+        if (GameController.instance.nextPlayerIndex != playerNumber)
+        {
+            yield return Park();
+        }
+
         yield return new WaitForSeconds(0.5f);
     }
 

@@ -12,7 +12,8 @@ public class GameController : MonoBehaviour
     public Player[] players = null;
 
     [Header("Turns")]
-    public int currentPlayerIndex = 0;
+    public int currentPlayerIndex = -1;
+    public int nextPlayerIndex = -1;
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
 
     [HideInInspector]
@@ -43,13 +44,16 @@ public class GameController : MonoBehaviour
             players[i].StartCoroutine(players[i].Park());
         }
 
-        --currentPlayerIndex;
+        currentPlayerIndex = 0;
+        nextPlayerIndex = 0;
         BeginTurn();
     }
 
     private void BeginTurn()
     {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Length;
+        currentPlayerIndex = nextPlayerIndex;
+        nextPlayerIndex = (currentPlayerIndex + 1) % players.Length;
+        Debug.LogFormat("New turn: {0}", currentPlayerIndex);
         m_GameRoutine = new UnityCoroutine(TurnRountine());
         StartCoroutine(m_GameRoutine.StartSafe());
     }

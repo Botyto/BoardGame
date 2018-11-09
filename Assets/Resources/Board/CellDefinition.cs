@@ -64,7 +64,16 @@ public class CellDefinition : ScriptableObject
             var method = ty.GetMethod(effect);
             if (method == null) { continue; }
 
-            yield return method.Invoke(null, parameters);
+            object result = null;
+            try
+            {
+                result = method.Invoke(null, parameters);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            yield return result;
         }
     }
 }

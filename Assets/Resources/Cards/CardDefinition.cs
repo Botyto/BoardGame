@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +36,28 @@ public class CardDefinition : ScriptableObject
             {
                 imgUI.sprite = sprite;
             }
+        }
+    }
+
+    public IEnumerator Activate(Player player)
+    {
+        var ty = typeof(CardEffects);
+        var parameters = new object[] { this, player };
+        foreach (var effect in effects)
+        {
+            var method = ty.GetMethod(effect);
+            if (method == null) { continue; }
+
+            object result = null;
+            try
+            {
+                result = method.Invoke(null, parameters);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            yield return result;
         }
     }
 }

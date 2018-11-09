@@ -2615,9 +2615,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 897952550}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccc20edfc4185e14bb0184f0e145e5c5, type: 3}
+  m_Script: {fileID: 11500000, guid: fd3581020eaa3c24ea15471c1ad83347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: default
+  cardPrefab: {fileID: 1312293763813512, guid: bae0bfa7b2c8df044bab2d698599aa0d, type: 2}
+  deckType: 1
+  m_Cards: []
+  m_CardsQueue: 
 --- !u!1 &909577085
 GameObject:
   m_ObjectHideFlags: 0
@@ -5578,6 +5583,7 @@ MonoBehaviour:
   playersCount: 2
   players: []
   currentPlayerIndex: 0
+  nextPlayerIndex: -1
 --- !u!4 &1828901972
 Transform:
   m_ObjectHideFlags: 0
