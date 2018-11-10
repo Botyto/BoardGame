@@ -1,11 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
     [Header("Card")]
     public CardDefinition definition = null;
     public Deck deck = null;
+
+    [Header("Visuals")]
+    public Text caption = null;
+    public Image image = null;
+    public GameObject hint = null;
 
     private Vector3 m_Velocity = Vector3.zero;
     private Vector3 m_PreviousPosition = Vector3.zero;

@@ -15,7 +15,7 @@ public class CardDefinition : ScriptableObject
     }
 
     [Header("Visuals")]
-    public string displayName = "";
+    public string caption = "";
     public Sprite sprite = null;
 
     [Header("Functional")]
@@ -29,14 +29,9 @@ public class CardDefinition : ScriptableObject
     {
         card.definition = this;
 
-        if (sprite != null)
-        {
-            var imgUI = card.GetComponentInChildren<Image>();
-            if (imgUI != null)
-            {
-                imgUI.sprite = sprite;
-            }
-        }
+        if (card.caption != null) { card.caption.text = caption; }
+        if (card.image != null) { card.image.sprite = sprite; }
+        //card.hint.SetActive(true);
     }
 
     public IEnumerator Activate(Player player)
