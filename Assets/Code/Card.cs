@@ -68,38 +68,42 @@ public class Card : MonoBehaviour
         yield return new WaitForSeconds(0.5f + 0.5f);
     }
     
-    public void Show()
+    public IEnumerator Show()
     {
-        StartCoroutine(ShowToCamera());
+        yield return ShowToCamera();
+        
+        while (!m_Seen) { yield return null; }
+
+        deck.SendMessage("CardShown", this, SendMessageOptions.DontRequireReceiver);
+
+        while (true)
+        {
+            var viewportPos = Camera.main.WorldToViewportPoint(transform.position);
+            if (viewportPos.x < 0 || viewportPos.x > 1) { break; }
+            if (viewportPos.y < 0 || viewportPos.y > 1) { break; }
+            yield return null;
+        }
+
+        yield return ReturnToDeck();
     }
 
     private void Update()
     {
-        if (m_IsDragging)
+        if (m_Seen)
         {
-            m_Velocity = transform.position - m_PreviousPosition;
-            m_PreviousPosition = transform.position;
-        }
-        else
-        {
-            transform.position += m_Velocity;
-            m_Velocity *= 0.9f;
-
-            if (m_Seen)
+            if (m_IsDragging)
             {
-                var viewportPos = Camera.main.WorldToViewportPoint(transform.position);
-                if (viewportPos.x < 0 || viewportPos.x > 1) { StartCoroutine(ReturnCardAndContinue()); }
-                if (viewportPos.y < 0 || viewportPos.y > 1) { StartCoroutine(ReturnCardAndContinue()); }
+                m_Velocity = transform.position - m_PreviousPosition;
+                m_PreviousPosition = transform.position;
+            }
+            else
+            {
+                transform.position += m_Velocity;
+                m_Velocity *= 0.9f;
             }
         }
     }
-
-    public IEnumerator ReturnCardAndContinue() //TODO - should this be called like that?
-    {
-        yield return ReturnToDeck();
-        Destroy(gameObject);
-    }
-
+    
     #region Dragging
 
     private void OnMouseDown()
