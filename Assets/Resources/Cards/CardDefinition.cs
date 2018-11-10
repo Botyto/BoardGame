@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 [Serializable]
 [CreateAssetMenu]
@@ -29,9 +28,9 @@ public class CardDefinition : ScriptableObject
     {
         card.definition = this;
 
-        if (card.caption != null) { card.caption.text = caption; }
+        if (card.caption != null) { card.caption.text = Localization.T(caption); }
         if (card.image != null) { card.image.sprite = sprite; }
-        //card.hint.SetActive(true);
+        //card.hint.SetActive(true); //TODO hint text should be localized as well. Probably inherit Text UI component
     }
 
     public IEnumerator Activate(Player player)
