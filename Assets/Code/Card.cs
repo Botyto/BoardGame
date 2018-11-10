@@ -35,8 +35,8 @@ public class Card : MonoBehaviour
 
         iTween.RotateTo(gameObject, iTween.Hash(
             "rotation", targetRotation.eulerAngles,
-            "time", 1.0f,
-            "easeType", iTween.EaseType.Linear));
+            "easeType", iTween.EaseType.Linear,
+            "time", 1.0f));
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  targetPos,
             "time", 2.0f));
@@ -47,14 +47,25 @@ public class Card : MonoBehaviour
 
     public IEnumerator ReturnToDeck()
     {
+        var deltaPos = transform.position - deck.transform.position;
+        var side = Vector3.Dot(deltaPos, deck.transform.right);
+        var settle_dir = (side > 0.0f) ? deck.transform.right : -deck.transform.right;
+
         iTween.RotateTo(gameObject, iTween.Hash(
-            "rotation",  deck.transform.rotation,
-            "time", 2.0f));
+            "rotation",  deck.transform.rotation * Quaternion.Euler(0, 0, 180),
+            "easeType", iTween.EaseType.Linear,
+            "time", 1.0f));
         iTween.MoveTo(gameObject, iTween.Hash(
-            "position",  deck.transform.position,
-            "time", 2.0f));
+            "position",  deck.transform.position + settle_dir * 5.0f,
+            "time", 1.5f));
 
         yield return new WaitForSeconds(2.0f);
+
+        iTween.MoveTo(gameObject, iTween.Hash(
+            "position", deck.transform.position,
+            "easeType", iTween.EaseType.Linear,
+            "time", 0.5f));
+        yield return new WaitForSeconds(0.5f + 0.5f);
     }
     
     public void Show()

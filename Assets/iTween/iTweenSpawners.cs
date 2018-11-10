@@ -2068,7 +2068,11 @@ public partial class iTween
         //additional property to ensure ConflictCheck can work correctly since Transforms are refrences:		
         if (args.Contains("rotation"))
         {
-            if (args["rotation"].GetType() == typeof(Transform))
+            if (args["rotation"].GetType() == typeof(Quaternion))
+            {
+                args["rotation"] = ((Quaternion)args["rotation"]).eulerAngles;
+            }
+            else if (args["rotation"].GetType() == typeof(Transform))
             {
                 Transform transform = (Transform)args["rotation"];
                 args["position"] = new Vector3(transform.position.x, transform.position.y, transform.position.z);
@@ -2192,6 +2196,11 @@ public partial class iTween
         //set augmented fromRotation:
         if (args.Contains("rotation"))
         {
+            if (args["rotation"].GetType() == typeof(Quaternion))
+            {
+                args["rotation"] = ((Quaternion)args["rotation"]).eulerAngles;
+            }
+
             if (args["rotation"].GetType() == typeof(Transform))
             {
                 Transform trans = (Transform)args["rotation"];
