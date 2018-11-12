@@ -16,9 +16,12 @@ public class GameController : MonoBehaviour
     public int nextPlayerIndex = -1;
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
 
+    public DisplayCurrentDieValue[] dices;
+    public int DiceSum = 0;
+
     [HideInInspector]
     public Dictionary<string, Deck> decks;
-    
+
     private void OnEnable()
     {
         //Gather all decks into a dictionary
@@ -79,16 +82,31 @@ public class GameController : MonoBehaviour
         yield return currentPlayer.BeginTurn();
         camera.PopTarget();
     }
-    
-    public int RollDice(int n = 1)
+
+
+    public IEnumerator RollDice(int n = 1)
+    {
+        DiceSum = 0;
+        if (n == 1) yield return dices[0].ShakeDice();
+
+        if (n == 2)
+        {
+            yield return dices[0].ShakeDice();
+            yield return dices[1].ShakeDice();
+        }
+
+        yield return new WaitForSeconds(5f);
+    }
+
+    public int RollFakeDice(int n = 1)
     {
         //TODO - make more elegant solution later?
         var cheat = FindObjectOfType<DiceCheat>();
         if (cheat != null)
         {
-            return cheat.RollDice(n);
+            return cheat.RollFakeDice(n);
         }
-        
+
         int total = 0;
         for (int i = 0; i < n; ++i)
         {

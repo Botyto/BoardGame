@@ -36,7 +36,7 @@ public class DiceCheat : MonoBehaviour
         }
     }
 
-    public int RollDice(int n = 1)
+    public int RollFakeDice(int n = 1)
     {
         var total = 0;
         if (sliders == null || sliders.Length == 0)

@@ -162,8 +162,9 @@ public class Player : MonoBehaviour
         //TODO - Maybe this should be a flag (or something..) to allow other types of input?
         //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
         yield return new WaitForKeyDown(KeyCode.Space);
-        var dice = GameController.instance.RollDice(2);
-        yield return MoveTo(currentCellIndex + dice);
+        yield return GameController.instance.RollDice(2);
+        yield return MoveTo(currentCellIndex + GameController.instance.DiceSum);
+        GameController.instance.DiceSum = 0;
 
         if (GameController.instance.nextPlayerIndex != playerNumber)
         {

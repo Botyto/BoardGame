@@ -40,25 +40,18 @@ public class DisplayCurrentDieValue : MonoBehaviour
         }
     }
 
-    public int ShakeDice()
-    {
-        StartCoroutine(diceForce());
-
-        return currentValue;
-    }
-    public IEnumerator diceForce()
+    public IEnumerator ShakeDice()
     {
         rigidbody.AddForce(Random.onUnitSphere * forceAmount, forceMode);
         rigidbody.AddTorque(Random.onUnitSphere * torqueAmount, forceMode);
+        this.transform.position += new Vector3(0, 7, 0);
 
-        while (GetComponent<Rigidbody>().IsSleeping())
-        {
-            rollComplete = true;
-            currentValue = GetNumber(Vector3.up, 30f);
-            Debug.Log("Die roll complete, " + currentValue);
-            yield return null;
-        }
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
+
+        rollComplete = true;
+        currentValue = GetNumber(Vector3.up, 30f);
+        GameController.instance.DiceSum += currentValue;
+        Debug.Log("Die roll complete, " + currentValue);
     }
 
     void OnGUI()
