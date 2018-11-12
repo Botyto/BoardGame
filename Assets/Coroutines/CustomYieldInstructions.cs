@@ -32,9 +32,9 @@ public class WaitForCamera : CustomYieldInstruction
 {
     private FollowCamera m_Camera;
 
-    public WaitForCamera(FollowCamera camera)
+    public WaitForCamera(FollowCamera camera = null)
     {
-        m_Camera = camera;
+        m_Camera = (camera != null) ? camera : GameController.instance.camera;
     }
 
     public override bool keepWaiting { get { return m_Camera.isMoving; } }

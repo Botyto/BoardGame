@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33967858735412486}
   - component: {fileID: 23993663486607428}
   - component: {fileID: 114954307443340846}
+  - component: {fileID: 65888216169971650}
   m_Layer: 0
   m_Name: Waypoint
   m_TagString: Untagged
@@ -84,6 +85,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1171009893878216}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &65888216169971650
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1171009893878216}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114954307443340846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -97,3 +110,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: -1
   isCorner: 0
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}

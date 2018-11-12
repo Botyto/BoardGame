@@ -116,11 +116,9 @@ public class Board : MonoBehaviour
                     var waypointObj = Instantiate(waypointPrefab, waypointsNode) as GameObject;
                     waypointObj.name = string.Format("Waypoint {0}", waypointIdx + 1);
                     waypointComp = waypointObj.GetComponent<Waypoint>() ?? waypointObj.AddComponent<Waypoint>();
-                    waypointsList.Add(waypointComp);
                 }
 
                 waypointComp.gameObject.isStatic = true;
-
                 var waypointTransform = waypointComp.transform;
                 waypointTransform.position = position;
                 waypointTransform.rotation = rotation;
@@ -141,22 +139,20 @@ public class Board : MonoBehaviour
 
                 waypointComp.index = waypointIdx;
                 waypointComp.isCorner = (i == 0);
-                waypointComp.bounds = new Bounds(waypointTransform.position, new Vector3(cellHeight, 0, cellLength));
+                waypointComp.SetBounds(new Bounds(waypointTransform.position, new Vector3(cellHeight, 0, cellLength)));
 
                 if (i == 0)
                 {                    
                     positionOffset += (cellHeight - cellLength) / 2.0f;
                 }
 
+                waypointsList.Add(waypointComp);
                 positionOffset += cellLength + spacing;
                 ++waypointIdx;
             }
         }
-
-        if (!reuseWaypoints)
-        {
-            waypoints = waypointsList.ToArray();
-        }
+        
+        waypoints = waypointsList.ToArray();
     }
 
     public Waypoint GetWaypoint(int index)

@@ -66,6 +66,17 @@ public class Waypoint : MonoBehaviour //TODO - this is badly named :( shouldn't 
 
     #endregion
 
+    public void SetBounds(Bounds newBounds)
+    {
+        bounds = newBounds;
+        var boxCollider = GetComponent<BoxCollider>();
+        if (boxCollider != null)
+        {
+            boxCollider.center = boxCollider.center;
+            boxCollider.size = boxCollider.size;
+        }
+    }
+    
     void OnEnable()
     {
         m_ParkedPlayers = new List<Player>();

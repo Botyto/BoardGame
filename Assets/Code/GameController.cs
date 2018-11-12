@@ -84,18 +84,26 @@ public class GameController : MonoBehaviour
     }
 
 
-    public IEnumerator RollDice(int n = 1)
+    public IEnumerator RollDice(int n = -1)
     {
+        camera.PushTarget(Board.instance.transform);
+        yield return new WaitForCamera();
+
+        //TODO - Maybe this should be a flag (or something..) to allow other types of input?
+        //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
+        yield return new WaitForKeyDown(KeyCode.Space);
+
         DiceSum = 0;
-        if (n == 1) yield return dices[0].ShakeDice();
-
-        if (n == 2)
+        n = (n <= 0) ? dices.Length : Mathf.Min(dices.Length, n);
+        for (int i = 0; i < n; ++i)
         {
-            yield return dices[0].ShakeDice();
-            yield return dices[1].ShakeDice();
+            yield return dices[i].ShakeDice();
         }
+        
+        yield return new WaitForSeconds(3.0f);
 
-        yield return new WaitForSeconds(5f);
+        camera.PopTarget();
+        yield return new WaitForCamera();
     }
 
     public int RollFakeDice(int n = 1)
@@ -143,7 +151,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    #region Singleton
+#region Singleton
 
     public static GameController instance { get; private set; }
 
@@ -159,5 +167,5 @@ public class GameController : MonoBehaviour
         instance = null;
     }
 
-    #endregion
+#endregion
 }

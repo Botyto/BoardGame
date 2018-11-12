@@ -80,7 +80,7 @@ public class Deck : MonoBehaviour
         if (m_CardsQueue.Count == 0) { yield break; }
 
         GameController.instance.camera.PushTarget(transform);
-        yield return new WaitForCamera(GameController.instance.camera);
+        yield return new WaitForCamera();
 
         var definition = PeekCard();
         var card = SpawnCard(definition);
