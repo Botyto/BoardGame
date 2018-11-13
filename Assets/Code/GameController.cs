@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     public int nextPlayerIndex = -1;
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
 
-    public DisplayCurrentDieValue[] dices;
+    public Dice[] dices;
     public int DiceSum = 0;
 
     [HideInInspector]
@@ -83,6 +83,7 @@ public class GameController : MonoBehaviour
         camera.PopTarget();
     }
 
+    
 
     public IEnumerator RollDice(int n = -1)
     {
@@ -97,10 +98,15 @@ public class GameController : MonoBehaviour
         n = (n <= 0) ? dices.Length : Mathf.Min(dices.Length, n);
         for (int i = 0; i < n; ++i)
         {
-            yield return dices[i].ShakeDice();
+            StartCoroutine(dices[i].ShakeDice());
         }
         
-        yield return new WaitForSeconds(3.0f);
+        while(!dices[0].rollComplete && !dices[1].rollComplete)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f);
 
         camera.PopTarget();
         yield return new WaitForCamera();

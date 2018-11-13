@@ -9,7 +9,7 @@ public class Dice : MonoBehaviour
 
     public float forceAmount = 40.0f;
     public float torqueAmount = 150.0f;
-    public float rotateDuration = 4f;
+    public float rotateDuration = 2f;
     public ForceMode forceMode;
 
     public Rigidbody rigidbody;
@@ -44,7 +44,7 @@ public class Dice : MonoBehaviour
     IEnumerator Rotate()
     {
         float startRotation = transform.eulerAngles.y;
-        float endRotation = startRotation + Random.Range(10f, 360.0f);
+        float endRotation = startRotation + Random.Range(45f, 275.0f);
         float t = 0.0f;
         while (t < rotateDuration)
         {
