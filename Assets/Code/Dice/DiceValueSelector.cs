@@ -5,9 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class DiceValueSelector : MonoBehaviour
 {
-    private float epsilonDeg = 30f;
-    public List<Vector3> directions = new List<Vector3>{Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.back, Vector3.forward};
-
     public enum DiceValue
     {
         Undefined = 0,
@@ -19,11 +16,11 @@ public class DiceValueSelector : MonoBehaviour
         Six = 6,
     }
 
-    public DiceValue upValue;
-    public DiceValue forwardValue;
-    public DiceValue rightValue;
+    public DiceValue upValue = DiceValue.Two;
+    public DiceValue forwardValue = DiceValue.Four;
+    public DiceValue rightValue = DiceValue.Six;
 
-    private Rigidbody m_Rigidbody;
+    private Rigidbody m_Rigidbody = null;
 
     private void Update()
     {
@@ -35,30 +32,44 @@ public class DiceValueSelector : MonoBehaviour
 
     public DiceValue SelectedValue()
     {
-        Vector3 referenceObjectSpace = transform.InverseTransformDirection(Vector3.up);
-        // Find smallest difference to object space direction
-        float min = float.MaxValue;
-        int mostSimilarDirectionIndex = -1;
-        for (int i = 0; i < 6; i++)
+        var dotProducts = new float[3];
+        dotProducts[0] = Vector3.Dot(transform.up, Vector3.up);
+        dotProducts[1] = Vector3.Dot(transform.forward, Vector3.up);
+        dotProducts[2] = Vector3.Dot(transform.right, Vector3.up);
+
+        var maxDotAbs = float.NegativeInfinity;
+        var maxDotIdx = -1;
+        for (int i = 0; i < 3; ++i)
         {
-            float a = Vector3.Angle(referenceObjectSpace, directions[i]);
-            if (a <= epsilonDeg && a < min)
+            var abs = Mathf.Abs(dotProducts[i]);
+            if (abs > maxDotAbs)
             {
-                min = a;
-                mostSimilarDirectionIndex = i + 1;
+                maxDotAbs = abs;
+                maxDotIdx = i;
             }
         }
 
-        switch (mostSimilarDirectionIndex)
+        Debug.AssertFormat(-1 <= maxDotIdx && maxDotIdx < dotProducts.Length, "<color=red>[Error]</color> Invalid dice side index {0}", maxDotIdx);
+
+        if (maxDotIdx == -1)
         {
-            case 1: return upValue;
-            case 2: return OppositeValue(upValue);
-            case 3: return rightValue;
-            case 4: return OppositeValue(rightValue);
-            case 5: return forwardValue; 
-            case 6: return OppositeValue(forwardValue); ;
-            default: return 0;         // 0 as error code for not within bounds
+            return DiceValue.Undefined;
         }
+
+        var side = DiceValue.Undefined;
+        switch (maxDotIdx)
+        {
+            case 0: side = upValue; break;
+            case 1: side = forwardValue; break;
+            case 2: side = rightValue; break;
+        }
+        
+        if (dotProducts[maxDotIdx] < 0.0f)
+        {
+            side = OppositeValue(side);
+        }
+
+        return side;
     }
 
     public IEnumerator WaitToSettle()

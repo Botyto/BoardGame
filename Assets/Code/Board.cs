@@ -8,6 +8,7 @@ public class Board : MonoBehaviour
     public GameObject waypointPrefab = null;
     public Transform waypointsNode = null;
     public BoardDefinition boardDefinition = null;
+    public Transform ground = null;
 
     [Header("Layout")]
     [SerializeField, GetSet("cellLength")]

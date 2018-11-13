@@ -104,13 +104,6 @@ public class FollowCamera : MonoBehaviour
             return false;
         }
 
-        var renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            bounds = renderer.bounds;
-            return true;
-        }
-
         var collider = obj.GetComponent<Collider>();
         if (collider != null)
         {
@@ -118,6 +111,13 @@ public class FollowCamera : MonoBehaviour
             return true;
         }
 
+        var renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            bounds = renderer.bounds;
+            return true;
+        }
+        
         bounds = default(Bounds);
         return false;
     }

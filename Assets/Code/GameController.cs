@@ -87,7 +87,7 @@ public class GameController : MonoBehaviour
 
     public IEnumerator RollDice(int n = -1)
     {
-        camera.PushTarget(Board.instance.transform);
+        camera.PushTarget(Board.instance.ground.transform);
         yield return new WaitForCamera();
 
         //TODO - Maybe this should be a flag (or something..) to allow other types of input?
