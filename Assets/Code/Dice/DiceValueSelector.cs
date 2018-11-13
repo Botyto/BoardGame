@@ -39,7 +39,7 @@ public class DiceValueSelector : MonoBehaviour
 
         var maxDotAbs = float.NegativeInfinity;
         var maxDotIdx = -1;
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < dotProducts.Length; ++i)
         {
             var abs = Mathf.Abs(dotProducts[i]);
             if (abs > maxDotAbs)
