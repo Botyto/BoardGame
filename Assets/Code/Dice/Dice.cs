@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Dice : MonoBehaviour
@@ -12,7 +11,7 @@ public class Dice : MonoBehaviour
     public float rotateDuration = 1f;
     public ForceMode forceMode;
 
-    public Rigidbody rigidbody;
+    public new Rigidbody rigidbody;
     public DiceValueSelector diceValueSelector;
 
     private void Awake()
@@ -36,7 +35,7 @@ public class Dice : MonoBehaviour
 
         if(rigidbody.IsSleeping())
         currentValue = (int)diceValueSelector.SelectedValue();
-        GameController.instance.DiceSum += currentValue;
+        DiceController.instance.diceSum += currentValue;
         Debug.Log("Die roll complete, " + currentValue);
         rollComplete = true;
     }

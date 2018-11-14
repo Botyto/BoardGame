@@ -30,14 +30,19 @@ public class WaitForKeyDown : CustomYieldInstruction
 
 public class WaitForCamera : CustomYieldInstruction
 {
-    private FollowCamera m_Camera;
+    public WaitForCamera() { }
 
-    public WaitForCamera(FollowCamera camera = null)
+    public WaitForCamera(Transform newTarget)
     {
-        m_Camera = (camera != null) ? camera : GameController.instance.camera;
+        FollowCamera.Push(newTarget);
     }
 
-    public override bool keepWaiting { get { return m_Camera.isMoving; } }
+    public WaitForCamera(Transform[] newTarget)
+    {
+        FollowCamera.Push(newTarget);
+    }
+    
+    public override bool keepWaiting { get { return FollowCamera.instance.isMoving; } }
 }
 
 public class WaitForObjectDestroyed : CustomYieldInstruction //TODO - this might have to go away

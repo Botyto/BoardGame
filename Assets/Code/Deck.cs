@@ -79,7 +79,7 @@ public class Deck : MonoBehaviour
     {
         if (m_CardsQueue.Count == 0) { yield break; }
 
-        GameController.instance.camera.PushTarget(transform);
+        FollowCamera.Push(transform);
         yield return new WaitForCamera();
 
         var definition = PeekCard();
@@ -92,6 +92,6 @@ public class Deck : MonoBehaviour
         yield return card.Show();
         yield return definition.Activate(forPlayer);
 
-        GameController.instance.camera.PopTarget();
+        FollowCamera.Pop();
     }
 }

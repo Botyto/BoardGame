@@ -159,9 +159,9 @@ public class Player : MonoBehaviour
         yield return new WaitForCamera();
         yield return Unpark();
         
-        yield return GameController.instance.RollDice(2);
-        yield return MoveTo(currentCellIndex + GameController.instance.DiceSum);
-        GameController.instance.DiceSum = -1;
+        yield return DiceController.instance.RollDice(2);
+        yield return MoveTo(currentCellIndex + DiceController.instance.diceSum);
+        DiceController.instance.diceSum = -1;
 
         if (GameController.instance.nextPlayerIndex != playerNumber)
         {

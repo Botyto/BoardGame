@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
-public class FollowCamera : MonoBehaviour
+public class FollowCamera : Singleton<FollowCamera>
 {
     public new Camera camera;
     public float minSize = 5.0f;
-
+    
     [Header("Follow")]
     public float moveSpeed = 0.5f;
     public float zoomSpeed = 0.05f;
@@ -40,15 +41,36 @@ public class FollowCamera : MonoBehaviour
         transform.position = smoothedPosition;
     }
 
-    public void PushTarget(Transform newTarget)
+    public static void Push<T>(T newTarget) where T : Component
     {
-        AddTarget(new Transform[1] { newTarget });
+        instance.PushTarget(newTarget.transform);
     }
 
-    public void AddTarget(Transform[] newTarget)
+    public static void Push<T>(T[] newTarget) where T : Component
+    {
+        var transforms = new Transform[newTarget.Length];
+        for (int i = 0; i < newTarget.Length; ++i)
+        {
+            transforms[i] = newTarget[i].transform;
+        }
+
+        instance.PushTarget(transforms);
+    }
+
+    public void PushTarget(Transform newTarget)
+    {
+        PushTarget(new Transform[1] { newTarget });
+    }
+
+    public void PushTarget(Transform[] newTarget)
     {
         followedObjectsStack.Add(newTarget);
         m_PreviousStepSize = float.PositiveInfinity;
+    }
+
+    public static void Pop()
+    {
+        instance.PopTarget();
     }
 
     public void PopTarget()
@@ -105,14 +127,14 @@ public class FollowCamera : MonoBehaviour
         }
 
         var collider = obj.GetComponent<Collider>();
-        if (collider != null)
+        if (collider != null && collider.enabled)
         {
             bounds = collider.bounds;
             return true;
         }
 
         var renderer = obj.GetComponent<Renderer>();
-        if (renderer != null)
+        if (renderer != null && renderer.enabled)
         {
             bounds = renderer.bounds;
             return true;

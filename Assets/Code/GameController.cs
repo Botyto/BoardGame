@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
-    public new FollowCamera camera = null;
-
     [Header("Players")]
     public GameObject playerPrefab = null;
     public int playersCount = 2;
@@ -15,10 +13,7 @@ public class GameController : MonoBehaviour
     public int currentPlayerIndex = -1;
     public int nextPlayerIndex = -1;
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
-
-    public Dice[] dices;
-    public int DiceSum = 0;
-
+    
     [HideInInspector]
     public Dictionary<string, Deck> decks;
 
@@ -78,58 +73,11 @@ public class GameController : MonoBehaviour
 
     private IEnumerator TurnRountine()
     {
-        camera.PushTarget(currentPlayer.gameObject.transform);
+        FollowCamera.Push(currentPlayer.gameObject.transform);
         yield return currentPlayer.BeginTurn();
-        camera.PopTarget();
+        FollowCamera.Pop();
     }
-
     
-
-    public IEnumerator RollDice(int n = -1)
-    {
-        camera.PushTarget(Board.instance.ground.transform);
-        yield return new WaitForCamera();
-
-        //TODO - Maybe this should be a flag (or something..) to allow other types of input?
-        //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
-        yield return new WaitForKeyDown(KeyCode.Space);
-
-        DiceSum = 0;
-        n = (n <= 0) ? dices.Length : Mathf.Min(dices.Length, n);
-        for (int i = 0; i < n; ++i)
-        {
-            StartCoroutine(dices[i].ShakeDice());
-        }
-        
-        while(!dices[0].rollComplete && !dices[1].rollComplete)
-        {
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(0.5f);
-
-        camera.PopTarget();
-        yield return new WaitForCamera();
-    }
-
-    public int RollFakeDice(int n = 1)
-    {
-        //TODO - make more elegant solution later?
-        var cheat = FindObjectOfType<DiceCheat>();
-        if (cheat != null)
-        {
-            return cheat.RollFakeDice(n);
-        }
-
-        int total = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            total += Random.Range(1, 6);
-        }
-
-        return total;
-    }
-
     private void SpawnPlayers()
     {
         if (playerPrefab == null)
@@ -156,22 +104,4 @@ public class GameController : MonoBehaviour
             spawnPosition += spacing;
         }
     }
-
-#region Singleton
-
-    public static GameController instance { get; private set; }
-
-    void Awake()
-    {
-        Debug.Assert(instance == null);
-        instance = this;
-    }
-
-    void OnDestroy()
-    {
-        Debug.Assert(instance == this);
-        instance = null;
-    }
-
-#endregion
 }
