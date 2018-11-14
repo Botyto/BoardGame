@@ -9,7 +9,7 @@ public class Dice : MonoBehaviour
 
     public float forceAmount = 40.0f;
     public float torqueAmount = 150.0f;
-    public float rotateDuration = 2f;
+    public float rotateDuration = 1f;
     public ForceMode forceMode;
 
     public Rigidbody rigidbody;
@@ -24,10 +24,10 @@ public class Dice : MonoBehaviour
     public IEnumerator ShakeDice()
     {
         rollComplete = false;
+        StartCoroutine( Rotate());
         this.transform.position += new Vector3(0, 7, 0);
         rigidbody.AddForce(Random.onUnitSphere * forceAmount, forceMode);
         rigidbody.AddTorque(Random.onUnitSphere * torqueAmount, forceMode);
-        yield return Rotate();
 
         while (!GetComponent<Rigidbody>().IsSleeping())
         {
@@ -43,16 +43,17 @@ public class Dice : MonoBehaviour
 
     IEnumerator Rotate()
     {
-        float startRotation = transform.eulerAngles.y;
-        float endRotation = startRotation + Random.Range(45f, 275.0f);
+        float startRotation = transform.eulerAngles.x;
+        float endRotation = startRotation + Random.Range(200f, 275.0f);
         float t = 0.0f;
         while (t < rotateDuration)
         {
             t += Time.deltaTime;
-            float yRotation = Mathf.Lerp(startRotation, endRotation, t / rotateDuration) % 360.0f;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, yRotation, transform.eulerAngles.z);
-            yield return null;
+            float xRotation = Mathf.Lerp(startRotation, endRotation, t / rotateDuration) % 360.0f;
+            transform.eulerAngles = new Vector3(xRotation, transform.eulerAngles.y, transform.eulerAngles.z);
+
         }
+        yield return null;
     }
 
     //void Awake()

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.4465801, g: 0.49641466, b: 0.57481784, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657993, g: 0.49641424, b: 0.5748173, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollComplete: 1
-  forceAmount: 40
+  forceAmount: 250
   torqueAmount: 150
   rotateDuration: 2
   forceMode: 0
@@ -2010,13 +2010,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffddcd10c8ee46f4aa03818c883ba8e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directions:
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: -1, z: 0}
-  - {x: -1, y: 0, z: 0}
-  - {x: 1, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
-  - {x: 0, y: 0, z: 1}
   upValue: 2
   forwardValue: 4
   rightValue: 6
@@ -4321,13 +4314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffddcd10c8ee46f4aa03818c883ba8e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directions:
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: -1, z: 0}
-  - {x: -1, y: 0, z: 0}
-  - {x: 1, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
-  - {x: 0, y: 0, z: 1}
   upValue: 2
   forwardValue: 4
   rightValue: 6
@@ -5378,7 +5364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollComplete: 1
-  forceAmount: 40
+  forceAmount: 250
   torqueAmount: 150
   rotateDuration: 2
   forceMode: 0
