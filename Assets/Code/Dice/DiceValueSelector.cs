@@ -51,7 +51,7 @@ public class DiceValueSelector : MonoBehaviour
 
         Debug.AssertFormat(-1 <= maxDotIdx && maxDotIdx < dotProducts.Length, "<color=red>[Error]</color> Invalid dice side index {0}", maxDotIdx);
 
-        if (maxDotIdx == -1)
+        if (maxDotAbs < 0.8f || maxDotIdx == -1)
         {
             return DiceValue.Undefined;
         }
