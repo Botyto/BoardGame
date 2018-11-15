@@ -5470,6 +5470,7 @@ GameObject:
   - component: {fileID: 1828901972}
   - component: {fileID: 1828901971}
   - component: {fileID: 1828901973}
+  - component: {fileID: 1828901974}
   m_Layer: 0
   m_Name: GameController
   m_TagString: GameController
@@ -5523,6 +5524,18 @@ MonoBehaviour:
   - {fileID: 25306919}
   diceSum: 0
   uiText: {fileID: 2143940746}
+--- !u!114 &1828901974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1828901970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314e4f7f00ed9314096f85a27856cc1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TimeScale: 4.74
 --- !u!1 &1860065633
 GameObject:
   m_ObjectHideFlags: 0
