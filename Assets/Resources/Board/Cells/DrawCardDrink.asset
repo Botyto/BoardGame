@@ -3,17 +3,19 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a999233be6bcd74d8c25c577ae7d218, type: 3}
-  m_Name: DrawCard
+  m_Name: DrawCardDrink
   m_EditorClassIdentifier: 
-  displayName: Draw Card
-  material: {fileID: 2100000, guid: 833fbc6ae06df3f4289beeb8e8ba9e99, type: 2}
+  displayName: Draw Card (Drink)
+  material: {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   enterEffects:
   - DrawCard
   leaveEffects: []
-  parameters: []
+  parameters:
+  - key: deck
+    value: drink

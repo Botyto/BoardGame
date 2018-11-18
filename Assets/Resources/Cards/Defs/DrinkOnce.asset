@@ -9,13 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a8afe87bc3673e428ce7b569cf867e8, type: 3}
-  m_Name: RepeatTurn
+  m_Name: DrinkOnce
   m_EditorClassIdentifier: 
-  caption: Throw dice again
+  caption: Drink
   sprite: {fileID: 21300000, guid: f385b666fd61ec545b2a38703508d4c4, type: 3}
-  effects:
-  - RepeatTurn
+  effects: []
   parameters: []
   inDefault: 1
-  inDrink: 0
-  inGame: 1
+  inDrink: 1
+  inGame: 0

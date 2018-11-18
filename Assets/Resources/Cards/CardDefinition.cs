@@ -23,6 +23,8 @@ public class CardDefinition : ScriptableObject
 
     [Header("Groups")]
     public bool inDefault = true;
+    public bool inDrink = true;
+    public bool inGame = false;
 
     public void ApplyDefinition(Card card)
     {

@@ -40,7 +40,7 @@ public class Cheats : MonoBehaviour
             }
             else
             {
-                timeScale = 10.0f;
+                timeScale = 5.0f;
             }
         }
     }

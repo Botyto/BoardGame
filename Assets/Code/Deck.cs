@@ -8,6 +8,8 @@ public class Deck : MonoBehaviour
     {
         All,
         Default,
+        Dink,
+        Game,
     }
 
     [Header("Deck")]
@@ -52,6 +54,8 @@ public class Deck : MonoBehaviour
         {
             case DeckType.All: return true;
             case DeckType.Default: return definition.inDefault;
+            case DeckType.Dink: return definition.inDrink;
+            case DeckType.Game: return definition.inGame;
         }
 
         return false;

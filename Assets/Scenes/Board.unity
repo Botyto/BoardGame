@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 249274}
   - component: {fileID: 249276}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,7 +159,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -344,7 +344,7 @@ Transform:
   - {fileID: 1352290529}
   - {fileID: 909577086}
   - {fileID: 947211553}
-  - {fileID: 1270092453}
+  - {fileID: 1243634398}
   - {fileID: 155057870}
   - {fileID: 967245151}
   - {fileID: 1628591127}
@@ -972,7 +972,7 @@ GameObject:
   - component: {fileID: 380425226}
   - component: {fileID: 380425228}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1006,7 +1006,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1308,7 +1308,7 @@ GameObject:
   - component: {fileID: 478257698}
   - component: {fileID: 478257700}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1575,7 +1575,7 @@ GameObject:
   - component: {fileID: 570193658}
   - component: {fileID: 570193660}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1609,7 +1609,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1753,7 +1753,7 @@ GameObject:
   - component: {fileID: 658277833}
   - component: {fileID: 658277835}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1787,7 +1787,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2041,7 +2041,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -18.437, y: -13.926001, z: 38.097}
 --- !u!1 &759496239
 GameObject:
@@ -2055,7 +2055,7 @@ GameObject:
   - component: {fileID: 759496241}
   - component: {fileID: 759496243}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2144,7 +2144,7 @@ GameObject:
   - component: {fileID: 773005698}
   - component: {fileID: 773005700}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2258,7 +2258,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4466136870771818, guid: b925f3ad3cea095449dc7397fe6dcc76, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b925f3ad3cea095449dc7397fe6dcc76, type: 2}
@@ -2344,7 +2344,7 @@ GameObject:
   - component: {fileID: 817665061}
   - component: {fileID: 817665063}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2552,7 +2552,7 @@ GameObject:
   - component: {fileID: 897952551}
   - component: {fileID: 897952554}
   m_Layer: 0
-  m_Name: DefaultDeck
+  m_Name: DrinkDeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2606,13 +2606,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 897952550}
-  m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 6, y: 0, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &897952554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2624,9 +2624,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3581020eaa3c24ea15471c1ad83347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: default
+  id: drink
   cardPrefab: {fileID: 1312293763813512, guid: bae0bfa7b2c8df044bab2d698599aa0d, type: 2}
-  deckType: 1
+  deckType: 2
   m_Cards: []
   m_CardsQueue: 
 --- !u!1 &909577085
@@ -2641,7 +2641,7 @@ GameObject:
   - component: {fileID: 909577087}
   - component: {fileID: 909577089}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2675,7 +2675,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2881,7 +2881,7 @@ GameObject:
   - component: {fileID: 967245152}
   - component: {fileID: 967245154}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2970,7 +2970,7 @@ GameObject:
   - component: {fileID: 995117415}
   - component: {fileID: 995117417}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3059,7 +3059,7 @@ GameObject:
   - component: {fileID: 1038545756}
   - component: {fileID: 1038545758}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3910,7 +3910,7 @@ GameObject:
   - component: {fileID: 1183678853}
   - component: {fileID: 1183678855}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3944,7 +3944,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3987,30 +3987,31 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -6.200001, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
---- !u!1 &1270092452
+--- !u!1 &1243634397
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1270092453}
-  - component: {fileID: 1270092455}
-  - component: {fileID: 1270092454}
-  - component: {fileID: 1270092456}
+  - component: {fileID: 1243634398}
+  - component: {fileID: 1243634401}
+  - component: {fileID: 1243634400}
+  - component: {fileID: 1243634402}
+  - component: {fileID: 1243634399}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
---- !u!4 &1270092453
+--- !u!4 &1243634398
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1270092452}
+  m_GameObject: {fileID: 1243634397}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 17.5, y: 0, z: -12.400002}
   m_LocalScale: {x: 0.7, y: 0.1, z: 0.3}
@@ -4018,12 +4019,24 @@ Transform:
   m_Father: {fileID: 143040369}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1270092454
+--- !u!65 &1243634399
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1243634397}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1243634400
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1270092452}
+  m_GameObject: {fileID: 1243634397}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -4053,19 +4066,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &1270092455
+--- !u!33 &1243634401
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1270092452}
+  m_GameObject: {fileID: 1243634397}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1270092456
+--- !u!114 &1243634402
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1270092452}
+  m_GameObject: {fileID: 1243634397}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2375c04c43ec8d5408f993613a81dbd4, type: 3}
@@ -4345,7 +4358,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -40.913002, y: 0, z: 44.623}
 --- !u!1 &1352290528
 GameObject:
@@ -4482,7 +4495,7 @@ GameObject:
   - component: {fileID: 1382105525}
   - component: {fileID: 1382105527}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4646,7 +4659,7 @@ GameObject:
   - component: {fileID: 1457284874}
   - component: {fileID: 1457284876}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4913,7 +4926,7 @@ GameObject:
   - component: {fileID: 1604086368}
   - component: {fileID: 1604086370}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4947,7 +4960,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5036,7 +5049,7 @@ GameObject:
   - component: {fileID: 1608023385}
   - component: {fileID: 1608023387}
   m_Layer: 0
-  m_Name: Block
+  m_Name: Draw Card (Drink)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5070,7 +5083,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 98ed4da4acd19d94789a34fcb5853c5b, type: 2}
+  - {fileID: 2100000, guid: 8bf2f071e7e448144962a7b7c726364d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5150,7 +5163,7 @@ MonoBehaviour:
   - {fileID: 1352290532}
   - {fileID: 909577089}
   - {fileID: 947211556}
-  - {fileID: 1270092456}
+  - {fileID: 1243634402}
   - {fileID: 155057873}
   - {fileID: 967245154}
   - {fileID: 1628591130}
@@ -5313,6 +5326,95 @@ MonoBehaviour:
   forceMode: 0
   rigidbody: {fileID: 0}
   diceValueSelector: {fileID: 0}
+--- !u!1 &1703797464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1703797468}
+  - component: {fileID: 1703797467}
+  - component: {fileID: 1703797466}
+  - component: {fileID: 1703797465}
+  m_Layer: 0
+  m_Name: GameDeck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!114 &1703797465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1703797464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd3581020eaa3c24ea15471c1ad83347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: game
+  cardPrefab: {fileID: 1312293763813512, guid: bae0bfa7b2c8df044bab2d698599aa0d, type: 2}
+  deckType: 3
+  m_Cards: []
+  m_CardsQueue: 
+--- !u!23 &1703797466
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1703797464}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: 32c1c767de0e60348856e0f3f939b73b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1703797467
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1703797464}
+  m_Mesh: {fileID: 4300002, guid: 5093c546876211f44b1b28285bc2b0d1, type: 3}
+--- !u!4 &1703797468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1703797464}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -6, y: 0, z: 6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1749411789
 GameObject:
   m_ObjectHideFlags: 0
@@ -5535,7 +5637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 314e4f7f00ed9314096f85a27856cc1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TimeScale: 4.74
+  m_TimeScale: 1
 --- !u!1 &1860065633
 GameObject:
   m_ObjectHideFlags: 0
@@ -5548,7 +5650,7 @@ GameObject:
   - component: {fileID: 1860065635}
   - component: {fileID: 1860065637}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5722,7 +5824,7 @@ GameObject:
   - component: {fileID: 2000427180}
   - component: {fileID: 2000427182}
   m_Layer: 0
-  m_Name: Draw Card
+  m_Name: Draw Card (Game)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

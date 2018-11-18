@@ -54,7 +54,7 @@ public class Card : MonoBehaviour
         iTween.RotateTo(gameObject, iTween.Hash(
             "rotation",  deck.transform.rotation * Quaternion.Euler(0, 0, 180),
             "easeType", iTween.EaseType.Linear,
-            "time", 1.0f));
+            "time", 0.75f));
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  deck.transform.position + settle_dir * 5.0f,
             "time", 1.5f));
