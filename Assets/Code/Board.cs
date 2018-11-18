@@ -4,7 +4,7 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     [Header("Board")]
-    public Waypoint[] waypoints = null;
+    public Cell[] waypoints = null;
     public GameObject waypointPrefab = null;
     public Transform waypointsNode = null;
     public BoardDefinition boardDefinition = null;
@@ -93,7 +93,7 @@ public class Board : MonoBehaviour
             new Vector3(1, 0, 0),
         };
 
-        var waypointsList = new List<Waypoint>();
+        var waypointsList = new List<Cell>();
         int waypointIdx = 0;
         for (int side = 0; side < 4; ++side)
         {
@@ -105,7 +105,7 @@ public class Board : MonoBehaviour
             {
                 var position = startingPosition + direction * positionOffset;
                 var rotation = Quaternion.Euler(0.0f, side * 90, 0.0f);
-                Waypoint waypointComp = null;
+                Cell waypointComp = null;
 
                 if (reuseWaypoints)
                 {
@@ -116,7 +116,7 @@ public class Board : MonoBehaviour
                 {
                     var waypointObj = Instantiate(waypointPrefab, waypointsNode) as GameObject;
                     waypointObj.name = string.Format("Waypoint {0}", waypointIdx + 1);
-                    waypointComp = waypointObj.GetComponent<Waypoint>() ?? waypointObj.AddComponent<Waypoint>();
+                    waypointComp = waypointObj.GetComponent<Cell>() ?? waypointObj.AddComponent<Cell>();
                 }
 
                 waypointComp.gameObject.isStatic = true;
@@ -156,7 +156,7 @@ public class Board : MonoBehaviour
         waypoints = waypointsList.ToArray();
     }
 
-    public Waypoint GetWaypoint(int index)
+    public Cell GetWaypoint(int index)
     {
         if (waypoints == null || waypoints.Length == 0)
         {
@@ -168,7 +168,7 @@ public class Board : MonoBehaviour
 
     public void ApplyCellDefinition(GameObject cell, CellDefinition definition)
     {
-        var waypoint = cell.GetComponent<Waypoint>();
+        var waypoint = cell.GetComponent<Cell>();
         Debug.Assert(waypoint != null);
 
         //TODO after creating special asset fix this step

@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public int playerNumber = 0;
     public int currentCellIndex = 0;
 
-    public Waypoint currentWaypoint { get { return Board.instance.GetWaypoint(currentCellIndex); } }
+    public Cell currentWaypoint { get { return Board.instance.GetWaypoint(currentCellIndex); } }
     public bool isMoving { get { return m_Moving; } }
 
     #region Movement
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         if (m_Moving) { return null; }
 
         var targetWaypoint = FindWaypointAt(index);
-        var waypointsOrder = new List<Waypoint>() { };
+        var waypointsOrder = new List<Cell>() { };
         var wp = currentWaypoint;
         while (wp != targetWaypoint)
         {
@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         return MoveToRoutine(waypointsOrder.ToArray());
     }
 
-    public IEnumerator MoveToRoutine(Waypoint[] order)
+    public IEnumerator MoveToRoutine(Cell[] order)
     {
         yield return OnLeaveCell(currentWaypoint);
 
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
         return MoveToDirectRoutine(targetWaypoint);
     }
 
-    public IEnumerator MoveToDirectRoutine(Waypoint targetWaypoint)
+    public IEnumerator MoveToDirectRoutine(Cell targetWaypoint)
     {
         yield return OnLeaveCell(currentWaypoint);
 
@@ -171,14 +171,14 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
-    public IEnumerator OnEnterCell(Waypoint waypoint)
+    public IEnumerator OnEnterCell(Cell waypoint)
     {
         //TODO should OnEnterCell and OnLeaveCell ask the board for the cell definition? Shouldn't it be embedded into the waypoint (see Deck.SpawnCard())?
         var cell = Board.instance.boardDefinition.GetCell(waypoint.index);
         return cell.OnEnter(waypoint.gameObject, this);
     }
 
-    public IEnumerator OnLeaveCell(Waypoint waypoint)
+    public IEnumerator OnLeaveCell(Cell waypoint)
     {
         var cell = Board.instance.boardDefinition.GetCell(waypoint.index);
         return cell.OnLeave(waypoint.gameObject, this);
@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
         }
     }
     
-    public Waypoint FindWaypointAt(int index)
+    public Cell FindWaypointAt(int index)
     {
         return Board.instance.GetWaypoint(index);
     }
