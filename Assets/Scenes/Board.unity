@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657993, g: 0.49641424, b: 0.5748173, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465801, g: 0.49641466, b: 0.57481784, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,6 +202,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: 6.200001}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!114 &25306919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,6 +311,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -3.1000004, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &143040368
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,6 +469,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: -3.0999994}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &155057869
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +559,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 0f49f5afb2a4c98459821750f31a7ce8, type: 2}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +715,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: 9.300001}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &190279560
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,6 +805,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 3.0999994, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &236349757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,6 +1055,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: -6.2}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &451728339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,6 +1145,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: -9.3}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &457372103
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,6 +1235,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: 3.1000004}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &471877667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,6 +1394,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: 12.4}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &566329360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,6 +1484,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 9.300001, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &569353047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,6 +1574,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -9.3, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &570193656
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,6 +1664,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 6.2, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &631495824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,6 +1754,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: 9.3}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &658277831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,6 +1844,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: 6.2}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &702418786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1919,6 +1934,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: 3.0999994}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &752940068
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,6 +2148,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: -12.4}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &773005696
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,6 +2238,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: 0}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1001 &787706984
 Prefab:
   m_ObjectHideFlags: 0
@@ -2421,6 +2439,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -12.400002, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &830690515
 GameObject:
   m_ObjectHideFlags: 0
@@ -2718,6 +2737,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: -6.200001}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &947211552
 GameObject:
   m_ObjectHideFlags: 0
@@ -2807,6 +2827,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: -9.300001}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &951077746
 GameObject:
   m_ObjectHideFlags: 0
@@ -2958,6 +2979,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 12.4, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &995117413
 GameObject:
   m_ObjectHideFlags: 0
@@ -3047,6 +3069,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: 0}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &1038545754
 GameObject:
   m_ObjectHideFlags: 0
@@ -3136,6 +3159,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -12.4, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &1046711083
 GameObject:
   m_ObjectHideFlags: 0
@@ -3446,6 +3470,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 0f49f5afb2a4c98459821750f31a7ce8, type: 2}
 --- !u!1 &1127384490
 GameObject:
   m_ObjectHideFlags: 0
@@ -3535,6 +3560,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -3.0999994, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &1132258630
 GameObject:
   m_ObjectHideFlags: 0
@@ -3829,6 +3855,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 6b5f2263f2035c54bbf1eeef0b527049, type: 2}
 --- !u!1 &1179508735
 GameObject:
   m_ObjectHideFlags: 0
@@ -3987,6 +4014,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -6.200001, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &1243634397
 GameObject:
   m_ObjectHideFlags: 0
@@ -4089,6 +4117,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: -12.400002}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &1277965396
 GameObject:
   m_ObjectHideFlags: 0
@@ -4236,6 +4265,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -9.300001, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &1351149771
 GameObject:
   m_ObjectHideFlags: 0
@@ -4449,6 +4479,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 17.5, y: 0.2, z: -3.1000004}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &1380037903
 GameObject:
   m_ObjectHideFlags: 0
@@ -4572,6 +4603,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &1425592198
 GameObject:
   m_ObjectHideFlags: 0
@@ -4736,6 +4768,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: 12.400002}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &1497932848
 GameObject:
   m_ObjectHideFlags: 0
@@ -5003,6 +5036,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -6.2, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &1605441589
 GameObject:
   m_ObjectHideFlags: 0
@@ -5126,6 +5160,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 6.200001, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 45440a04b5d92de43bf5347599b9821b, type: 2}
 --- !u!1 &1620023407
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,6 +5342,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 9.3, y: 0.2, z: -17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!114 &1629264543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5562,6 +5598,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: -17.5, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 0f49f5afb2a4c98459821750f31a7ce8, type: 2}
 --- !u!1 &1828901970
 GameObject:
   m_ObjectHideFlags: 0
@@ -5594,10 +5631,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1350723779956648, guid: 30eeaebddc480da4fba9905c4a6a01cd,
     type: 2}
-  playersCount: 2
+  playersCount: 3
   players: []
   currentPlayerIndex: 0
-  nextPlayerIndex: -1
+  turnDirection: 1
 --- !u!4 &1828901972
 Transform:
   m_ObjectHideFlags: 0
@@ -5742,6 +5779,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 0, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &1983563897
 GameObject:
   m_ObjectHideFlags: 0
@@ -5916,6 +5954,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 12.400002, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: ee427b34c155541468a20ba94ccdd340, type: 2}
 --- !u!1 &2041636789
 GameObject:
   m_ObjectHideFlags: 0
@@ -6005,6 +6044,7 @@ MonoBehaviour:
   bounds:
     m_Center: {x: 3.1000004, y: 0.2, z: 17.5}
     m_Extent: {x: 3.5, y: 0, z: 1.5}
+  definition: {fileID: 11400000, guid: 54afe6b1a676713488b3b138331237ae, type: 2}
 --- !u!1 &2052799135
 GameObject:
   m_ObjectHideFlags: 0

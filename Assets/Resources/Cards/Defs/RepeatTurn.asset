@@ -14,7 +14,7 @@ MonoBehaviour:
   caption: Throw dice again
   sprite: {fileID: 21300000, guid: f385b666fd61ec545b2a38703508d4c4, type: 3}
   effects:
-  - RepeatTurn
+  - ModifyTurns
   parameters: []
   inDefault: 1
   inDrink: 0

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [Header("Board")]
     public int playerNumber = 0;
     public int currentCellIndex = 0;
+    public int numberOfTurns = 1;
 
     public Cell currentWaypoint { get { return Board.instance.GetWaypoint(currentCellIndex); } }
     public bool isMoving { get { return m_Moving; } }
@@ -184,7 +185,7 @@ public class Player : MonoBehaviour
         yield return MoveBy(DiceController.instance.diceSum);
         DiceController.instance.diceSum = 0;
 
-        if (GameController.instance.nextPlayerIndex != playerNumber)
+        if (numberOfTurns <= 0)
         {
             yield return Park();
         }

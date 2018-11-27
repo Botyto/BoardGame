@@ -3,12 +3,24 @@ using UnityEngine;
 
 public class CardEffects
 {
-    public static IEnumerable RepeatTurn(CardDefinition definition, Card card, Player player)
+    public static IEnumerable ModifyTurns(CardDefinition definition, Card card, Player player)
     {
-        GameController.instance.nextPlayerIndex = player.playerNumber;
+        int count;
+        if (!int.TryParse(definition.GetParameter("turns", defaultValue: "1"), out count))
+        {
+            count = 1;
+        }
+
+        player.numberOfTurns += count;
         return null;
     }
-    
+
+    public static IEnumerable SwitchTurnsDirection(CardDefinition definition, Card card, Player player)
+    {
+        GameController.instance.turnDirection *= -1;
+        return null;
+    }
+
     public static IEnumerable ChoosePlayer(CardDefinition definition, Card card, Player player)
     {
         Debug.Log("choose player");

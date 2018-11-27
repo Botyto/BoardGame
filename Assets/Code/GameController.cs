@@ -11,7 +11,7 @@ public class GameController : Singleton<GameController>
 
     [Header("Turns")]
     public int currentPlayerIndex = -1;
-    public int nextPlayerIndex = -1;
+    public int turnDirection = 1;
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
 
     [HideInInspector]
@@ -43,15 +43,32 @@ public class GameController : Singleton<GameController>
         }
 
         currentPlayerIndex = 0;
-        nextPlayerIndex = 0;
         BeginTurn();
     }
 
     private void BeginTurn()
     {
-        currentPlayerIndex = nextPlayerIndex;
-        nextPlayerIndex = (currentPlayerIndex + 1) % players.Length;
-        Debug.LogFormat("New turn: {0}", currentPlayerIndex);
+        while (true)
+        {
+            if (currentPlayer.numberOfTurns > 0)
+            {
+                --currentPlayer.numberOfTurns;
+                break;
+            }
+            else
+            {
+                //This increment guarantees that at some point one of the players will have a positive number of turns.
+                ++currentPlayer.numberOfTurns;
+                currentPlayerIndex += turnDirection;
+
+                while (currentPlayerIndex < 0)
+                {
+                    currentPlayerIndex += players.Length;
+                }
+                currentPlayerIndex %= players.Length;
+            }
+        }
+
         m_GameRoutine = new UnityCoroutine(TurnRountine());
         StartCoroutine(m_GameRoutine.StartSafe());
     }
