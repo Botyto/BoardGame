@@ -13,7 +13,7 @@ public class GameController : Singleton<GameController>
     public int currentPlayerIndex = -1;
     public int nextPlayerIndex = -1;
     public Player currentPlayer { get { return players[currentPlayerIndex % players.Length]; } }
-    
+
     [HideInInspector]
     public Dictionary<string, Deck> decks;
 
@@ -77,7 +77,7 @@ public class GameController : Singleton<GameController>
         yield return currentPlayer.BeginTurn();
         FollowCamera.Pop();
     }
-    
+
     private void SpawnPlayers()
     {
         if (playerPrefab == null)

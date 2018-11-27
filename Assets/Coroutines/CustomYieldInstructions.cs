@@ -1,21 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-//Example yield instruction
-public class WaitForPredicate<T> : CustomYieldInstruction //TODO - this might have to go away
-{
-    public Predicate<T> predicate;
-    public T context;
-
-    public WaitForPredicate(Predicate<T> predicate, T context)
-    {
-        this.predicate = predicate;
-        this.context = context;
-    }
-
-    public override bool keepWaiting { get { return !predicate(context); } }
-}
-
 public class WaitForKeyDown : CustomYieldInstruction
 {
     private KeyCode m_KeyCode;

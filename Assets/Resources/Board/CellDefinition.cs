@@ -37,11 +37,12 @@ public class CellDefinition : ScriptableObject
 
     public string finalDisplayName { get { return (displayName != "") ? displayName : name; } }
 
-    public void ApplyDefinition(GameObject cell)
+    public void ApplyDefinition(Cell cell)
     {
+        cell.definition = this;
         cell.name = finalDisplayName;
 
-        var renderer = cell.GetComponent<MeshRenderer>() ?? cell.AddComponent<MeshRenderer>();
+        var renderer = cell.GetComponent<MeshRenderer>() ?? cell.gameObject.AddComponent<MeshRenderer>();
         renderer.material = material;
     }
 

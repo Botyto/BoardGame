@@ -48,7 +48,7 @@ public class Board : MonoBehaviour
 
         for (int i = 0; i < waypoints.Length; ++i)
         {
-            ApplyCellDefinition(waypoints[i].gameObject, boardDefinition.GetCell(i));
+            ApplyCellDefinition(waypoints[i], boardDefinition.GetCell(i));
         }
     }
 
@@ -166,19 +166,16 @@ public class Board : MonoBehaviour
         return waypoints[index % waypoints.Length];
     }
 
-    public void ApplyCellDefinition(GameObject cell, CellDefinition definition)
+    public void ApplyCellDefinition(Cell cell, CellDefinition definition)
     {
-        var waypoint = cell.GetComponent<Cell>();
-        Debug.Assert(waypoint != null);
-
         //TODO after creating special asset fix this step
-        if (waypoint.isCorner)
+        if (cell.isCorner)
         {
-            waypoint.transform.localScale = new Vector3(cellHeight, 1, cellHeight) / 10.0f;
+            cell.transform.localScale = new Vector3(cellHeight, 1, cellHeight) / 10.0f;
         }
         else
         {
-            waypoint.transform.localScale = new Vector3(cellHeight, 1, cellLength) / 10.0f; 
+            cell.transform.localScale = new Vector3(cellHeight, 1, cellLength) / 10.0f; 
         }
 
         definition.ApplyDefinition(cell);

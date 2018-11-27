@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Cell : MonoBehaviour //TODO - this is badly named :( shouldn't it be Cell or something like that?
+public class Cell : MonoBehaviour
 {
     [Header("Cell")]
     public int index = -1;
     public bool isCorner = false;
     public Bounds bounds = new Bounds();
+    public CellDefinition definition = null;
 
     #region Parking
 
