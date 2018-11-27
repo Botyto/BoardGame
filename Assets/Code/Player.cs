@@ -31,15 +31,31 @@ public class Player : MonoBehaviour
 
     public IEnumerator MoveTo(int index)
     {
+        var positionDelta = index - currentCellIndex;
+        while (positionDelta < 0)
+        {
+            positionDelta += Board.instance.waypoints.Length;
+        }
+
+        return MoveBy(positionDelta);
+    }
+
+    public IEnumerator MoveBy(int positionDelta)
+    {
         if (m_Moving) { return null; }
 
-        var targetWaypoint = FindWaypointAt(index);
         var waypointsOrder = new List<Cell>() { };
         var wp = currentWaypoint;
-        while (wp != targetWaypoint)
+        var direction = (int)Mathf.Sign(positionDelta);
+        for (int i = 0; i != positionDelta; i += direction)
         {
             waypointsOrder.Add(wp);
-            wp = FindWaypointAt(wp.index + 1);
+            var nextIndex = wp.index + direction;
+            while (nextIndex < 0)
+            {
+                nextIndex += Board.instance.waypoints.Length;
+            }
+            wp = FindWaypointAt(nextIndex);
         }
         waypointsOrder.Add(wp);
 
@@ -48,10 +64,10 @@ public class Player : MonoBehaviour
             return null;
         }
 
-        return MoveToRoutine(waypointsOrder.ToArray());
+        return MoveByRoutine(waypointsOrder.ToArray());
     }
 
-    public IEnumerator MoveToRoutine(Cell[] order)
+    public IEnumerator MoveByRoutine(Cell[] order)
     {
         yield return OnLeaveCell(currentWaypoint);
 
@@ -165,7 +181,7 @@ public class Player : MonoBehaviour
         if(fakeDice == true) yield return DiceController.instance.RollFakeDice(2);
         else  yield return DiceController.instance.RollDice(2);
 
-        yield return MoveTo(currentCellIndex + DiceController.instance.diceSum);
+        yield return MoveBy(DiceController.instance.diceSum);
         DiceController.instance.diceSum = 0;
 
         if (GameController.instance.nextPlayerIndex != playerNumber)
