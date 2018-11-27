@@ -22,13 +22,13 @@ public class DiceValueSelector : MonoBehaviour
 
     private Rigidbody m_Rigidbody = null;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Debug.Log(SelectedValue().ToString());
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Mouse0))
+    //    {
+    //        Debug.Log(SelectedValue().ToString());
+    //    }
+    //}
 
     public DiceValue SelectedValue()
     {

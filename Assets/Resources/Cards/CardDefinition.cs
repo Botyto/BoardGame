@@ -26,6 +26,19 @@ public class CardDefinition : ScriptableObject
     public bool inDrink = true;
     public bool inGame = false;
 
+    public string GetParameter(string key, string defaultValue = "")
+    {
+        foreach (var param in parameters)
+        {
+            if (param.key == key)
+            {
+                return param.value;
+            }
+        }
+
+        return defaultValue;
+    }
+
     public void ApplyDefinition(Card card)
     {
         card.definition = this;
@@ -35,10 +48,10 @@ public class CardDefinition : ScriptableObject
         //card.hint.SetActive(true); //TODO hint text should be localized as well. Probably inherit Text UI component
     }
 
-    public IEnumerator Activate(Player player)
+    public IEnumerator Activate(Card card, Player player)
     {
         var ty = typeof(CardEffects);
-        var parameters = new object[] { this, player };
+        var parameters = new object[] { this, card, player };
         foreach (var effect in effects)
         {
             var method = ty.GetMethod(effect);

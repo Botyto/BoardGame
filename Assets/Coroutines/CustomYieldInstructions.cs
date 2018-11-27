@@ -45,11 +45,11 @@ public class WaitForCamera : CustomYieldInstruction
     public override bool keepWaiting { get { return FollowCamera.instance.isMoving; } }
 }
 
-public class WaitForObjectDestroyed : CustomYieldInstruction //TODO - this might have to go away
+public class WaitForObjectDestroyed : CustomYieldInstruction
 {
-    private GameObject m_Object;
-
-    public WaitForObjectDestroyed(GameObject obj)
+    private UnityEngine.Object m_Object;
+    
+    public WaitForObjectDestroyed(UnityEngine.Object obj)
     {
         m_Object = obj;
     }

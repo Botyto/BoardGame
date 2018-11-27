@@ -36,7 +36,7 @@ public class Dice : MonoBehaviour
         if(rigidbody.IsSleeping())
         currentValue = (int)diceValueSelector.SelectedValue();
         DiceController.instance.diceSum += currentValue;
-        Debug.Log("Die roll complete, " + currentValue);
+        //Debug.Log("Die roll complete, " + currentValue);
         rollComplete = true;
     }
 

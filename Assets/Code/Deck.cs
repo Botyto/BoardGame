@@ -94,8 +94,8 @@ public class Deck : MonoBehaviour
         m_CardsQueue.Add(cardIdx); //TODO should this card return to the queue before it has been actually activated and visually returned to the deck?
 
         yield return card.Show();
+        yield return definition.Activate(card, forPlayer);
         Destroy(card.gameObject);
-        yield return definition.Activate(forPlayer);
 
         FollowCamera.Pop();
     }

@@ -15,6 +15,7 @@ public class MessageBox : Dialog
     public Text titleControl;
     public Text textControl;
     public Button closeButton;
+    public bool hasCloseButton = true;
 
     [Header("Buttons")]
     public ButtonEntry[] additionalButtons;
@@ -29,9 +30,16 @@ public class MessageBox : Dialog
             SetButtonText(newButton, btn.text);
         }
 
-        closeButton.transform.SetAsLastSibling();
-        closeButton.onClick.AddListener(Close);
-        SetButtonText(closeButton, "Close");
+        if (hasCloseButton)
+        {
+            closeButton.transform.SetAsLastSibling();
+            closeButton.onClick.AddListener(Close);
+            SetButtonText(closeButton, "Close");
+        }
+        else
+        {
+            Destroy(closeButton.gameObject);
+        }
     }
 
     private void SetButtonText(Button button, string text)

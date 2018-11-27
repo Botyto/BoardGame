@@ -45,17 +45,17 @@ public class CellDefinition : ScriptableObject
         renderer.material = material;
     }
 
-    public IEnumerator OnEnter(GameObject cell, Player player)
+    public IEnumerator OnEnter(Cell cell, Player player)
     {
         return ApplyEffects(enterEffects, cell, player);
     }
 
-    public IEnumerator OnLeave(GameObject cell, Player player)
+    public IEnumerator OnLeave(Cell cell, Player player)
     {
         return ApplyEffects(leaveEffects, cell, player);
     }
 
-    private IEnumerator ApplyEffects(string[] effects, GameObject cell, Player player)
+    private IEnumerator ApplyEffects(string[] effects, Cell cell, Player player)
     {
         var ty = typeof(CellEffects);
         var parameters = new object[] { this, cell, player };

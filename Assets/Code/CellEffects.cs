@@ -3,13 +3,13 @@ using UnityEngine;
 
 public static partial class CellEffects
 {
-    public static IEnumerator Announce(CellDefinition definition, GameObject cell, Player player)
+    public static IEnumerator Announce(CellDefinition definition, Cell cell, Player player)
     {
         Debug.LogFormat(player, "{0} at {1}", player.name, definition.name);
         yield break;
     }
 
-    public static IEnumerator MessageBox(CellDefinition definition, GameObject cell, Player player)
+    public static IEnumerator MessageBox(CellDefinition definition, Cell cell, Player player)
     {
         var text = definition.GetParameter("text", defaultValue: "");
         var title = definition.GetParameter("title", defaultValue: "Message Box");
@@ -20,7 +20,7 @@ public static partial class CellEffects
         yield return new WaitForObjectDestroyed(msgBox.gameObject);
     }
 
-    public static IEnumerator DrawCard(CellDefinition definition, GameObject cell, Player player)
+    public static IEnumerator DrawCard(CellDefinition definition, Cell cell, Player player)
     {
         var deckName = definition.GetParameter("deck", defaultValue: "default");
         Deck deck = null;

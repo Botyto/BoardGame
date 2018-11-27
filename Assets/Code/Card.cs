@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,12 +13,15 @@ public class Card : MonoBehaviour
     public Text caption = null;
     public Image image = null;
     public GameObject hint = null;
-
+    
+    [Header("Dragging & Interaction")]
     private Vector3 m_Velocity = Vector3.zero;
     private Vector3 m_PreviousPosition = Vector3.zero;
     private bool m_IsDragging = false;
     private Vector3 m_DragOffset = Vector3.zero;
     private bool m_Seen = false;
+
+    private Dictionary<string, object> m_Memory;
     
     public IEnumerator ShowToCamera()
     {
@@ -87,6 +91,11 @@ public class Card : MonoBehaviour
         yield return ReturnToDeck();
     }
 
+    private void OnEnable()
+    {
+        m_Memory = new Dictionary<string, object>();
+    }
+
     private void Update()
     {
         if (m_Seen)
@@ -103,7 +112,29 @@ public class Card : MonoBehaviour
             }
         }
     }
-    
+
+    #region Memory
+
+    public void WriteData(string key, object value)
+    {
+        m_Memory[key] = value;
+    }
+
+    public object ReadData(string key)
+    {
+        object value = null;
+        if (m_Memory.TryGetValue(key, out value))
+        {
+            return value;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    #endregion
+
     #region Dragging
 
     private void OnMouseDown()
