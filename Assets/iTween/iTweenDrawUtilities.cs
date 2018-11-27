@@ -516,7 +516,7 @@ public static class iTweenDrawUtilities
             else if (method == "handles")
             {
                 //Debug.LogError("iTween Error: Drawing a path with Handles is temporarily disabled because of compatability issues with Unity 2.6!");
-                UnityEditor.Handles.DrawLine(currPt, prevPt);
+              //  UnityEditor.Handles.DrawLine(currPt, prevPt);
             }
             prevPt = currPt;
         }
