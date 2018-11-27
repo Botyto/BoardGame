@@ -48,21 +48,13 @@ public class DiceController : Singleton<DiceController>
         yield return new WaitForCamera();
     }
 
-    public int RollFakeDice(int n = 1)
+    public IEnumerator RollFakeDice(int n = 1)
     {
-        //TODO - make more elegant solution later?
+        yield return new WaitForKeyDown(KeyCode.Space);
+
         var cheat = FindObjectOfType<DiceCheat>();
-        if (cheat != null)
-        {
-            return cheat.RollFakeDice(n);
-        }
-
-        int total = 0;
-        for (int i = 0; i < n; ++i)
-        {
-            total += Random.Range(1, 6);
-        }
-
-        return total;
+        StartCoroutine(cheat.RollFakeDice(n));
+          
+        yield return new WaitForSeconds(0.5f);
     }
 }

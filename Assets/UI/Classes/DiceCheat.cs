@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class DiceCheat : MonoBehaviour
@@ -36,14 +37,13 @@ public class DiceCheat : MonoBehaviour
         }
     }
 
-    public int RollFakeDice(int n = 1)
+    public IEnumerator RollFakeDice(int n = 1)
     {
-        var total = 0;
         if (sliders == null || sliders.Length == 0)
         {
             for (int i = 0; i < n; ++i)
             {
-                total += Random.Range(1, 6);
+                DiceController.instance.diceSum += Random.Range(1, 6);
             }
         }
         else
@@ -53,15 +53,15 @@ public class DiceCheat : MonoBehaviour
                 var slider = sliders[i % sliders.Length];
                 if ((int)slider.value == 0)
                 {
-                    total += Random.Range(1, 6);
+                    DiceController.instance.diceSum += Random.Range(1, 6);
                 }
                 else
                 {
-                    total += (int)slider.value;
+                    DiceController.instance.diceSum += (int)slider.value;
                 }
             }
         }
+        yield return null;
 
-        return total;
     }
 }
