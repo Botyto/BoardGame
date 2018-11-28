@@ -10,16 +10,17 @@ public class Deck : MonoBehaviour
         Default,
         Dink,
         Game,
+        Debug,
     }
 
     [Header("Deck")]
     public string id = "default";
     public GameObject cardPrefab = null;
     public DeckType deckType = DeckType.All; //TODO should this be a list of filters for easier setup in inspector?
-    [SerializeField] //TODO visible for debug purposes, hide later
     private List<CardDefinition> m_Cards = null;
-    [SerializeField] //TODO visible for debug purposes, hide later
     private List<int> m_CardsQueue = null;
+
+    public int deckSize { get { return m_Cards.Count; } }
 
     private void OnEnable()
     {
@@ -56,6 +57,7 @@ public class Deck : MonoBehaviour
             case DeckType.Default: return definition.inDefault;
             case DeckType.Dink: return definition.inDrink;
             case DeckType.Game: return definition.inGame;
+            case DeckType.Debug: return definition.inDebug;
         }
 
         return false;

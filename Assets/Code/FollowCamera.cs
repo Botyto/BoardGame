@@ -99,7 +99,7 @@ public class FollowCamera : Singleton<FollowCamera>
             }
         }
 
-        //No renderer
+        //No renderers
         if (i == followedObjects.Length)
         {
             return result;

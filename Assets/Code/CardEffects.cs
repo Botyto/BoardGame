@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 public class CardEffects
 {
@@ -42,6 +43,31 @@ public class CardEffects
         }
         
         yield return new WaitForObjectDestroyed(msgBox.gameObject);
+    }
+
+    public static IEnumerator MoveBy(CardDefinition definition, Card card, Player player)
+    {
+        var playerIdx = GetIntParam(definition, card, "playerIdx", player.playerNumber);
+        if (playerIdx < 0 || playerIdx >= GameController.instance.playersCount) { yield break; }
+
+        var count = GetIntParam(definition, card, "count", 0);
+        if (count == 0) { yield break; }
+
+        var targetPlayer = GameController.instance.players[playerIdx];
+        FollowCamera.Push(targetPlayer);
+        yield return new WaitForCamera();
+        yield return targetPlayer.MoveBy(count);
+        FollowCamera.Pop();
+    }
+
+    public static IEnumerator ShowBoard(CardDefinition definition, Card card, Player player)
+    {
+        var time = GetIntParam(definition, card, "time", 5);
+
+        FollowCamera.Push(Board.instance.ground);
+        yield return new WaitForCamera();
+        yield return new WaitForSeconds(time);
+        FollowCamera.Pop();
     }
 
     #region Parameter getters

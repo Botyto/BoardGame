@@ -6,7 +6,7 @@ public static partial class CellEffects
     public static IEnumerator Announce(CellDefinition definition, Cell cell, Player player)
     {
         Debug.LogFormat(player, "{0} at {1}", player.name, definition.name);
-        yield break;
+        return null;
     }
 
     public static IEnumerator MessageBox(CellDefinition definition, Cell cell, Player player)
@@ -22,14 +22,25 @@ public static partial class CellEffects
 
     public static IEnumerator DrawCard(CellDefinition definition, Cell cell, Player player)
     {
+#if UNITY_EDITOR
+        Deck debugDeck = null;
+        if (GameController.instance.decks.TryGetValue("debug", out debugDeck))
+        {
+            if (debugDeck.deckSize > 0)
+            {
+                return debugDeck.DrawCard(player);
+            }
+        }
+#endif
+
         var deckName = definition.GetParameter("deck", defaultValue: "default");
         Deck deck = null;
         if (!GameController.instance.decks.TryGetValue(deckName, out deck))
         {
             Debug.LogFormat("<color=red>[Failed]</color> Deck with name {0} doesn't exists!", deckName);
-            yield break;
+            return null;
         }
 
-        yield return deck.DrawCard(player);
+        return deck.DrawCard(player);
     }
 }

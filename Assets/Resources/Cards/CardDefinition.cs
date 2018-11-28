@@ -23,8 +23,9 @@ public class CardDefinition : ScriptableObject
 
     [Header("Groups")]
     public bool inDefault = true;
-    public bool inDrink = true;
+    public bool inDrink = false;
     public bool inGame = false;
+    public bool inDebug = false;
 
     public string GetParameter(string key, string defaultValue = "")
     {
