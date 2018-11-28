@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CardEffects
 {
-    public static IEnumerable ModifyTurns(CardDefinition definition, Card card, Player player)
+    public static IEnumerator ModifyTurns(CardDefinition definition, Card card, Player player)
     {
         int count;
         if (!int.TryParse(definition.GetParameter("turns", defaultValue: "1"), out count))
@@ -15,13 +15,13 @@ public class CardEffects
         return null;
     }
 
-    public static IEnumerable SwitchTurnsDirection(CardDefinition definition, Card card, Player player)
+    public static IEnumerator SwitchTurnsDirection(CardDefinition definition, Card card, Player player)
     {
         GameController.instance.turnDirection *= -1;
         return null;
     }
 
-    public static IEnumerable ChoosePlayer(CardDefinition definition, Card card, Player player)
+    public static IEnumerator ChoosePlayer(CardDefinition definition, Card card, Player player)
     {
         Debug.Log("choose player");
         var text = definition.GetParameter("text", defaultValue: "Choose player");
