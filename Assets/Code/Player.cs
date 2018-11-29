@@ -16,10 +16,7 @@ public class Player : MonoBehaviour
 
     public Cell currentWaypoint { get { return Board.instance.GetWaypoint(currentCellIndex); } }
     public bool isMoving { get { return m_Moving; } }
-
-    //Testing purpose
-    bool fakeDice = true;
-
+    
     #region Movement
 
     private bool m_Moving = false;
@@ -179,8 +176,7 @@ public class Player : MonoBehaviour
         yield return new WaitForCamera();
         yield return Unpark();
         
-        if(fakeDice == true) yield return DiceController.instance.RollFakeDice(2);
-        else  yield return DiceController.instance.RollDice(2);
+        yield return DiceController.instance.RollDice();
 
         yield return MoveBy(DiceController.instance.diceSum);
         DiceController.instance.diceSum = 0;

@@ -37,31 +37,41 @@ public class DiceCheat : MonoBehaviour
         }
     }
 
-    public IEnumerator RollFakeDice(int n = 1)
+    public int RollFakeDice(int n = -1)
     {
+        if (n == -1)
+        {
+            n = sliders.Length;
+        }
+
+        var diceSum = 0;
         if (sliders == null || sliders.Length == 0)
         {
-            for (int i = 0; i < n; ++i)
-            {
-                DiceController.instance.diceSum += Random.Range(1, 6);
-            }
+            diceSum = 0;
         }
         else
         {
+            var anyNonZero = false;
             for (int i = 0; i < n; ++i)
             {
                 var slider = sliders[i % sliders.Length];
                 if ((int)slider.value == 0)
                 {
-                    DiceController.instance.diceSum += Random.Range(1, 6);
+                    diceSum += Random.Range(1, 6);
                 }
                 else
                 {
-                    DiceController.instance.diceSum += (int)slider.value;
+                    anyNonZero = true;
+                    diceSum += (int)slider.value;
                 }
             }
-        }
-        yield return null;
 
+            if (!anyNonZero) //Cheat not used
+            {
+                diceSum = 0;
+            }
+        }
+
+        return diceSum;
     }
 }

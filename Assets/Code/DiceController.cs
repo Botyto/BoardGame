@@ -25,6 +25,18 @@ public class DiceController : Singleton<DiceController>
         //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
         yield return new WaitForKeyDown(KeyCode.Space);
 
+#if UNITY_EDITOR
+        //Dice force cheat
+        var fakeDiceSum = RollFakeDice(n);
+        if (fakeDiceSum > 0)
+        {
+            diceSum = fakeDiceSum;
+            FollowCamera.Pop();
+            yield return new WaitForCamera();
+            yield break;
+        }
+#endif
+
         if (uiText != null)
         {
             uiText.text = "";
@@ -48,13 +60,18 @@ public class DiceController : Singleton<DiceController>
         yield return new WaitForCamera();
     }
 
-    public IEnumerator RollFakeDice(int n = 1)
+#if UNITY_EDITOR
+    public int RollFakeDice(int n = 1)
     {
-        yield return new WaitForKeyDown(KeyCode.Space);
-
         var cheat = FindObjectOfType<DiceCheat>();
-        StartCoroutine(cheat.RollFakeDice(n));
-          
-        yield return new WaitForSeconds(0.5f);
+        if (cheat == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return cheat.RollFakeDice();
+        }
     }
+#endif
 }
