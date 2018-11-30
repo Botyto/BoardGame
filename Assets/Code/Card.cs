@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
+    public enum State
+    {
+        Unseen,
+        Seen,
+        Dismissed,
+    }
+
     [Header("Card")]
     public CardDefinition definition = null;
     public Deck deck = null;
@@ -19,7 +26,7 @@ public class Card : MonoBehaviour
     private Vector3 m_PreviousPosition = Vector3.zero;
     private bool m_IsDragging = false;
     private Vector3 m_DragOffset = Vector3.zero;
-    private bool m_Seen = false;
+    private State m_State = State.Unseen;
 
     private Dictionary<string, object> m_Memory;
     
@@ -46,11 +53,13 @@ public class Card : MonoBehaviour
             "time", 2.0f));
         yield return new WaitForSeconds(2.0f);
 
-        m_Seen = true;
+        m_State = State.Seen;
     }
 
     public IEnumerator ReturnToDeck()
     {
+        m_State = State.Dismissed;
+
         var deltaPos = transform.position - deck.transform.position;
         var side = Vector3.Dot(deltaPos, deck.transform.right);
         var settle_dir = (side > 0.0f) ? deck.transform.right : -deck.transform.right;
@@ -76,7 +85,7 @@ public class Card : MonoBehaviour
     {
         yield return ShowToCamera();
         
-        while (!m_Seen) { yield return null; }
+        while (m_State == State.Unseen) { yield return null; }
 
         deck.SendMessage("CardShown", this, SendMessageOptions.DontRequireReceiver);
 
@@ -87,7 +96,7 @@ public class Card : MonoBehaviour
             if (viewportPos.y < 0 || viewportPos.y > 1) { break; }
             yield return null;
         }
-
+        
         yield return ReturnToDeck();
     }
 
@@ -98,7 +107,7 @@ public class Card : MonoBehaviour
 
     private void Update()
     {
-        if (m_Seen)
+        if (m_State == State.Seen)
         {
             if (m_IsDragging)
             {
@@ -139,7 +148,7 @@ public class Card : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!m_Seen) { return; }
+        if (m_State == State.Unseen) { return; }
 
         m_DragOffset = transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
         m_PreviousPosition = transform.position;
