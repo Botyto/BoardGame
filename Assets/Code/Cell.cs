@@ -60,9 +60,10 @@ public class Cell : MonoBehaviour
 
     public Vector3 GetParkingSpacePosition(int index)
     {
-        //TODO - can we generate a grid-like (instead of line-like) arrangement of the parking spaces
-        //       This should take into account the size of the cell (see Waypoint.bounds.size) and adjust to it
-        return transform.TransformPoint(Vector3.right * 2.0f * (index + 1));
+        const float spacing = 2.0f;
+        var rowSize = Mathf.FloorToInt(bounds.size.x / spacing);
+        var pt = new Vector3((index / rowSize) + 1, 0, (index % rowSize) + 1 - rowSize / 2) * spacing;
+        return transform.TransformPoint(pt);
     }
 
     #endregion

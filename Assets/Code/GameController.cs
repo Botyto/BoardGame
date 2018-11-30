@@ -115,7 +115,7 @@ public class GameController : Singleton<GameController>
             newPlayerObj.name = string.Format("Player {0}", i);
             var newPlayer = newPlayerObj.GetComponent<Player>();
             newPlayer.playerNumber = i;
-            newPlayer.color = new Color(Random.Range(0.5f, 0.8f), Random.Range(0.5f, 0.8f), Random.Range(0.5f, 1.8f));
+            newPlayer.color = new Color(Random.Range(0.2f, 0.8f), Random.Range(0.2f, 0.8f), Random.Range(0.2f, 1.8f));
 
             players[i] = newPlayer;
             spawnPosition += spacing;
