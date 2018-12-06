@@ -29,6 +29,7 @@ public class GameController : Singleton<GameController>
             }
         }
 
+      //  playersCount = GameObject.Find("CanvasMenu").GetComponent<Menu>().NumberOfPlayers;
         SpawnPlayers();
     }
 
