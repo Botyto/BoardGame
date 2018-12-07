@@ -75,6 +75,13 @@ public class Menu : MonoBehaviour {
             Debug.Log("Loading scene " + " [][] Progress: " + scene.progress);
             yield return null;
         }
+
+        while (!scene.isDone)
+        {
+            // wait until it is really finished
+            yield return null;
+        }
+
         OnFinishedLoadingAllScene();
     }
 
