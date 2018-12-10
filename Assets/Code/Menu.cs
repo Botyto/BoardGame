@@ -38,11 +38,8 @@ public class Menu : MonoBehaviour {
     public void StartGame(int numOfPlayers)
     {
         canvasMenu.gameObject.SetActive(true);
-        StartCoroutine(loadScene(1));
-        NumberOfPlayers = 5;
-        //  SceneManager.LoadScene("Assets/Scenes/Board.unity");
-        //  GameObject.Find("GameController").GetComponent<GameController>().playersCount = 6;
-
+        StartCoroutine(loadScene());
+        NumberOfPlayers = numOfPlayers;
     }
 
     public void Quit()
@@ -63,54 +60,42 @@ public class Menu : MonoBehaviour {
     }
 
 
-    IEnumerator loadScene(int index)
+    IEnumerator loadScene()
     {
-        AsyncOperation scene = SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive);
+        AsyncOperation scene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
         scene.allowSceneActivation = false;
         sceneAsync = scene;
 
-        //Wait until we are done loading the scene
-        while (scene.progress < 0.9f)
-        {
-            Debug.Log("Loading scene " + " [][] Progress: " + scene.progress);
-            yield return null;
-        }
-
         while (!scene.isDone)
         {
-            // wait until it is really finished
+            Debug.Log("Loading scene " + " [][] Progress: " + scene.progress);
+
+            // Check if the load has finished
+            if (scene.progress >= 0.9f)
+            {
+                scene.allowSceneActivation = true;
+            }
             yield return null;
         }
 
         OnFinishedLoadingAllScene();
     }
 
-    void enableScene(int index)
-    {
-        //Activate the Scene
-        sceneAsync.allowSceneActivation = true;
-
-
-        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(index);
-        if (sceneToLoad.IsValid())
-        {
-            Debug.Log("Scene is Valid");
-            canvasMenu.gameObject.SetActive(false);
-            canvasPlayerSelection.gameObject.SetActive(false);
-            SceneManager.SetActiveScene(sceneToLoad);
-
-        }
-    }
-
     void OnFinishedLoadingAllScene()
     {
-
-        Debug.Log("Done Loading Scene");
-        enableScene(1);
-     //   GameObject.Find("GameController").GetComponent<GameController>().playersCount = 6;
-
+        enableScene();
         Debug.Log("Scene Activated!");
     }
 
+    void enableScene()
+    {
+        Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(1);
+        if (sceneToLoad.IsValid())
+        {
+            canvasMenu.gameObject.SetActive(false);
+            canvasPlayerSelection.gameObject.SetActive(false);
+            SceneManager.SetActiveScene(sceneToLoad);
+        }
+    }
 
 }

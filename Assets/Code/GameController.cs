@@ -28,8 +28,11 @@ public class GameController : Singleton<GameController>
                 decks.Add(deck.id, deck);
             }
         }
-
-      //  playersCount = GameObject.Find("CanvasMenu").GetComponent<Menu>().NumberOfPlayers;
+        //TODO: Make it more elegant
+        try {
+        int players = GameObject.Find("Menu").GetComponent<Menu>().NumberOfPlayers;
+            playersCount = players;
+        } catch { }
         SpawnPlayers();
     }
 

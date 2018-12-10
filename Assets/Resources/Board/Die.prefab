@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 23347815716971694}
   - component: {fileID: 65766752698944374}
   - component: {fileID: 54650355927595460}
-  - component: {fileID: 114929371911080472}
   - component: {fileID: 114728912993171304}
   m_Layer: 0
   m_Name: Die
@@ -125,31 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffddcd10c8ee46f4aa03818c883ba8e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directions:
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: -1, z: 0}
-  - {x: -1, y: 0, z: 0}
-  - {x: 1, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
-  - {x: 0, y: 0, z: 1}
   upValue: 2
   forwardValue: 3
   rightValue: 1
---- !u!114 &114929371911080472
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1925025730185866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a21eb251338f49bca64298d9559b7d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rollComplete: 1
-  forceAmount: 40
-  torqueAmount: 150
-  rotateDuration: 4
-  forceMode: 0
-  rigidbody: {fileID: 54650355927595460}
-  diceValueSelector: {fileID: 114728912993171304}
