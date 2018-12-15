@@ -16,7 +16,9 @@ public class Player : MonoBehaviour
 
     public Cell currentWaypoint { get { return Board.instance.GetWaypoint(currentCellIndex); } }
     public bool isMoving { get { return m_Moving; } }
-    
+    public bool isMyTurn { get { return GameController.instance.currentPlayerIndex == playerNumber; } }
+    public bool shouldPark { get { return !isMyTurn || numberOfTurns <= 0; } }
+
     #region Movement
 
     private bool m_Moving = false;
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
 
     public IEnumerator MoveByRoutine(Cell[] order)
     {
+        yield return Unpark();
         yield return OnLeaveCell(currentWaypoint);
 
         currentCellIndex = order[order.Length - 1].index;
@@ -86,6 +89,11 @@ public class Player : MonoBehaviour
         m_Moving = false;
 
         yield return OnEnterCell(currentWaypoint);
+        
+        if (shouldPark)
+        {
+            yield return Park();
+        }
     }
 
     public IEnumerator MoveToToDirect(int index)
@@ -181,7 +189,7 @@ public class Player : MonoBehaviour
         yield return MoveBy(DiceController.instance.diceSum);
         DiceController.instance.diceSum = 0;
 
-        if (numberOfTurns <= 0)
+        if (shouldPark)
         {
             yield return Park();
         }

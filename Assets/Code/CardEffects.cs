@@ -47,17 +47,43 @@ public class CardEffects
 
     public static IEnumerator MoveBy(CardDefinition definition, Card card, Player player)
     {
-        var playerIdx = GetIntParam(definition, card, "playerIdx", player.playerNumber);
-        if (playerIdx < 0 || playerIdx >= GameController.instance.playersCount) { yield break; }
-
         var count = GetIntParam(definition, card, "count", 0);
         if (count == 0) { yield break; }
+        
+        var allPlayers = GetIntParam(definition, card, "allPlayers", 0);
+        if (allPlayers != 0)
+        {
+            FollowCamera.Push(Board.instance.ground);
+            yield return new WaitForCamera();
 
-        var targetPlayer = GameController.instance.players[playerIdx];
-        FollowCamera.Push(targetPlayer);
-        yield return new WaitForCamera();
-        yield return targetPlayer.MoveBy(count);
-        FollowCamera.Pop();
+            var game = GameController.instance;
+            var routines = new UnityCoroutine[game.playersCount];
+
+            for (int i = 0; i < game.playersCount; ++i)
+            {
+                var currentPlayer = game.players[i];
+                routines[i] = new UnityCoroutine(currentPlayer.MoveBy(count));
+                currentPlayer.StartCoroutineEx(routines[i].Start());
+            }
+
+            foreach (var routine in routines)
+            {
+                yield return new WaitForRoutine(routine);
+            }
+
+            FollowCamera.Pop();
+        }
+        else
+        {
+            var playerIdx = GetIntParam(definition, card, "playerIdx", player.playerNumber);
+            if (playerIdx < 0 || playerIdx >= GameController.instance.playersCount) { yield break; }
+
+            var targetPlayer = GameController.instance.players[playerIdx];
+            FollowCamera.Push(targetPlayer);
+            yield return new WaitForCamera();
+            yield return targetPlayer.MoveBy(count);
+            FollowCamera.Pop();
+        }
     }
 
     public static IEnumerator ShowBoard(CardDefinition definition, Card card, Player player)

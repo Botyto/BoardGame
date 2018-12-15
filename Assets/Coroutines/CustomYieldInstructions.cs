@@ -1,6 +1,24 @@
 ﻿using System;
 using UnityEngine;
 
+public class WaitForRoutine : CustomYieldInstruction
+{
+    private UnityCoroutine m_Routine;
+
+    public WaitForRoutine(UnityCoroutine routine)
+    {
+        m_Routine = routine;
+    }
+
+    public override bool keepWaiting
+    {
+        get
+        {
+            return m_Routine.state == UnityCoroutine.CoroutineState.Running || m_Routine.state == UnityCoroutine.CoroutineState.Paused;
+        }
+    }
+}
+
 public class WaitForKeyDown : CustomYieldInstruction
 {
     private KeyCode m_KeyCode;
