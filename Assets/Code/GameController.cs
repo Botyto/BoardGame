@@ -23,16 +23,12 @@ public class GameController : Singleton<GameController>
         decks = new Dictionary<string, Deck>();
         foreach (var deck in FindObjectsOfType<Deck>())
         {
-            if (!decks.ContainsKey(deck.id))
-            {
-                decks.Add(deck.id, deck);
-            }
+            Debug.AssertFormat(!decks.ContainsKey(deck.id), "Duplicate deck ID: ", deck.id);
+            decks[deck.id] = deck;
         }
-        //TODO: Make it more elegant
-        try {
-        int players = GameObject.Find("Menu").GetComponent<Menu>().NumberOfPlayers;
-            playersCount = players;
-        } catch { }
+
+        playersCount = SceneController.GetParameter("playersCount", playersCount);
+        
         SpawnPlayers();
     }
 

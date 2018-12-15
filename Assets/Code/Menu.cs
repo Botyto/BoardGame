@@ -36,8 +36,10 @@ public class Menu : MonoBehaviour {
     public void StartGame(int numOfPlayers)
     {
         canvasMenu.gameObject.SetActive(true);
-        SceneController.instance.ChangeScene("Board"); //StartCoroutine(loadScene());
-        NumberOfPlayers = numOfPlayers;
+        var sceneData = new SceneData();
+        sceneData.sceneName = "Board";
+        sceneData.SetParameter("playersCount", numOfPlayers);
+        SceneController.LoadScene(sceneData);
     }
 
     public void Quit()
