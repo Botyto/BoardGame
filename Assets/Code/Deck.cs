@@ -16,7 +16,7 @@ public class Deck : MonoBehaviour
     [Header("Deck")]
     public string id = "default";
     public GameObject cardPrefab = null;
-    public DeckType deckType = DeckType.All; //TODO should this be a list of filters for easier setup in inspector?
+    public DeckType deckType = DeckType.All;
     private List<CardDefinition> m_Cards = null;
     private List<int> m_CardsQueue = null;
 
@@ -93,7 +93,7 @@ public class Deck : MonoBehaviour
 
         var cardIdx = m_CardsQueue[0];
         m_CardsQueue.RemoveAt(0);
-        m_CardsQueue.Add(cardIdx); //TODO should this card return to the queue before it has been actually activated and visually returned to the deck?
+        m_CardsQueue.Add(cardIdx);
 
         yield return card.Show();
         yield return definition.Activate(card, forPlayer);

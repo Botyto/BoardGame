@@ -12,7 +12,7 @@ public class SceneData
         public object value;
     }
 
-    public string sceneName = ""; //TODO how should we know that this is the correct data for this scene?
+    public string sceneName = "";
     private ParamData[] parameters = new ParamData[0];
 
     public void SetParameter<T>(string paramName, T value)

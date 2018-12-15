@@ -142,7 +142,7 @@ public class UnityCoroutine
     /// <summary>
     /// Adds a pause reason and pauses the UnityCoroutine.
     /// </summary>
-    public void Pause(string reason) //TODO - test pause reasons.
+    public void Pause(string reason)
     {
         m_PauseReasons.Add(reason);
         if (state != CoroutineState.Paused) { Pause(); }
