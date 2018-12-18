@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class DiceCheat : MonoBehaviour
+public class DiceCheat : Dialog
 {
     public Slider[] sliders;
     public Text totalText;
 
-    public void OnEnable()
+    public override void OnOpen()
     {
         if (sliders != null && sliders.Length > 0)
         {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Dialog : MonoBehaviour
+public class Dialog : UINode
 {
     public static Dictionary<string, Dialog> dialogs = null;
     
