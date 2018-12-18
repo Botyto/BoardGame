@@ -184,7 +184,7 @@ public class Player : MonoBehaviour
         yield return new WaitForCamera();
         yield return Unpark();
         
-        yield return DiceController.instance.RollDice();
+        yield return DiceController.instance.RollDice(2);
 
         yield return MoveBy(DiceController.instance.diceSum);
         DiceController.instance.diceSum = 0;

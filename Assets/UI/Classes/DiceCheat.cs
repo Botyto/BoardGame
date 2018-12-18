@@ -70,7 +70,7 @@ public class DiceCheat : Dialog
                 diceSum = 0;
             }
         }
-
+        Debug.LogFormat("Slider - sum: {0}", diceSum);
         return diceSum;
     }
 }

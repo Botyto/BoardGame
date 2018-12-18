@@ -1,7 +1,4 @@
-﻿
-using System.Collections;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 public class Menu : MonoBehaviour {
 
@@ -45,17 +42,5 @@ public class Menu : MonoBehaviour {
     public void Quit()
     {
         Application.Quit();
-    }
-
-
-    //TODO: on start check if they are set up 
-    //      otherwise game will crash if start checking them in scene "board"
-    public void SkipDiceThrow(bool isCheck)
-    {
-        PlayerPrefs.SetInt("Skip Dice Throw", isCheck ? 1 : 0);
-    }
-    public void ShakeThrowDice(bool isCheck)
-    {
-        PlayerPrefs.SetInt("Shake Throw Dice", isCheck ? 1 : 0);
     }
 }

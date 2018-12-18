@@ -10,7 +10,7 @@ public class DiceController : Singleton<DiceController>
 
     [Header("Visuals")]
     public Text uiText = null;
-    
+
     public IEnumerator RollDice(int n = -1)
     {
         if (uiText != null)
@@ -20,7 +20,7 @@ public class DiceController : Singleton<DiceController>
 
         FollowCamera.Push(Board.instance.ground.transform);
         yield return new WaitForCamera();
-        
+
         //TODO - Maybe this should be a flag (or something..) to allow other types of input?
         //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
         yield return new WaitForKeyDown(KeyCode.Space);
@@ -64,14 +64,22 @@ public class DiceController : Singleton<DiceController>
     public int RollFakeDice(int n = 1)
     {
         var cheat = FindObjectOfType<DiceCheat>();
-        if (cheat == null)
+
+        if (PlayerPrefs.GetInt("SkipThrow") != 0)
         {
-            return 0;
+            int diceSum = 0;
+            for (int i = 0; i < n; ++i)
+            {
+                diceSum += Random.Range(1, 6);
+            }
+            Debug.LogFormat("Dice throw skipped - sum: {0}", diceSum);
+            return diceSum;
         }
-        else
+        if (cheat != null)
         {
             return cheat.RollFakeDice();
         }
+        return 0;
     }
 #endif
 }
