@@ -23,7 +23,17 @@ public class DiceController : Singleton<DiceController>
 
         //TODO - Maybe this should be a flag (or something..) to allow other types of input?
         //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
-        yield return new WaitForKeyDown(KeyCode.Space);
+
+        if(PlayerPrefs.GetInt("Shake") != 0)
+        {
+            yield return new WaitForKeyDown(KeyCode.Space);  // TODO: Replace with wait for shake 
+        }
+        else
+        {
+            Debug.Log("Dice throwing skipped !"); // TODO: Replace with wait GUI button press
+        }
+
+
 
 #if UNITY_EDITOR
         //Dice force cheat
