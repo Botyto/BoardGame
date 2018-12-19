@@ -24,7 +24,7 @@ public class DiceController : Singleton<DiceController>
         //TODO - Maybe this should be a flag (or something..) to allow other types of input?
         //(can we avoid making another WaitFor* instruction, but also avoid starting another heavy UnityCoroutine as in GameController?)
 
-        if(PlayerPrefs.GetInt("Shake") != 0)
+        if (GameSettings.Get<bool>("Shake"))
         {
             yield return new WaitForKeyDown(KeyCode.Space);  // TODO: Replace with wait for shake 
         }
@@ -75,7 +75,7 @@ public class DiceController : Singleton<DiceController>
     {
         var cheat = FindObjectOfType<DiceCheat>();
 
-        if (PlayerPrefs.GetInt("SkipThrow") != 0)
+        if (GameSettings.Get<bool>("SkipThrow"))
         {
             int diceSum = 0;
             for (int i = 0; i < n; ++i)
