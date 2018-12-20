@@ -26,11 +26,15 @@ public class DiceController : Singleton<DiceController>
 
         if (GameSettings.Get<bool>("Shake"))
         {
+            Debug.Log("Wait for shake (space key)!");
             yield return new WaitForKeyDown(KeyCode.Space);  // TODO: Replace with wait for shake 
         }
         else
         {
-            Debug.Log("Dice throwing skipped !"); // TODO: Replace with wait GUI button press
+            var msgBox = Dialog.Spawn<MessageBox>();
+            msgBox.titleControl.text = "Throw dice";
+            Debug.Log("Dice throwing skipped !");
+            yield return new WaitForObjectDestroyed(msgBox.gameObject);
         }
 
 
