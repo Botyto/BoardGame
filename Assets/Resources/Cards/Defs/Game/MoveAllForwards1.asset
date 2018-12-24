@@ -23,4 +23,4 @@ MonoBehaviour:
   inDefault: 1
   inDrink: 0
   inGame: 1
-  inDebug: 1
+  inDebug: 0
