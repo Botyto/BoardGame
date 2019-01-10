@@ -26,8 +26,11 @@ public class DiceController : Singleton<DiceController>
 
         if (GameSettings.Get<bool>("Shake"))
         {
-            Debug.Log("Wait for shake (space key)!");
-            yield return new WaitForKeyDown(KeyCode.Space);  // TODO: Replace with wait for shake 
+            ///Debug.Log("Wait for shake (space key)!"); yield return new WaitForKeyDown(KeyCode.Space);
+            // TODO: Think of way to optimise it ?
+
+            AccelerometerReaction accelerometer = GameObject.Find("GameController").GetComponent<AccelerometerReaction>();
+            yield return accelerometer.WaitForShake();
         }
         else
         {

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class AccelerometerReaction : MonoBehaviour
@@ -33,12 +35,11 @@ public class AccelerometerReaction : MonoBehaviour
     float lowPassKernelWidthInSeconds = 1.0f;
     // This next parameter is initialized to 2.0 per Apple's recommendation,
     // or at least according to Brady! ;)
-    float shakeDetectionThreshold = 2.0f;
+    float shakeDetectionThreshold = 1.0f;
 
     float lowPassFilterFactor;
     Vector3 lowPassValue;
 
-    int shakeCount = 0;
 
     void Start()
     {
@@ -47,19 +48,18 @@ public class AccelerometerReaction : MonoBehaviour
         lowPassValue = Input.acceleration;
     }
 
-    void Update()
+    public IEnumerator WaitForShake()
     {
         Vector3 acceleration = Input.acceleration;
         lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
         Vector3 deltaAcceleration = acceleration - lowPassValue;
 
-        if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
+        while (deltaAcceleration.sqrMagnitude < shakeDetectionThreshold)
         {
-            // Perform your "shaking actions" here. If necessary, add suitable
-            // guards in the if check above to avoid redundant handling during
-            // the same shake (e.g. a minimum refractory period).
-            Debug.Log("Shake event detected at time " + Time.time);
-            DiceController.instance.uiText.text = string.Format("Shake {0}", shakeCount++);
+            acceleration = Input.acceleration;
+            lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
+            deltaAcceleration = acceleration - lowPassValue;
+            yield return null;
         }
     }
 }
