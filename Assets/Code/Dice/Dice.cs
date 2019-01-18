@@ -6,9 +6,9 @@ public class Dice : MonoBehaviour
     private int currentValue = 1;
     public bool rollComplete = true;
 
-    public float forceAmount = 40.0f;
+    public float forceAmount = 55.0f;
     public float torqueAmount = 150.0f;
-    public float rotateDuration = 1f;
+    public float rotateDuration = 0.5f;
     public ForceMode forceMode;
 
     public new Rigidbody rigidbody;
@@ -24,9 +24,9 @@ public class Dice : MonoBehaviour
     {
         rollComplete = false;
         StartCoroutine( Rotate());
-        this.transform.position += new Vector3(0, 7, 0);
-        rigidbody.AddForce(Random.onUnitSphere * forceAmount, forceMode);
-        rigidbody.AddTorque(Random.onUnitSphere * torqueAmount, forceMode);
+        this.transform.position = Random.onUnitSphere * 3f + new Vector3(5f, 5f, 5f);
+        rigidbody.AddForce((Random.onUnitSphere + new Vector3(-3f, 2f, -3f)) * forceAmount, ForceMode.Force);
+        //rigidbody.AddTorque(Random.onUnitSphere * torqueAmount, forceMode);
 
         while (!GetComponent<Rigidbody>().IsSleeping())
         {
@@ -43,13 +43,13 @@ public class Dice : MonoBehaviour
     IEnumerator Rotate()
     {
         float startRotation = transform.eulerAngles.x;
-        float endRotation = startRotation + Random.Range(200f, 275.0f);
+        float endRotation = startRotation + Random.Range(45f, 275.0f);
         float t = 0.0f;
         while (t < rotateDuration)
         {
             t += Time.deltaTime;
             float xRotation = Mathf.Lerp(startRotation, endRotation, t / rotateDuration) % 360.0f;
-            transform.eulerAngles = new Vector3(xRotation, transform.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(xRotation, xRotation, transform.eulerAngles.z);
 
         }
         yield return null;
