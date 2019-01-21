@@ -6,13 +6,13 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
     protected virtual void Awake()
     {
-        Debug.Assert(instance == null);
+        Debug.Assert(instance == null, this);
         instance = this as T;
     }
 
     protected virtual void OnDestroy()
     {
-        Debug.Assert(instance == this);
+        Debug.Assert(instance == this, this);
         instance = null;
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -78,9 +80,10 @@ public class DiceController : Singleton<DiceController>
         }
         yield return new WaitForSeconds(1f);
 
+        var sortedDice = SortDiceAlongAxis(dices, Camera.main.transform.right);
         for (int i = 0; i < n; ++i)
         {
-            StartCoroutine(dices[i].ShowToCamera(i == 0));
+            StartCoroutine(sortedDice[i].ShowToCamera(i == 0));
         }
 
 
@@ -97,6 +100,36 @@ public class DiceController : Singleton<DiceController>
         yield return new WaitForCamera();
     }
 
+    private Dice[] SortDiceAlongAxis(Dice[] list, Vector3 axis)
+    {
+        if (list.Length == 0) { return list; }
+
+        var e1 = axis.normalized;
+        var e2 = new Vector3(2 * e1.y * e1.z, -e1.x * e1.z, -e1.x * e1.y).normalized;
+        var e3 = Vector3.Cross(e1, e2);
+        Debug.Assert(Mathf.Approximately(Vector3.Dot(e1, e2), 0.0f));
+        Debug.Assert(Mathf.Approximately(Vector3.Dot(e1, e3), 0.0f));
+        Debug.Assert(Mathf.Approximately(Vector3.Dot(e2, e3), 0.0f));
+        var T = new Matrix4x4(e1, e2, e3, new Vector4(0, 0, 0, 1)).inverse;
+        
+        var sorted = new KeyValuePair<Dice, float>[list.Length];
+        for (int i = 0; i < list.Length; ++i)
+        {
+            var dice = list[i];
+            var dist = T.MultiplyVector(dice.transform.position).x;
+            sorted[i] = new KeyValuePair<Dice, float>(dice, dist);
+        }
+
+        Array.Sort(sorted, (a, b) => Mathf.RoundToInt(a.Value - b.Value));
+        var result = new Dice[list.Length];
+        for (int i = 0; i < list.Length; ++i)
+        {
+            result[i] = sorted[i].Key;
+        }
+
+        return result;
+    }
+
 #if UNITY_EDITOR
     public int RollFakeDice(int n = 1)
     {
@@ -107,7 +140,7 @@ public class DiceController : Singleton<DiceController>
             int diceSum = 0;
             for (int i = 0; i < n; ++i)
             {
-                diceSum += Random.Range(1, 6);
+                diceSum += UnityEngine.Random.Range(1, 6);
             }
             Debug.LogFormat("Dice throw skipped - sum: {0}", diceSum);
             return diceSum;
