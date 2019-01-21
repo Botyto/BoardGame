@@ -70,6 +70,10 @@ public class Dice : MonoBehaviour
     {
         Destroy(this.GetComponent<DiceValueSelector>());
         Destroy(this.GetComponent<BoxCollider>());
+        while (!GetComponent<Rigidbody>().IsSleeping())
+        {
+            yield return null;
+        }
         Destroy(this.GetComponent<Rigidbody>());
        // transform.localScale = new Vector3(4, 4, 4);
         this.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
