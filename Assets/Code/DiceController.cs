@@ -58,7 +58,13 @@ public class DiceController : Singleton<DiceController>
         {
             uiText.text = "";
         }
-
+        for (int i = 0; i < n; i++)
+        {
+            GameObject dice = Resources.Load("Board/Die") as GameObject;
+            var obj = GameObject.Instantiate(dice);
+            dices[i] = obj.GetComponent<Dice>();
+        }
+        yield return null;
         diceSum = 0;
         n = (n <= 0) ? dices.Length : Mathf.Min(dices.Length, n);
         for (int i = 0; i < n; ++i)
@@ -70,8 +76,22 @@ public class DiceController : Singleton<DiceController>
         {
             yield return null;
         }
+        yield return new WaitForSeconds(1f);
 
-        yield return new WaitForSeconds(0.5f);
+        for (int i = 0; i < n; ++i)
+        {
+            StartCoroutine(dices[i].ShowToCamera(i == 0));
+        }
+
+
+        //yield return dices[1].ShowToCamera();
+
+        yield return new WaitForSeconds(5f);
+
+        for (int i = 0; i < n; ++i)
+        {
+            Destroy(dices[i].gameObject);
+        }
 
         FollowCamera.Pop();
         yield return new WaitForCamera();
