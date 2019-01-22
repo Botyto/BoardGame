@@ -60,6 +60,7 @@ public class DiceController : Singleton<DiceController>
         {
             uiText.text = "";
         }
+        // Spawn dices
         for (int i = 0; i < n; i++)
         {
             GameObject dice = Resources.Load("Board/Die") as GameObject;
@@ -67,6 +68,8 @@ public class DiceController : Singleton<DiceController>
             dices[i] = obj.GetComponent<Dice>();
         }
         yield return null;
+
+        // Shake dices and getting their values
         diceSum = 0;
         n = (n <= 0) ? dices.Length : Mathf.Min(dices.Length, n);
         for (int i = 0; i < n; ++i)
@@ -74,23 +77,25 @@ public class DiceController : Singleton<DiceController>
             StartCoroutine(dices[i].ShakeDice());
         }
 
-        while (!dices[0].rollComplete && !dices[1].rollComplete)
+        // Wait all dices finish moving/rolling
+        for(int i = 0; i < n; ++i)
         {
-            yield return null;
+            while (!dices[i].rollComplete || !dices[i].GetComponent<Rigidbody>().IsSleeping())
+            {
+                yield return null;
+            }
         }
-        yield return new WaitForSeconds(1f);
 
+        // Show dices to Camera
         var sortedDice = SortDiceAlongAxis(dices, Camera.main.transform.right);
         for (int i = 0; i < n; ++i)
         {
-            StartCoroutine(sortedDice[i].ShowToCamera(i == 0));
+            StartCoroutine(sortedDice[i].ShowToCamera(i));
+
         }
-
-
-        //yield return dices[1].ShowToCamera();
-
         yield return new WaitForSeconds(5f);
 
+        // Destroy dices
         for (int i = 0; i < n; ++i)
         {
             Destroy(dices[i].gameObject);
