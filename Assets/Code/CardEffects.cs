@@ -64,6 +64,11 @@ public class CardEffects
                 var currentPlayer = game.players[i];
                 routines[i] = new UnityCoroutine(currentPlayer.MoveBy(count));
                 currentPlayer.StartCoroutineEx(routines[i].Start());
+                while(routines[i].state != UnityCoroutine.CoroutineState.Finished)
+                {
+                    yield return null; 
+                    //buggy all moving but just the first one get card effect from moving
+                }
             }
 
             foreach (var routine in routines)
