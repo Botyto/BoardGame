@@ -8,6 +8,8 @@ public class UINode : MonoBehaviour
     [HideInInspector]
     public Dictionary<string, UINode> nodes = new Dictionary<string, UINode>();
     
+    public UINode this[string nodeName] { get { return ResolveNode(nodeName); } }
+
     public UINode ResolveNode(string nodeName)
     {
         if (nodes == null) { return null; }
@@ -39,20 +41,22 @@ public class UINode : MonoBehaviour
 
     #region Unity internals
 
-    protected void OnEnable()
+    protected virtual void Awake()
     {
+        if (!Application.isPlaying) { return; }
         Debug.Assert(!string.IsNullOrEmpty(name), "UINodes cannot have empty names");
         AddToParent();
     }
 
-    protected void OnDisable()
+    protected virtual void OnDestroy()
     {
+        if (!Application.isPlaying) { return; }
         RemoveFromParent();
-        nodes.Clear();
     }
 
-    protected void OnTransformParentChanged()
+    protected virtual void OnTransformParentChanged()
     {
+        if (!Application.isPlaying) { return; }
         RemoveFromParent();
         AddToParent();
     }

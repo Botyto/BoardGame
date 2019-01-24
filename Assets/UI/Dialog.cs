@@ -13,7 +13,7 @@ public class Dialog : UINode
     public virtual void OnOpen() { }
     public virtual void OnClose() { }
 
-    private void Start()
+    protected virtual void Start()
     {
         if (!CreateDialogsDict())
         {
@@ -23,7 +23,7 @@ public class Dialog : UINode
         OnOpen();
 	}
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
         OnClose();
 
@@ -96,4 +96,6 @@ public class Dialog : UINode
             dlg.Close();
         }
     }
+
+    //TODO implement modes
 }
