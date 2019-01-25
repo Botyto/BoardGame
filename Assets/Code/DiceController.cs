@@ -78,11 +78,20 @@ public class DiceController : Singleton<DiceController>
         }
 
         // Wait all dices finish moving/rolling
-        for(int i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i)
         {
             while (!dices[i].rollComplete || !dices[i].GetComponent<Rigidbody>().IsSleeping())
             {
                 yield return null;
+            }
+        }
+
+        // Reroll (Dice is not grounded)
+        for (int i = 0; i < n; ++i)
+        {
+            if (dices[i].GetCurrentValue() == 0)
+            {
+                yield return RollDice();
             }
         }
 
@@ -108,7 +117,7 @@ public class DiceController : Singleton<DiceController>
     private Dice[] SortDiceCameraAlongAxis(Dice[] list, Camera cam)
     {
         if (list.Length == 0) { return list; }
-        
+
         var sorted = new KeyValuePair<Dice, float>[list.Length];
         for (int i = 0; i < list.Length; ++i)
         {

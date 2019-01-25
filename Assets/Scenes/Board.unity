@@ -2645,6 +2645,7 @@ GameObject:
   - component: {fileID: 897952552}
   - component: {fileID: 897952551}
   - component: {fileID: 897952554}
+  - component: {fileID: 897952555}
   m_Layer: 0
   m_Name: DrinkDeck
   m_TagString: Untagged
@@ -2721,6 +2722,18 @@ MonoBehaviour:
   id: drink
   cardPrefab: {fileID: 1312293763813512, guid: bae0bfa7b2c8df044bab2d698599aa0d, type: 2}
   deckType: 2
+--- !u!65 &897952555
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 897952550}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.000001, y: 2.02, z: 7.000002}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &909577085
 GameObject:
   m_ObjectHideFlags: 0
@@ -5439,6 +5452,7 @@ GameObject:
   - component: {fileID: 1703797467}
   - component: {fileID: 1703797466}
   - component: {fileID: 1703797465}
+  - component: {fileID: 1703797469}
   m_Layer: 0
   m_Name: GameDeck
   m_TagString: Untagged
@@ -5515,6 +5529,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &1703797469
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1703797464}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.000001, y: 2.02, z: 7.000002}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1749411789
 GameObject:
   m_ObjectHideFlags: 0

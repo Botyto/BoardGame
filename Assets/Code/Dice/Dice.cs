@@ -91,4 +91,9 @@ public class Dice : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
     }
+
+    public int GetCurrentValue()
+    {
+        return currentValue;
+    }
 }
