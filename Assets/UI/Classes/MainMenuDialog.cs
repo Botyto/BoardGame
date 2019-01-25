@@ -29,36 +29,21 @@ public class MainMenuDialog : Dialog
         options.gameObject.SetActive(false);
 
         //New Game
-        var playersChoice = newGame.ResolveNode<ScrollRect>("PlayerCountChoice");
+        var playersChoice = newGame.ResolveNode<ScrollRectSnap>("PlayerCountChoice");
 
         var startGame = newGame.ResolveNode<Button>("StartGame");
         startGame.onClick.AddListener(delegate {
-            var content = playersChoice.viewport.GetChild(0) as RectTransform;
-            Debug.Assert(content.childCount > 0);
-
-            var contentHeight = content.rect.height;
-            var contentY = content.localPosition.y;
-
-            var vLayout = content.GetComponent<VerticalLayoutGroup>();
-            if (vLayout != null)
+            var item = playersChoice.snappedItem;
+            Debug.Assert(item != null);
+            
+            var numPlayers = 2;
+            var itemText = item.GetComponent<Text>();
+            Debug.Assert(itemText != null);
+            
+            int textNumber;
+            if (int.TryParse(itemText.text, out textNumber))
             {
-                contentHeight -= vLayout.padding.vertical;
-                contentY += vLayout.padding.vertical;
-            }
-
-            var choices = content.childCount;
-            var choice = Mathf.RoundToInt((contentY / contentHeight) * choices) - 1;
-            choice = Mathf.Clamp(choice, 0, content.childCount - 1);
-
-            var numPlayers = choice + 1;
-            var itemText = content.GetChild(choice).GetComponent<Text>();
-            if (itemText != null)
-            {
-                int textNumber;
-                if (int.TryParse(itemText.text, out textNumber))
-                {
-                    numPlayers = textNumber;
-                }
+                numPlayers = textNumber;
             }
             
             var sceneData = new SceneData();

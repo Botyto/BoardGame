@@ -11,7 +11,24 @@ public class ScrollRectSnap : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     [Tooltip("How quickly the GUI snaps to each panel")]
     public float snapSpeed = 5.0f;
     public float inertiaCutoffMagnitude = 0.5f;
-    
+
+    [HideInInspector]
+    public RectTransform[] items = null;
+    [HideInInspector]
+    public int snappedItemIndex = -1;
+    public RectTransform snappedItem
+    {
+        get
+        {
+            if (items == null || items.Length == 0 || snappedItemIndex == -1)
+            {
+                return null;
+            }
+
+            return items[snappedItemIndex];
+        }
+    }
+
     private bool m_LerpV = false;
     private float m_TargetV = 0.0f;
     
@@ -26,7 +43,7 @@ public class ScrollRectSnap : MonoBehaviour, IBeginDragHandler, IEndDragHandler
         }
     }
 
-    void Start()
+    void OnEnable()
     {
         if (targetScrollRect == null)
         {
@@ -49,20 +66,23 @@ public class ScrollRectSnap : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 content = targetScrollRect.viewport.GetChild(0) as RectTransform;
             }
 
-            if (content.childCount > 0)
+            var n = content.childCount;
+            if (n > 0)
             {
                 var minY = float.PositiveInfinity;
                 var maxY = float.NegativeInfinity;
-                m_Points = new float[content.childCount];
-                for (int i = 0; i < content.childCount; ++i)
+                m_Points = new float[n];
+                items = new RectTransform[n];
+                for (int i = 0; i < n; ++i)
                 {
                     var child = content.GetChild(i) as RectTransform;
+                    items[i] = child;
                     m_Points[i] = child.localPosition.y;
                     minY = Mathf.Min(minY, m_Points[i]);
                     maxY = Mathf.Max(maxY, m_Points[i]);
                 }
 
-                for (int i = 0; i < content.childCount; ++i)
+                for (int i = 0; i < n; ++i)
                 {
                     m_Points[i] = (m_Points[i] - minY) / (maxY - minY);
                 }
@@ -89,7 +109,8 @@ public class ScrollRectSnap : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        int target = FindNearest(targetScrollRect.verticalNormalizedPosition, m_Points);
+        var scrollVPos = targetScrollRect.verticalNormalizedPosition;
+        int target = FindNearest(scrollVPos, m_Points);
         if (target == m_DragStartNearest && targetScrollRect.velocity.sqrMagnitude > inertiaCutoffMagnitude * inertiaCutoffMagnitude)
         {
             if (targetScrollRect.velocity.x < 0)
@@ -104,10 +125,15 @@ public class ScrollRectSnap : MonoBehaviour, IBeginDragHandler, IEndDragHandler
             target = Mathf.Clamp(target, 0, m_Points.Length - 1);
         }
         
-        if (targetScrollRect.vertical && targetScrollRect.verticalNormalizedPosition > 0f && targetScrollRect.verticalNormalizedPosition < 1f)
+        if (targetScrollRect.vertical && scrollVPos > 0f && scrollVPos < 1f)
         {
+            snappedItemIndex = target;
             m_TargetV = m_Points[target];
             m_LerpV = true;
+        }
+        else
+        {
+            snappedItemIndex = -1;
         }
     }
 
