@@ -1,57 +1,82 @@
-Rule;specific action rule;More generic action rule
-Point out who drinks;;
-Point out who's next;pointer + change order + now ;
-Drink up your glass;;
-Players born in Q1 drink;;
-Players born in Q2 drink;;"""pointer"" attach rule to some of player/s ?"
-Players born in Q3 drink;;
-Players born in Q4 drink;;
-Order two people to drink;;
-Skip turn;skip turn;
-Skip next turn;skip next turn ?? Too tricky ? ;"(""next turn"" + complete rule)"
-Tell who misses turn;"""pointer"" + skip turn";
-All male drink;;
-All famale drink;;
-Player to left drinks;;
-Go back X spaces;go back/forward num of spcaces;
-Drink 3 times;;
-All players drink;;
-Move one space back and complete field;Move all players X spaces + complete rules;
-Move one space forward and complete field;;
-Go back to last corner ;Move back to last corner;
-Go back to start corner ;Move back to start;
-Lift the person on your right if you can't drink 2 times;;
-Drink half a glass of no mather the liquid;;
-Get slap in the face by a girl;;
-Players wearing something black drink;;
-Players who can't lift just one eyeborwn drink;;
-All players without pets drink;;
-All players drink except you;;
-Make 10 pushup or drink;;
-Drink and order who drinks or tells a joke;;
-Player closest to end drink;Anounce who drinks;
-Mix 2two alcohols and dice decide who will drink it ;1 Dice throw (2nd if players more than 6 );
-All players roll dice / Players who hit 6 drink;Roll dice for each player;
-Drink if you don't want to go back X spaces;;
-Drink if you want someone go back X spaces;pointer + move back;
-Player with most friends on facebook drinks;;
-Move all players one space back (or more);;
-Tell a joke or drink;;
-Drink up your glass;;
-Drink once and miss turn;miss turn;
-Make a 4-liquid mix for a player of own choice and pour it his month;;
-Men drink 2 / Women drink 1;;
-Other players make you some kind of makeup or you drink 3 times;;
-If you can't walk in straight line you drink once;;
-Go back 3 spaces;;
-Reverse the order of the players ;Reverse the order of the players ;
-Tell all toxic word that if someone say he/she have to drink;New rules (add some reminders on screen? );
-From now on everyone  drink with spread pinkie else he/she have to drink;xD nimoa basi prostotiqta :D;
-"From now on everyone  have to say ""Cheers"" before drink or have to repeat";;
-"From now on nobody can say the word ""Drink""";;
+Rule;specific action rule;More generic action rule,
+Point out who drinks;;,
+Point out who's next;pointer + change order + now ;,
+Drink up your glass;;,
+Players born in Q1 drink;;,
+"Players born in Q2 drink;;""""""pointer"""" attach rule to some of player/s ?""",
+Players born in Q3 drink;;,
+Players born in Q4 drink;;,
+Order two people to drink;;,
+Skip turn;skip turn;,
+"Skip next turn;skip next turn ?? Too tricky ? ;""(""""next turn"""" + complete rule)""",
+"Tell who misses turn;""""""pointer"""" + skip turn"";",
+All male drink;;,
+All famale drink;;,
+Player to left drinks;;,
+Go back X spaces;go back/forward num of spcaces;,
+Drink 3 times;;,
+All players drink;;,
+Move one space back and complete field;Move all players X spaces + complete rules;,
+Move one space forward and complete field;;,
+Go back to last corner ;Move back to last corner;,
+Go back to start corner ;Move back to start;,
+Lift the person on your right if you can't drink 2 times;;,
+Drink half a glass of no mather the liquid;;,
+Get slap in the face by a girl;;,
+Players wearing something black drink;;,
+Players who can't lift just one eyeborwn drink;;,
+All players without pets drink;;,
+All players drink except you;;,
+Make 10 pushup or drink;;,
+Drink and order who drinks or tells a joke;;,
+Player closest to end drink;Anounce who drinks;,
+Mix 2two alcohols and dice decide who will drink it ;1 Dice throw (2nd if players more than 6 );,
+All players roll dice / Players who hit 6 drink;Roll dice for each player;,
+Drink if you don't want to go back X spaces;;,
+Drink if you want someone go back X spaces;pointer + move back;,
+Player with most friends on facebook drinks;;,
+Move all players one space back (or more);;,
+Tell a joke or drink;;,
+Drink up your glass;;,
+Drink once and miss turn;miss turn;,
+Make a 4-liquid mix for a player of own choice and pour it his month;;,
+Men drink 2 / Women drink 1;;,
+Other players make you some kind of makeup or you drink 3 times;;,
+If you can't walk in straight line you drink once;;,
+Go back 3 spaces;;,
+Reverse the order of the players ;Reverse the order of the players ;,
+Tell all toxic word that if someone say he/she have to drink;New rules (add some reminders on screen? );,
+From now on everyone  drink with spread pinkie else he/she have to drink;xD nimoa basi prostotiqta :D;,
+"From now on everyone  have to say ""Cheers"" before drink or have to repeat;;",
+"From now on nobody can say the word ""Drink"";;",
 From now on NO swearing,;;
-From now on NO pointing with an extended finger.;;
-Players must drink with their secondary hand  (left if they're right-handed or right hand if they are lefties);;
+From now on NO pointing with an extended finger.;;,
+Players must drink with their secondary hand  (left if they're right-handed or right hand if they are lefties);;,
 A glass cannot be put down empty, it must be refilled first;;
-You must announce to the whole group ahead of time what action you¡¯re about to perform in the toilet.;;
-From now on Depersonalization (No first name, no pointing);;
+You must announce to the whole group ahead of time what action you¡¯re about to perform in the toilet.;;,
+From now on Depersonalization (No first name  no pointing);;,
+No saying the word “drink”,
+If you touch your phone you drink,
+"From now on everybody have to include ""X"" in his/her sentence",
+"Replace word ""X"" with word ""Y"" from now on",
+You can't show your teeth while laughing.,
+"Every time the rule maker motion like their hands are horns on a viking helmet, everyone else has to paddle, last person to do so drinks.",
+"No one is allowed to speak in first person. After one round, it gets pretty interesting.",
+Glasses should be held with the off-hand,
+Glasses should rest a safe distance from the table's edge,
+Empty glasses should be replaced immediately by a new beverage. Otherwise you drink again,
+Every 15 min everyone drinks,
+"If your glass is more than half full, drink half of it.",
+"If your glass is more than half empty, drink the rest of it.",
+Every 10 min you drink,
+If you drink beer from now on everything is multiplied by 2,
+Everyone born in 80's drinks,
+Everyone born in 90-95's drinks,
+Everyone born in 95-00's drinks,
+,
+,
+,
+,
+,
+,
+My favorite is the phrase like a question rule. Everything has to sound like it ends in a question mark?,Difficulty lvl 9000 :D
