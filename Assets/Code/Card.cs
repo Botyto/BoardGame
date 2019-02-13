@@ -40,7 +40,7 @@ public class Card : MonoBehaviour
 
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  transform.position + Vector3.up * 2,
-            "easeType", iTween.EaseType.Linear,
+            "easeType", iTween.EaseType.EaseInOutBack,
             "time", 0.5f));
         yield return new WaitForSeconds(0.5f);
 
@@ -50,6 +50,7 @@ public class Card : MonoBehaviour
             "time", 1.0f));
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  targetPos,
+            "easeType", iTween.EaseType.EaseInOutBack,
             "time", 2.0f));
         yield return new WaitForSeconds(2.0f);
 
@@ -66,7 +67,7 @@ public class Card : MonoBehaviour
 
         iTween.RotateTo(gameObject, iTween.Hash(
             "rotation",  deck.transform.rotation * Quaternion.Euler(0, 0, 180),
-            "easeType", iTween.EaseType.Linear,
+            "easeType", iTween.EaseType.EaseInOutBack,
             "time", 0.75f));
         iTween.MoveTo(gameObject, iTween.Hash(
             "position",  deck.transform.position + settle_dir * 5.0f,
@@ -76,7 +77,7 @@ public class Card : MonoBehaviour
 
         iTween.MoveTo(gameObject, iTween.Hash(
             "position", deck.transform.position,
-            "easeType", iTween.EaseType.Linear,
+            "easeType", iTween.EaseType.EaseInOutBack,
             "time", 0.5f));
         yield return new WaitForSeconds(0.5f + 0.5f);
     }

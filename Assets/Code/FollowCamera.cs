@@ -7,23 +7,32 @@ public class FollowCamera : Singleton<FollowCamera>
 {
     public new Camera camera;
     public float minSize = 5.0f;
-    
+
     [Header("Follow")]
-    public float moveSpeed = 0.5f;
+    public float moveSpeed = 5000f;
     public float zoomSpeed = 0.05f;
     public float additionalDistance = 10.0f;
     public List<Transform[]> followedObjectsStack = new List<Transform[]>() { new Transform[0] };
-    
+
     public Transform[] followedObjects { get { return followedObjectsStack[followedObjectsStack.Count - 1]; } }
 
     private float m_PreviousStepSize = 0.0f;
     public float previousStepSize { get { return m_PreviousStepSize; } }
     public bool isMoving { get { return previousStepSize > 0.01f; } }
 
+    public float lastSqrMag = Mathf.Infinity;
+    public Vector3 desiredVelocity;
+    Rigidbody body;
+
+    private void Start()
+    {
+        body = this.GetComponent<Rigidbody>();
+    }
+
     void LateUpdate()
     {
         var bounds = GetObjectsBounds(); //TODO - can we avoid calculating this bounding box every frame? But it will still need to be updated when something moves.
-        if (bounds.size.sqrMagnitude < 0.001)
+        if (bounds.size.sqrMagnitude < 0.05f)
         {
             return;
         }
@@ -38,7 +47,28 @@ public class FollowCamera : Singleton<FollowCamera>
         var smoothedPosition = transform.position + (direction * Time.deltaTime) * moveSpeed;
 
         m_PreviousStepSize = Vector3.Distance(transform.position, smoothedPosition);
-        transform.position = smoothedPosition;
+
+        var directionalVector = (desiredPosition - transform.position).normalized * moveSpeed;
+        desiredVelocity = directionalVector;
+
+        if (Vector3.Dot(desiredPosition - transform.position, desiredVelocity) < 0)
+        {
+            desiredVelocity *= -1;
+        }
+
+        body.AddForce(desiredPosition);
+        var sqrMag = (desiredPosition - transform.position).sqrMagnitude;
+
+        if (sqrMag > lastSqrMag)
+        {
+            desiredVelocity = Vector3.zero;
+        }
+        lastSqrMag = sqrMag;
+    }
+
+    void FixedUpdate()
+    {
+        body.velocity = desiredVelocity;
     }
 
     public static void Push<T>(T newTarget) where T : Component
@@ -139,7 +169,7 @@ public class FollowCamera : Singleton<FollowCamera>
             bounds = renderer.bounds;
             return true;
         }
-        
+
         bounds = default(Bounds);
         return false;
     }

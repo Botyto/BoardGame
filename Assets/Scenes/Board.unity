@@ -3257,6 +3257,7 @@ GameObject:
   - component: {fileID: 1046711086}
   - component: {fileID: 1046711085}
   - component: {fileID: 1046711087}
+  - component: {fileID: 1046711088}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -3337,9 +3338,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1046711086}
   minSize: 5
-  moveSpeed: 2
+  moveSpeed: 7
   zoomSpeed: 10
   additionalDistance: 10
+  lastSqrMag: Infinity
+  desiredVelocity: {x: 0, y: 0, z: 0}
+--- !u!54 &1046711088
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1046711083}
+  serializedVersion: 2
+  m_Mass: 2
+  m_Drag: 0
+  m_AngularDrag: 0.5
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1071790656
 GameObject:
   m_ObjectHideFlags: 0
