@@ -23,6 +23,8 @@ public class FollowCamera : Singleton<FollowCamera>
     public float lastSqrMag = Mathf.Infinity;
     public Vector3 desiredVelocity;
     Rigidbody body;
+    public AnimationCurve DistanceVersusSpeed;
+
 
     private void Start()
     {
@@ -32,7 +34,7 @@ public class FollowCamera : Singleton<FollowCamera>
     void LateUpdate()
     {
         var bounds = GetObjectsBounds(); //TODO - can we avoid calculating this bounding box every frame? But it will still need to be updated when something moves.
-        if (bounds.size.sqrMagnitude < 0.05f)
+        if (bounds.size.sqrMagnitude < 0.01f)
         {
             return;
         }
@@ -48,7 +50,10 @@ public class FollowCamera : Singleton<FollowCamera>
 
         m_PreviousStepSize = Vector3.Distance(transform.position, smoothedPosition);
 
-        var directionalVector = (desiredPosition - transform.position).normalized * moveSpeed;
+        float distanceToTarget = direction.magnitude;
+
+        var directionalVector = (desiredPosition - transform.position).normalized 
+            * distanceToTarget * moveSpeed; 
         desiredVelocity = directionalVector;
 
         if (Vector3.Dot(desiredPosition - transform.position, desiredVelocity) < 0)
@@ -56,7 +61,7 @@ public class FollowCamera : Singleton<FollowCamera>
             desiredVelocity *= -1;
         }
 
-        body.AddForce(desiredPosition);
+        body.AddForce(desiredPosition - body.velocity);
         var sqrMag = (desiredPosition - transform.position).sqrMagnitude;
 
         if (sqrMag > lastSqrMag)
@@ -64,6 +69,7 @@ public class FollowCamera : Singleton<FollowCamera>
             desiredVelocity = Vector3.zero;
         }
         lastSqrMag = sqrMag;
+
     }
 
     void FixedUpdate()

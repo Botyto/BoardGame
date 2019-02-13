@@ -3338,11 +3338,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1046711086}
   minSize: 5
-  moveSpeed: 7
+  moveSpeed: 2
   zoomSpeed: 10
   additionalDistance: 10
   lastSqrMag: Infinity
   desiredVelocity: {x: 0, y: 0, z: 0}
+  DistanceVersusSpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!54 &1046711088
 Rigidbody:
   m_ObjectHideFlags: 0

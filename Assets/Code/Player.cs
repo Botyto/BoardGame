@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
         var moveTween = iTween.MoveTo(gameObject, iTween.Hash(
             "position", targetWaypoint.bounds.center,
             "speed", moveSpeed,
-            "easeType", iTween.EaseType.Linear));
+            "easeType", iTween.EaseType.EaseInOutQuad));
         yield return new WaitForSeconds(moveTween.time);
         m_Moving = false;
 
