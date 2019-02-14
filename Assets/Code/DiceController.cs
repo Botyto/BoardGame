@@ -38,6 +38,7 @@ public class DiceController : Singleton<DiceController>
         {
             var msgBox = Dialog.Spawn<MessageBox>();
             msgBox.titleControl.text = "Throw dice";
+            msgBox.textControl.text = "Throw dice";
             Debug.Log("Dice throwing skipped !");
             yield return new WaitForObjectDestroyed(msgBox.gameObject);
         }

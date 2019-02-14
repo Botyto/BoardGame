@@ -1,28 +1,28 @@
-Rule;specific action rule;More generic action rule,
-Point out who drinks;;,
+Rule,
+Point out who drinks;;,+
 Point out who's next;pointer + change order + now ;,
-Drink up your glass;;,
-Players born in Q1 drink;;,
-"Players born in Q2 drink;;""""""pointer"""" attach rule to some of player/s ?""",
-Players born in Q3 drink;;,
-Players born in Q4 drink;;,
-Order two people to drink;;,
-Skip turn;skip turn;,
-"Skip next turn;skip next turn ?? Too tricky ? ;""(""""next turn"""" + complete rule)""",
-"Tell who misses turn;""""""pointer"""" + skip turn"";",
-All male drink;;,
-All famale drink;;,
+Drink up your glass;;,+
+Players born in Q1 drink;;,+
+"Players born in Q2 drink;;""""""pointer"""" attach rule to some of player/s ?""",+
+Players born in Q3 drink;;,+
+Players born in Q4 drink;;,+
+Order two people to drink;;,?-
+,
+"Skip next turn;skip next turn ?? Too tricky ? ;""(""""next turn"""" + complete rule)""",+
+"Tell who misses turn;""""""pointer"""" + skip turn"";",+
+All male drink;;,+
+All famale drink;;,+
 Player to left drinks;;,
-Go back X spaces;go back/forward num of spcaces;,
-Drink 3 times;;,
-All players drink;;,
+Go back X spaces;go back/forward num of spcaces;,?+
+Drink 3 times;;,+
+All players drink;;,+
 Move one space back and complete field;Move all players X spaces + complete rules;,
-Move one space forward and complete field;;,
-Go back to last corner ;Move back to last corner;,
+Move one space forward and complete field;;,?
+Go back to last corner ;Move back to last corner;,?
 Go back to start corner ;Move back to start;,
-Lift the person on your right if you can't drink 2 times;;,
-Drink half a glass of no mather the liquid;;,
-Get slap in the face by a girl;;,
+Lift the person on your right if you can't drink 2 times;;,+
+Drink half a glass of no mather the liquid;;,+
+Get slap in the face by a girl;;,+
 Players wearing something black drink;;,
 Players who can't lift just one eyeborwn drink;;,
 All players without pets drink;;,
@@ -72,7 +72,7 @@ Every 10 min you drink,
 If you drink beer from now on everything is multiplied by 2,
 Everyone born in 80's drinks,
 Everyone born in 90-95's drinks,
-Everyone born in 95-00's drinks,
+Everyone born in 95-present drinks,
 ,
 ,
 ,
