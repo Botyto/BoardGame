@@ -23,8 +23,6 @@ public class FollowCamera : Singleton<FollowCamera>
     public float lastSqrMag = Mathf.Infinity;
     public Vector3 desiredVelocity;
     Rigidbody body;
-    public AnimationCurve DistanceVersusSpeed;
-
 
     private void Start()
     {
@@ -52,8 +50,7 @@ public class FollowCamera : Singleton<FollowCamera>
 
         float distanceToTarget = direction.magnitude;
 
-        var directionalVector = (desiredPosition - transform.position).normalized 
-            * distanceToTarget * moveSpeed; 
+        var directionalVector = direction.normalized * distanceToTarget * moveSpeed;
         desiredVelocity = directionalVector;
 
         if (Vector3.Dot(desiredPosition - transform.position, desiredVelocity) < 0)
