@@ -20,7 +20,7 @@ public class Card : MonoBehaviour
     public Text caption = null;
     public Image image = null;
     public GameObject hint = null;
-    
+
     [Header("Dragging & Interaction")]
     private Vector3 m_Velocity = Vector3.zero;
     private Vector3 m_PreviousPosition = Vector3.zero;
@@ -29,7 +29,7 @@ public class Card : MonoBehaviour
     private State m_State = State.Unseen;
 
     private Dictionary<string, object> m_Memory;
-    
+
     public IEnumerator ShowToCamera()
     {
         var cam = Camera.main;
@@ -39,7 +39,7 @@ public class Card : MonoBehaviour
         var targetRotation = lookRotation * Quaternion.Euler(180, 90, 90);
 
         iTween.MoveTo(gameObject, iTween.Hash(
-            "position",  transform.position + Vector3.up * 2,
+            "position", transform.position + Vector3.up * 2,
             "easeType", iTween.EaseType.EaseInOutBack,
             "time", 0.5f));
         yield return new WaitForSeconds(0.5f);
@@ -49,10 +49,15 @@ public class Card : MonoBehaviour
             "easeType", iTween.EaseType.Linear,
             "time", 1.0f));
         iTween.MoveTo(gameObject, iTween.Hash(
-            "position",  targetPos,
+            "position", targetPos,
             "easeType", iTween.EaseType.EaseInOutBack,
             "time", 2.0f));
         yield return new WaitForSeconds(2.0f);
+        iTween.ScaleTo(gameObject, iTween.Hash(
+            "scale", new Vector3(1.2f, 1.2f, 1.2f),
+            "easeType", iTween.EaseType.Linear,
+            "time", 1.0f));
+
 
         m_State = State.Seen;
     }
@@ -66,12 +71,16 @@ public class Card : MonoBehaviour
         var settle_dir = (side > 0.0f) ? deck.transform.right : -deck.transform.right;
 
         iTween.RotateTo(gameObject, iTween.Hash(
-            "rotation",  deck.transform.rotation * Quaternion.Euler(0, 0, 180),
+            "rotation", deck.transform.rotation * Quaternion.Euler(0, 0, 180),
             "easeType", iTween.EaseType.EaseInOutBack,
             "time", 0.75f));
         iTween.MoveTo(gameObject, iTween.Hash(
-            "position",  deck.transform.position + settle_dir * 5.0f,
+            "position", deck.transform.position + settle_dir * 5.0f,
             "time", 1.5f));
+        iTween.ScaleTo(gameObject, iTween.Hash(
+            "scale", new Vector3(1f, 1f, 1f),
+            "easeType", iTween.EaseType.Linear,
+            "time", 1.0f));
 
         yield return new WaitForSeconds(2.0f);
 
@@ -80,12 +89,13 @@ public class Card : MonoBehaviour
             "easeType", iTween.EaseType.EaseInOutBack,
             "time", 0.5f));
         yield return new WaitForSeconds(0.5f + 0.5f);
+
     }
-    
+
     public IEnumerator Show()
     {
         yield return ShowToCamera();
-        
+
         while (m_State == State.Unseen) { yield return null; }
 
         deck.SendMessage("CardShown", this, SendMessageOptions.DontRequireReceiver);
@@ -97,7 +107,7 @@ public class Card : MonoBehaviour
             if (viewportPos.y < 0 || viewportPos.y > 1) { break; }
             yield return null;
         }
-        
+
         yield return ReturnToDeck();
     }
 
